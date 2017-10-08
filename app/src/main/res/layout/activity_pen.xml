@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".PenActivity">
 
-    <com.example.alichishti.paint.PaintView
+    <pk.edu.seecs.cs361.paint.PaintView
         android:id="@+id/paintView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

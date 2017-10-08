@@ -59,7 +59,13 @@
         android:id="@+id/canvas"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/actionButtons"
-        android:background="#fff" />
+        android:layout_above="@id/actionButtons">
+
+        <pk.edu.seecs.cs361.paint.PaintView
+            android:id="@+id/paintView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
 
 </RelativeLayout>
