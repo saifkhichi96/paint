@@ -1,91 +1,98 @@
 package pk.edu.seecs.cs361.paint;
 
-import android.support.v7.app.AppCompatActivity;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private PaintView paintView;
+    private LinearLayout toolbar;
+    private PaintCanvas paintCanvas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        paintView = (PaintView) findViewById(R.id.paintView);
+        // Add click event listeners to toolbar buttons
+        toolbar = (LinearLayout) findViewById(R.id.toolbar);
+        for (int i = 0; i < toolbar.getChildCount(); i++) {
+            toolbar.getChildAt(i).setOnClickListener(this);
+        }
+        findViewById(R.id.clear).setOnClickListener(this);
+
+        // Initialize canvas where everything is drawn
+        paintCanvas = (PaintCanvas) findViewById(R.id.canvas);
+
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        paintView.init(metrics);
+        paintCanvas.init(metrics);
 
-        findViewById(R.id.pencil).setOnClickListener(this);
-        findViewById(R.id.line).setOnClickListener(this);
-        findViewById(R.id.circle).setOnClickListener(this);
-        findViewById(R.id.box).setOnClickListener(this);
-        findViewById(R.id.colorBucket).setOnClickListener(this);
-        findViewById(R.id.colorPicker).setOnClickListener(this);
-    }
+        // Select Pen tool by default
+        enableButton(0);
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.main, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case R.id.clear:
-                paintView.clear();
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.pencil:
-                selectTool(1);
-                break;
+        for (int i = 0; i < toolbar.getChildCount(); i++) {
+            if (v.getId() == toolbar.getChildAt(i).getId()) {
+                switch (i) {
+                    case 0: // PEN
+                        disableButtons();
+                        enableButton(i);
+                        paintCanvas.enablePen();
+                        break;
+                    case 1: // LINE
+                        disableButtons();
+                        enableButton(i);
+                        paintCanvas.enableLine();
+                        break;
+                    case 2: // BOX
+                        disableButtons();
+                        enableButton(i);
+                        paintCanvas.enableBox();
+                        break;
+                    case 3: // CIRCLE
+                        disableButtons();
+                        break;
+                    case 4: // STROKE WIDTH
 
-            case R.id.line:
-                selectTool(2);
-                break;
+                        break;
+                    case 5: // COLOR PICKER
+                        // TODO: Implement color picker
+                        // Display color picker here. And set color using paintCanvas.setBrushColor once a color is picked.
+                        break;
+                }
+            }
+        }
 
-            case R.id.circle:
-                selectTool(3);
-                break;
+        if (v.getId() == R.id.clear) {
+            paintCanvas.clear();
+        }
+    }
 
-            case R.id.box:
-                selectTool(4);
-                break;
-
-            case R.id.colorBucket:
-                selectTool(5);
-                break;
-
-            case R.id.colorPicker:
-                selectTool(6);
-                break;
+    private void setToolbarItemColor(int itemIndex, int color) {
+        try {
+            ((ImageButton) toolbar.getChildAt(itemIndex)).setColorFilter(color);
+        } catch (Exception ignored) {
 
         }
     }
 
-    private void selectTool(int toolId) {
-        // Disable all containers
-        paintView.setEnabled(false);
-
-        // Select appropriate container
-        if (toolId == 1) {
-            paintView.setEnabled(true);
-        }
-
+    private void enableButton(int toolId) {
+        setToolbarItemColor(toolId, Color.parseColor("#883997"));
     }
+
+    private void disableButtons() {
+        for (int i = 0; i < toolbar.getChildCount(); i++) {
+            if (i == 4) continue;
+            setToolbarItemColor(i, Color.WHITE);
+        }
+    }
+
 }

@@ -8,7 +8,7 @@
 
     <!-- Action buttons -->
     <LinearLayout
-        android:id="@+id/actionButtons"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:layout_alignParentBottom="true"
@@ -17,55 +17,74 @@
         android:weightSum="6">
 
         <ImageButton
-            android:id="@+id/pencil"
+            android:id="@+id/pen"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_pen" />
 
         <ImageButton
             android:id="@+id/line"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_line" />
 
         <ImageButton
             android:id="@+id/box"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_box" />
 
         <ImageButton
             android:id="@+id/circle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_circle" />
 
         <ImageButton
-            android:id="@+id/colorBucket"
+            android:id="@+id/filled"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_fill" />
 
         <ImageButton
             android:id="@+id/colorPicker"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_color_picker" />
 
     </LinearLayout>
 
     <!-- Painting canvas -->
-    <RelativeLayout
+    <pk.edu.seecs.cs361.paint.PaintCanvas
         android:id="@+id/canvas"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/actionButtons">
+        android:layout_above="@id/toolbar" />
 
-        <pk.edu.seecs.cs361.paint.PaintView
-            android:id="@+id/paintView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </RelativeLayout>
+    <!-- Clear button -->
+    <ImageButton
+        android:id="@+id/clear"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dp"
+        android:background="@android:color/transparent"
+        android:scaleType="centerInside"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        android:tint="@android:color/white" />
 
 </RelativeLayout>
