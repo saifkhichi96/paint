@@ -25,7 +25,7 @@ public class PaintCanvas extends View {
 
     private static final float TOUCH_TOLERANCE = 10;
 
-    private ArrayList<FingerPath> paths = new ArrayList<>();
+    private ArrayList<PaintObject> paths = new ArrayList<>();
     private Paint mBitmapPaint = new Paint(Paint.DITHER_FLAG);
     private Canvas mCanvas;
     private Bitmap mBitmap;
@@ -34,20 +34,27 @@ public class PaintCanvas extends View {
     private float iX, iY;
     private float mX, mY;
 
-    private int strokeWidth = DEFAULT_STROKE_WIDTH;
+    private int canvasColor = DEFAULT_BG_COLOR;
     private int brushColor = DEFAULT_COLOR;
+    private int strokeWidth = DEFAULT_STROKE_WIDTH;
 
     private boolean pen = true;
     private boolean line = false;
     private boolean box = false;
+    private boolean circle = false;
+
+    private boolean three3d = false;
+
+    private int fillColor = DEFAULT_COLOR;
+    private boolean filled = false;
 
     public PaintCanvas(Context context) {
         this(context, null);
         mPaint = new Paint();
         mPaint.setColor(brushColor);
         mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setStrokeJoin(Paint.Join.MITER);
-        mPaint.setStrokeCap(Paint.Cap.BUTT);
+        mPaint.setStrokeJoin(Paint.Join.ROUND);
+        mPaint.setStrokeCap(Paint.Cap.ROUND);
         mPaint.setXfermode(null);
         mPaint.setAlpha(0xff);
     }
@@ -57,8 +64,8 @@ public class PaintCanvas extends View {
         mPaint = new Paint();
         mPaint.setColor(brushColor);
         mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setStrokeJoin(Paint.Join.MITER);
-        mPaint.setStrokeCap(Paint.Cap.BUTT);
+        mPaint.setStrokeJoin(Paint.Join.ROUND);
+        mPaint.setStrokeCap(Paint.Cap.ROUND);
         mPaint.setXfermode(null);
         mPaint.setAlpha(0xff);
 
@@ -85,11 +92,20 @@ public class PaintCanvas extends View {
         mPaint.setColor(brushColor);
     }
 
+    public void setFillColor(int fillColor) {
+        this.fillColor = fillColor;
+    }
+
+    public void setCanvasColor(int canvasColor) {
+        this.canvasColor = canvasColor;
+    }
+
     public void enablePen() {
         this.pen = true;
 
         this.line = false;
         this.box = false;
+        this.circle = false;
     }
 
     public void enableLine() {
@@ -97,6 +113,7 @@ public class PaintCanvas extends View {
 
         this.pen = false;
         this.box = false;
+        this.circle = false;
     }
 
     public void enableBox() {
@@ -104,15 +121,41 @@ public class PaintCanvas extends View {
 
         this.pen = false;
         this.line = false;
+        this.circle = false;
+    }
+
+    public void enableCircle() {
+        this.circle = true;
+
+        this.box = false;
+        this.pen = false;
+        this.line = false;
+    }
+
+    public boolean toggle3D() {
+        three3d = !three3d;
+        return three3d;
+    }
+
+    public boolean toggleFilled() {
+        this.filled = !this.filled;
+        return this.filled;
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.save();
-        mCanvas.drawColor(DEFAULT_BG_COLOR);
+        mCanvas.drawColor(canvasColor);
 
-        for (FingerPath fp : paths) {
-            mPaint.setColor(fp.getColor());
+        for (PaintObject fp : paths) {
+            if (fp.isFilled() && !fp.isLine()) {
+                mPaint.setStyle(Paint.Style.FILL);
+                mPaint.setColor(fp.getFillColor());
+            } else {
+                mPaint.setStyle(Paint.Style.STROKE);
+                mPaint.setColor(fp.getStrokeColor());
+            }
+
             mPaint.setStrokeWidth(fp.getStrokeWidth());
             mCanvas.drawPath(fp.getPath(), mPaint);
         }
@@ -123,6 +166,11 @@ public class PaintCanvas extends View {
 
     public void clear() {
         paths.clear();
+        invalidate();
+    }
+
+    public void undo() {
+        paths.remove(paths.size() - 1);
         invalidate();
     }
 
@@ -151,7 +199,17 @@ public class PaintCanvas extends View {
 
     private void touchStart(float x, float y) {
         mPath = new Path();
-        FingerPath fp = new FingerPath(brushColor, strokeWidth, mPath);
+
+        PaintObject fp = new PaintObject(brushColor, strokeWidth, mPath, filled, fillColor);
+        fp.setDoodle();
+        if (line) {
+            fp.setLine();
+        } else if (box) {
+            fp.setBox();
+        } else if (circle) {
+            fp.setCircle();
+        }
+
         paths.add(fp);
 
         mPath.reset();
@@ -165,26 +223,88 @@ public class PaintCanvas extends View {
         float dy = Math.abs(y - mY);
 
         if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
-            mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
             mX = x;
             mY = y;
+        }
+
+        if (pen) {
+            mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
+        } else if (line) {
+            drawLine(iX, iY, mX, mY);
+        } else if (box) {
+            drawRect(iX, iY, mX, mY);
+        } else if (circle) {
+            drawCircle(iX, iY, mX, mY);
         }
     }
 
     private void touchUp() {
-        if (!pen) {
-            mPath.reset();
-            mPath.moveTo(iX, iY);
-        }
-
-        if (pen || line) {
+        if (pen) {
             mPath.lineTo(mX, mY);
+        } else if (line) {
+            drawLine(iX, iY, mX, mY);
         } else if (box) {
-            mPath.moveTo(iX, iY);
-            mPath.lineTo(iX, mY);
-            mPath.lineTo(mX, mY);
-            mPath.lineTo(mX, iY);
-            mPath.lineTo(iX, iY);
+            drawRect(iX, iY, mX, mY);
+        } else if (circle) {
+            drawCircle(iX, iY, mX, mY);
         }
     }
+
+    private void drawRect(float iX, float iY, float fX, float fY) {
+        mPath.reset();
+        mPath.moveTo(iX, iY);
+
+        if (!three3d) {
+            mPath.lineTo(iX, fY);
+            mPath.lineTo(fX, fY);
+            mPath.lineTo(fX, iY);
+            mPath.lineTo(iX, iY);
+        } else {
+            // Front
+            mPath.lineTo(iX, fY);
+            mPath.lineTo(fX, fY);
+            mPath.lineTo(fX, iY);
+            mPath.lineTo(iX, iY);
+
+            // Back
+            mPath.lineTo(iX + Math.abs(fX - iX) / 2, iY + Math.abs(fY - iY) / 2);
+            mPath.lineTo(iX + Math.abs(fX - iX) / 2, fY + Math.abs(fY - iY) / 2);
+            mPath.lineTo(fX + Math.abs(fX - iX) / 2, fY + Math.abs(fY - iY) / 2);
+            mPath.lineTo(fX + Math.abs(fX - iX) / 2, iY + Math.abs(fY - iY) / 2);
+            mPath.lineTo(iX + Math.abs(fX - iX) / 2, iY + Math.abs(fY - iY) / 2);
+
+            // Left
+            mPath.lineTo(iX + Math.abs(fX - iX) / 2, fY + Math.abs(fY - iY) / 2);
+            mPath.lineTo(iX, fY);
+
+            // Right
+            mPath.lineTo(fX, fY);
+            mPath.lineTo(fX + Math.abs(fX - iX) / 2, fY + Math.abs(fY - iY) / 2);
+            mPath.lineTo(fX + Math.abs(fX - iX) / 2, iY + Math.abs(fY - iY) / 2);
+            mPath.lineTo(fX, iY);
+        }
+    }
+
+    private void drawLine(float iX, float iY, float fX, float fY) {
+        mPath.reset();
+        mPath.moveTo(iX, iY);
+        mPath.lineTo(fX, fY);
+    }
+
+    private void drawCircle(float iX, float iY, float fX, float fY) {
+        // Find midpoint
+        float x = (iX + fX) / 2;
+        float y = (iY + fY) / 2;
+
+        // Calculate radius
+        float xr = Math.abs((fX - iX) / 2);
+        float yr = Math.abs((fY - iY) / 2);
+        float r = (xr > yr) ? xr : yr;
+
+        // Add circle to path
+        mPath.reset();
+        mPath.moveTo(iX, iY);
+        mPath.addCircle(x, y, r, Path.Direction.CW);
+    }
+
 }

@@ -1,7 +1,10 @@
 package pk.edu.seecs.cs361.paint;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -11,12 +14,35 @@ import android.widget.LinearLayout;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private LinearLayout toolbar;
+    private int selectedTool = -1;
+
     private PaintCanvas paintCanvas;
+
+    private AlertDialog confirmClear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Create confirmation dailogs
+        confirmClear = new AlertDialog.Builder(this)
+                .setTitle("Are you sure?")
+                .setMessage("This action will erase everything drawn on canvas. It cannot be reversed. Do you really wish to proceed?")
+                .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        paintCanvas.clear();
+                        confirmClear.dismiss();
+                    }
+                })
+                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        confirmClear.dismiss();
+                    }
+                })
+                .create();
 
         // Add click event listeners to toolbar buttons
         toolbar = (LinearLayout) findViewById(R.id.toolbar);
@@ -24,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             toolbar.getChildAt(i).setOnClickListener(this);
         }
         findViewById(R.id.clear).setOnClickListener(this);
+        findViewById(R.id.undo).setOnClickListener(this);
 
         // Initialize canvas where everything is drawn
         paintCanvas = (PaintCanvas) findViewById(R.id.canvas);
@@ -31,6 +58,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         paintCanvas.init(metrics);
+
+        // Set canvase color
+        Intent intent = getIntent();
+        paintCanvas.setCanvasColor(intent.getIntExtra("BG_COLOR", Color.BLACK));
 
         // Select Pen tool by default
         enableButton(0);
@@ -53,27 +84,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         paintCanvas.enableLine();
                         break;
                     case 2: // BOX
+                        if (selectedTool == 2) {
+                            if (paintCanvas.toggle3D()) {
+                                ((ImageButton) toolbar.getChildAt(i)).setImageResource(R.drawable.ic_box);
+                            } else {
+                                ((ImageButton) toolbar.getChildAt(i)).setImageResource(R.drawable.ic_square);
+                            }
+                        }
+
                         disableButtons();
                         enableButton(i);
                         paintCanvas.enableBox();
                         break;
                     case 3: // CIRCLE
                         disableButtons();
+                        enableButton(i);
+                        paintCanvas.enableCircle();
                         break;
                     case 4: // STROKE WIDTH
-
+                        if (paintCanvas.toggleFilled()) {
+                            ((ImageButton) toolbar.getChildAt(i)).setImageResource(R.drawable.ic_fill);
+                        } else {
+                            ((ImageButton) toolbar.getChildAt(i)).setImageResource(R.drawable.ic_fill_none);
+                        }
                         break;
                     case 5: // COLOR PICKER
                         // TODO: Implement color picker
                         // Display color picker here. And set color using paintCanvas.setBrushColor once a color is picked.
                         break;
                 }
+                selectedTool = i;
             }
         }
 
-        if (v.getId() == R.id.clear) {
-            paintCanvas.clear();
+        switch (v.getId()) {
+            case R.id.clear:
+                confirmClear.show();
+                break;
+
+            case R.id.undo:
+                paintCanvas.undo();
+                break;
         }
+
     }
 
     private void setToolbarItemColor(int itemIndex, int color) {
