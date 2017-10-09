@@ -20,7 +20,7 @@ public class SplashScreen extends AppCompatActivity {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                startActivity(new Intent(getApplicationContext(), MenuActivity.class));
                 overridePendingTransition(0, 0);
                 finish();
             }
