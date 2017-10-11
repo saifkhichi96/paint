@@ -49,7 +49,7 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
                     android:paddingStart="5dp"
-                    android:text="White"
+                    android:text="White Canvas"
                     android:textColor="#333" />
 
             </LinearLayout>
@@ -75,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
                     android:paddingStart="5dp"
-                    android:text="Black"
+                    android:text="Black Canvas"
                     android:textColor="#333" />
 
             </LinearLayout>

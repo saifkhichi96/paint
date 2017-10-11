@@ -1,4 +1,4 @@
-package pk.edu.seecs.cs361.paint;
+package pk.edu.seecs.cs361.paint.core;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -13,6 +13,8 @@ import android.view.View;
 
 import java.util.ArrayList;
 
+import pk.edu.seecs.cs361.paint.utils.DoodleDatabase;
+
 
 /**
  * @author alichishti
@@ -25,8 +27,10 @@ public class PaintCanvas extends View {
 
     private static final float TOUCH_TOLERANCE = 10;
 
-    private ArrayList<PaintObject> paths = new ArrayList<>();
-    private Paint mBitmapPaint = new Paint(Paint.DITHER_FLAG);
+    private final Paint mBitmapPaint = new Paint(Paint.DITHER_FLAG);
+    private final ArrayList<PaintObject> paths = new ArrayList<>();
+    private int pointer = 0;
+
     private Canvas mCanvas;
     private Bitmap mBitmap;
     private Paint mPaint;
@@ -47,6 +51,9 @@ public class PaintCanvas extends View {
 
     private int fillColor = DEFAULT_COLOR;
     private boolean filled = false;
+
+    private String projectName = null;
+    private Bitmap savedBitmap = null;
 
     public PaintCanvas(Context context) {
         this(context, null);
@@ -69,6 +76,47 @@ public class PaintCanvas extends View {
         mPaint.setXfermode(null);
         mPaint.setAlpha(0xff);
 
+    }
+
+    public void init(DisplayMetrics metrics, Bitmap srcBmp) {
+        init(metrics);
+
+        if (srcBmp.getWidth() >= srcBmp.getHeight()) {
+            srcBmp = Bitmap.createBitmap(
+                    srcBmp,
+                    srcBmp.getWidth() / 2 - srcBmp.getHeight() / 2,
+                    0,
+                    srcBmp.getHeight(),
+                    srcBmp.getHeight()
+            );
+        } else {
+            srcBmp = Bitmap.createBitmap(
+                    srcBmp,
+                    0,
+                    srcBmp.getHeight() / 2 - srcBmp.getWidth() / 2,
+                    srcBmp.getWidth(),
+                    srcBmp.getWidth()
+            );
+        }
+
+        if (metrics.widthPixels > metrics.heightPixels) {
+            int w = metrics.widthPixels;
+            int h = (int) (metrics.widthPixels * srcBmp.getHeight() / (float) srcBmp.getWidth());
+            savedBitmap = Bitmap.createScaledBitmap(srcBmp, w, h, false);
+        } else {
+            int h = metrics.heightPixels;
+            int w = (int) (metrics.heightPixels * srcBmp.getWidth() / (float) srcBmp.getHeight());
+            savedBitmap = Bitmap.createScaledBitmap(srcBmp, w, h, false);
+        }
+    }
+
+    public void init(DisplayMetrics metrics, String doodlePath) {
+        init(metrics);
+
+        Bitmap savedDoodle = DoodleDatabase.loadDoodle(doodlePath);
+        savedBitmap = savedDoodle.copy(Bitmap.Config.ARGB_8888, true);
+
+        projectName = doodlePath;
     }
 
     public void init(DisplayMetrics metrics) {
@@ -147,7 +195,14 @@ public class PaintCanvas extends View {
         canvas.save();
         mCanvas.drawColor(canvasColor);
 
+        if (savedBitmap != null) {
+            mCanvas.drawBitmap(savedBitmap, 0, 0, mPaint);
+        }
+
+        int i = 0;
         for (PaintObject fp : paths) {
+            if (++i > pointer) break;
+
             if (fp.isFilled() && !fp.isLine()) {
                 mPaint.setStyle(Paint.Style.FILL);
                 mPaint.setColor(fp.getFillColor());
@@ -165,13 +220,31 @@ public class PaintCanvas extends View {
     }
 
     public void clear() {
+        pointer = 0;
         paths.clear();
         invalidate();
     }
 
+    public boolean canRedo() {
+        return pointer < paths.size();
+    }
+
+    public void redo() {
+        if (pointer < paths.size()) {
+            pointer++;
+            invalidate();
+        }
+    }
+
+    public boolean canUndo() {
+        return pointer > 0;
+    }
+
     public void undo() {
-        paths.remove(paths.size() - 1);
-        invalidate();
+        if (pointer > 0) {
+            pointer--;
+            invalidate();
+        }
     }
 
     @Override
@@ -200,8 +273,15 @@ public class PaintCanvas extends View {
     private void touchStart(float x, float y) {
         mPath = new Path();
 
+        // Delete any undo-ed paths
+        while (paths.size() > pointer) {
+            paths.remove(paths.size() - 1);
+        }
+
         PaintObject fp = new PaintObject(brushColor, strokeWidth, mPath, filled, fillColor);
+        pointer++;
         fp.setDoodle();
+
         if (line) {
             fp.setLine();
         } else if (box) {
@@ -305,6 +385,14 @@ public class PaintCanvas extends View {
         mPath.reset();
         mPath.moveTo(iX, iY);
         mPath.addCircle(x, y, r, Path.Direction.CW);
+    }
+
+    public void save() {
+        if (projectName == null) {
+            DoodleDatabase.saveDoodle(mBitmap);
+        } else {
+            DoodleDatabase.saveDoodle(mBitmap, projectName);
+        }
     }
 
 }

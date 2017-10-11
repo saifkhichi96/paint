@@ -1,4 +1,4 @@
-package pk.edu.seecs.cs361.paint;
+package pk.edu.seecs.cs361.paint.core;
 
 import android.graphics.Color;
 import android.graphics.Path;
@@ -46,11 +46,11 @@ class PaintObject {
         return strokeWidth;
     }
 
-    public boolean isFilled() {
+    boolean isFilled() {
         return filled;
     }
 
-    public int getFillColor() {
+    int getFillColor() {
         return fillColor;
     }
 
