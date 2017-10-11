@@ -2,14 +2,20 @@ package pk.edu.seecs.cs361.paint;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+
+import pk.edu.seecs.cs361.paint.core.PaintCanvas;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -19,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private PaintCanvas paintCanvas;
 
     private AlertDialog confirmClear;
+    private AlertDialog confirmSave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +51,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 })
                 .create();
 
+        confirmSave = new AlertDialog.Builder(this)
+                .setTitle("Save doodle to Galley?")
+                .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        paintCanvas.save();
+                        confirmClear.dismiss();
+                        finish();
+                    }
+                })
+                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        confirmClear.dismiss();
+                    }
+                })
+                .create();
+
         // Add click event listeners to toolbar buttons
         toolbar = (LinearLayout) findViewById(R.id.toolbar);
         for (int i = 0; i < toolbar.getChildCount(); i++) {
@@ -51,21 +76,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         findViewById(R.id.clear).setOnClickListener(this);
         findViewById(R.id.undo).setOnClickListener(this);
+        findViewById(R.id.redo).setOnClickListener(this);
+        findViewById(R.id.save).setOnClickListener(this);
 
         // Initialize canvas where everything is drawn
-        paintCanvas = (PaintCanvas) findViewById(R.id.canvas);
 
+        // Initialize canvas
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        paintCanvas.init(metrics);
 
-        // Set canvase color
-        Intent intent = getIntent();
-        paintCanvas.setCanvasColor(intent.getIntExtra("BG_COLOR", Color.BLACK));
+        paintCanvas = (PaintCanvas) findViewById(R.id.canvas);
+        String savedDoodle = getIntent().getStringExtra("DOODLE");
+        if (savedDoodle != null && !savedDoodle.equals("")) {
+            paintCanvas.init(metrics, savedDoodle);
+        }
+
+        paintCanvas = (PaintCanvas) findViewById(R.id.canvas);
+        Intent data = getIntent().getParcelableExtra("FROM_GALLERY");
+        if (data != null) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+
+            paintCanvas.init(metrics, BitmapFactory.decodeFile(picturePath));
+        } else {
+            paintCanvas.init(metrics);
+            paintCanvas.setCanvasColor(getIntent().getIntExtra("BG_COLOR", Color.BLACK));
+        }
 
         // Select Pen tool by default
         enableButton(0);
-
     }
 
     @Override
@@ -124,6 +171,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.undo:
                 paintCanvas.undo();
+                if (paintCanvas.canRedo()) {
+                    findViewById(R.id.redo).setVisibility(View.VISIBLE);
+                }
+                break;
+
+            case R.id.redo:
+                paintCanvas.redo();
+                if (!paintCanvas.canRedo()) {
+                    findViewById(R.id.redo).setVisibility(View.GONE);
+                }
+                break;
+
+            case R.id.save:
+                confirmSave.show();
                 break;
         }
 
