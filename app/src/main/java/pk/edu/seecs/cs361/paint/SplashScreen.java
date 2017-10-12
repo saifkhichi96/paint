@@ -31,6 +31,15 @@ public class SplashScreen extends AppCompatActivity {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     STORAGE_PERMISSION_REQUEST);
+        } else {
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(getApplicationContext(), MenuActivity.class));
+                    overridePendingTransition(0, 0);
+                    finish();
+                }
+            }, delay);
         }
     }
 
