@@ -221,6 +221,10 @@ public class PaintCanvas extends View {
         canvas.restore();
     }
 
+    public int getBrushColor(){
+        return this.brushColor;
+    }
+
     public void clear() {
         pointer = 0;
         paths.clear();

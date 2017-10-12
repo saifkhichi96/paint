@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import pk.edu.seecs.cs361.paint.utils.DoodleDatabase;
+import pk.edu.seecs.cs361.paint.utils.MainActivity;
 
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener {
 

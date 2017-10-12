@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="pk.edu.seecs.cs361.paint.MainActivity">
+    tools:context="pk.edu.seecs.cs361.paint.utils.MainActivity">
 
     <!-- Drawing tools -->
     <pk.edu.seecs.cs361.paint.view.ToolboxView
