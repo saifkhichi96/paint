@@ -7,7 +7,6 @@ import pk.edu.seecs.cs361.paint.R;
 import pk.edu.seecs.cs361.paint.core.CanvasActionListener;
 
 /**
- *
  * @author saifkhichi96
  * @see pk.edu.seecs.cs361.paint.core.CanvasActionListener
  */
