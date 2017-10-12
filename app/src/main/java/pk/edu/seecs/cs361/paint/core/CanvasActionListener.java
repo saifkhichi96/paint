@@ -6,8 +6,11 @@ package pk.edu.seecs.cs361.paint.core;
 public interface CanvasActionListener {
 
     void onDrawPath();
+
     void onUndo(boolean allowed);
+
     void onRedo(boolean allowed);
+
     void onRevert();
 
 }
