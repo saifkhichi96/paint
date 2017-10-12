@@ -6,9 +6,9 @@
     android:orientation="vertical"
     tools:context="pk.edu.seecs.cs361.paint.MainActivity">
 
-    <!-- Action buttons -->
-    <LinearLayout
-        android:id="@+id/toolbar"
+    <!-- Drawing tools -->
+    <pk.edu.seecs.cs361.paint.view.ToolboxView
+        android:id="@+id/toolbox"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:layout_alignParentBottom="true"
@@ -64,83 +64,41 @@
             android:background="@android:color/transparent"
             android:src="@drawable/ic_color_picker" />
 
-    </LinearLayout>
+    </pk.edu.seecs.cs361.paint.view.ToolboxView>
 
     <!-- Painting canvas -->
     <pk.edu.seecs.cs361.paint.core.PaintCanvas
         android:id="@+id/canvas"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/toolbar" />
+        android:layout_above="@id/toolbox" />
 
     <!-- Action bar -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:layout_alignParentTop="true"
-        android:background="#8000"
+        android:background="#8888"
+        android:elevation="4dp"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/actionBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
         <!-- Save button -->
         <TextView
             android:id="@+id/save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:padding="2dp"
+            android:layout_marginStart="5dp"
             android:text="SAVE"
-            android:textColor="#FFF" />
-
-        <!-- Clear button -->
-        <ImageButton
-            android:id="@+id/clear"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@android:color/transparent"
-            android:padding="2dp"
-            android:scaleType="centerInside"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
-            android:tint="@android:color/white" />
-
-        <!-- Redo button -->
-        <ImageButton
-            android:id="@+id/undo"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="3dp"
-            android:layout_marginRight="3dp"
-            android:layout_toLeftOf="@id/clear"
-            android:layout_toStartOf="@id/clear"
-            android:background="@android:color/transparent"
-            android:padding="4dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_action_undo"
-            android:tint="@android:color/white" />
-
-        <!-- Redo button -->
-        <ImageButton
-            android:id="@+id/redo"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="3dp"
-            android:layout_marginRight="3dp"
-            android:layout_toLeftOf="@id/undo"
-            android:layout_toStartOf="@id/undo"
-            android:background="@android:color/transparent"
-            android:padding="4dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_action_redo"
-            android:tint="@android:color/white"
-            android:visibility="gone"/>
+            android:textStyle="bold" />
 
     </RelativeLayout>
 

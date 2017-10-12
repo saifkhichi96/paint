@@ -55,6 +55,8 @@ public class PaintCanvas extends View {
     private String projectName = null;
     private Bitmap savedBitmap = null;
 
+    private CanvasActionListener canvasActionListener;
+
     public PaintCanvas(Context context) {
         this(context, null);
         mPaint = new Paint();
@@ -223,27 +225,31 @@ public class PaintCanvas extends View {
         pointer = 0;
         paths.clear();
         invalidate();
-    }
 
-    public boolean canRedo() {
-        return pointer < paths.size();
+        if (canvasActionListener != null) {
+            canvasActionListener.onRevert();
+        }
     }
 
     public void redo() {
         if (pointer < paths.size()) {
             pointer++;
             invalidate();
-        }
-    }
 
-    public boolean canUndo() {
-        return pointer > 0;
+            if (canvasActionListener != null) {
+                canvasActionListener.onRedo(pointer < paths.size());
+            }
+        }
     }
 
     public void undo() {
         if (pointer > 0) {
             pointer--;
             invalidate();
+
+            if (canvasActionListener != null) {
+                canvasActionListener.onUndo(pointer > 0);
+            }
         }
     }
 
@@ -328,6 +334,10 @@ public class PaintCanvas extends View {
         } else if (circle) {
             drawCircle(iX, iY, mX, mY);
         }
+
+        if (canvasActionListener != null) {
+            canvasActionListener.onDrawPath();
+        }
     }
 
     private void drawRect(float iX, float iY, float fX, float fY) {
@@ -395,4 +405,7 @@ public class PaintCanvas extends View {
         }
     }
 
+    public void setCanvasActionListener(CanvasActionListener canvasActionListener) {
+        this.canvasActionListener = canvasActionListener;
+    }
 }
