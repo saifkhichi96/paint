@@ -1,4 +1,4 @@
-package pk.edu.seecs.cs361.paint;
+package pk.edu.seecs.cs361.paint.utils;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,11 +16,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
+import pk.edu.seecs.cs361.paint.R;
 import pk.edu.seecs.cs361.paint.core.PaintCanvas;
 import pk.edu.seecs.cs361.paint.utils.ActionBarManager;
 import pk.edu.seecs.cs361.paint.view.ToolboxView;
+import yuku.ambilwarna.AmbilWarnaDialog;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -121,6 +125,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Select Pen tool by default
         toolbox.selectTool(0);
+
+        ImageButton btnPick = (ImageButton) findViewById(R.id.colorPicker);
+        btnPick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openDialog(false);
+            }
+        });
+    }
+
+    private void openDialog(boolean supportsAlpha) {
+        AmbilWarnaDialog dialog = new AmbilWarnaDialog(this, paintCanvas.getBrushColor(), supportsAlpha, new AmbilWarnaDialog.OnAmbilWarnaListener() {
+            @Override
+            public void onOk(AmbilWarnaDialog dialog, int color) {
+                paintCanvas.setBrushColor(color);
+            }
+
+            @Override
+            public void onCancel(AmbilWarnaDialog dialog) {
+                Toast.makeText(getApplicationContext(), "Action canceled!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        dialog.show();
     }
 
     @Override
