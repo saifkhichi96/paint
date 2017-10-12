@@ -18,6 +18,7 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="NEW PROJECT"
+            android:textColor="#FFF"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -115,6 +116,7 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="SAVED DOODLES"
+            android:textColor="#FFF"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -129,7 +131,7 @@
                 android:gravity="center_horizontal"
                 android:padding="10dp"
                 android:text="There are no saved doodles yet!"
-                android:textColor="#333" />
+                android:textColor="#888" />
 
         </LinearLayout>
 
