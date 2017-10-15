@@ -4,10 +4,18 @@ import android.graphics.Color;
 import android.graphics.Path;
 
 /**
+ * PaintObject represents a single path drawn on the canvas. Characteristics of the path, including
+ * its shape, color, etc. are stored in this class.
+ *
  * @author alichishti
+ * @version 1.0
+ * @see PaintCanvas
  */
 class PaintObject {
 
+    /**
+     * The shape (or path on canvas) of the object.
+     */
     private final Path path;
 
     private final int strokeColor;
