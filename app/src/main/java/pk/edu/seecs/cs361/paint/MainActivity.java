@@ -1,4 +1,4 @@
-package pk.edu.seecs.cs361.paint.utils;
+package pk.edu.seecs.cs361.paint;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,11 +16,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import pk.edu.seecs.cs361.paint.R;
 import pk.edu.seecs.cs361.paint.core.PaintCanvas;
 import pk.edu.seecs.cs361.paint.utils.ActionBarManager;
 import pk.edu.seecs.cs361.paint.view.ToolboxView;
@@ -140,6 +138,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onOk(AmbilWarnaDialog dialog, int color) {
                 paintCanvas.setBrushColor(color);
+                paintCanvas.setFillColor(color);
             }
 
             @Override
