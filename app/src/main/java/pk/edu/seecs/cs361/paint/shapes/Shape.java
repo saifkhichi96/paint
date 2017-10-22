@@ -18,7 +18,7 @@ import pk.edu.seecs.cs361.paint.view.PaintView;
  */
 public abstract class Shape extends Path {
 
-    private final PaintBrush paintBrush;
+    protected final PaintBrush paintBrush;
 
     public Shape(PaintBrush paintBrush) {
         this.paintBrush = paintBrush.clone();

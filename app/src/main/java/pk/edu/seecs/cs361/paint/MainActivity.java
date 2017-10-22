@@ -19,6 +19,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import pk.edu.seecs.cs361.paint.core.PaintCanvas;
+import pk.edu.seecs.cs361.paint.shapes.Eraser;
 import pk.edu.seecs.cs361.paint.shapes.Quad2D;
 import pk.edu.seecs.cs361.paint.shapes.Quad3D;
 import pk.edu.seecs.cs361.paint.view.PaintView;
@@ -95,21 +97,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.save).setOnClickListener(this);
 
         // Initialize canvas where everything is drawn
-
-        // Initialize canvas
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
+        PaintCanvas canvas;
         paintView = (PaintView) findViewById(R.id.canvas);
         String savedDoodle = getIntent().getStringExtra("DOODLE");
+        Intent galleryImage = getIntent().getParcelableExtra("FROM_GALLERY");
         if (savedDoodle != null && !savedDoodle.equals("")) {
-            paintView.loadFromPath(metrics, savedDoodle);
+            canvas = PaintCanvas.loadFromPath(metrics, savedDoodle);
         }
-
-        paintView = (PaintView) findViewById(R.id.canvas);
-        Intent data = getIntent().getParcelableExtra("FROM_GALLERY");
-        if (data != null) {
-            Uri selectedImage = data.getData();
+        else if (galleryImage != null) {
+            Uri selectedImage = galleryImage.getData();
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
             Cursor cursor = getContentResolver().query(selectedImage,
@@ -120,11 +119,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
 
-            paintView.loadFromBitmap(metrics, BitmapFactory.decodeFile(picturePath));
+            canvas = PaintCanvas.loadFromBitmap(metrics, BitmapFactory.decodeFile(picturePath));
         } else {
-            paintView.init(metrics);
-            paintView.getCanvas().setColor(getIntent().getIntExtra("BG_COLOR", Color.BLACK));
+            canvas = new PaintCanvas(metrics);
+            canvas.setColor(getIntent().getIntExtra("BG_COLOR", Color.BLACK));
         }
+        paintView.setCanvas(canvas);
 
         // Select Pen tool by default
         toolbox.selectTool(0);
@@ -177,6 +177,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.revert:
                 revertConfirmation.show();
+                return true;
+
+            case R.id.eraser:
+                paintView.setShapeType(Eraser.class);
                 return true;
 
         }
