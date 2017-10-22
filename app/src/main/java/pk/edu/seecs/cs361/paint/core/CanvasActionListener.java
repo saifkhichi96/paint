@@ -1,13 +1,15 @@
 package pk.edu.seecs.cs361.paint.core;
 
+import pk.edu.seecs.cs361.paint.view.PaintView;
+
 /**
- * CanvasActionListener provides a callback interface for certain actions performed on the {@link PaintCanvas}.
- * Pass an instance of this class to {@link PaintCanvas#setCanvasActionListener(CanvasActionListener)} to use
+ * CanvasActionListener provides a callback interface for certain actions performed on the {@link PaintView}.
+ * Pass an instance of this class to {@link PaintView#setCanvasActionListener(CanvasActionListener)} to use
  * these callback methods.
  *
  * @author saifkhichi96
  * @version 1.0
- * @see PaintCanvas
+ * @see PaintView
  */
 public interface CanvasActionListener {
 
@@ -18,7 +20,7 @@ public interface CanvasActionListener {
 
     /**
      * This method is called after an action performed on canvas is undone by calling the
-     * {@link PaintCanvas#undo()} method.
+     * {@link PaintView#undo()} method.
      *
      * @param allowed flag indicating whether more undo actions are allowed or not
      */
@@ -26,7 +28,7 @@ public interface CanvasActionListener {
 
     /**
      * This method is called after a previously undone action on canvas is restored by calling the
-     * {@link PaintCanvas#redo()} method.
+     * {@link PaintView#redo()} method.
      *
      * @param allowed flag indicating whether more redo actions are allowed or not
      */
@@ -34,7 +36,7 @@ public interface CanvasActionListener {
 
     /**
      * This method is called after reverting the canvas to its initial state using the
-     * {@link PaintCanvas#clear()} method.
+     * {@link PaintView#clear()} method.
      */
     void onRevert();
 
