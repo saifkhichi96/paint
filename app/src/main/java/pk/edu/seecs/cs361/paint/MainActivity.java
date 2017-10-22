@@ -19,7 +19,12 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import pk.edu.seecs.cs361.paint.core.PaintCanvas;
+import pk.edu.seecs.cs361.paint.shapes.Quad2D;
+import pk.edu.seecs.cs361.paint.shapes.Quad3D;
+import pk.edu.seecs.cs361.paint.view.PaintView;
+import pk.edu.seecs.cs361.paint.shapes.Circle;
+import pk.edu.seecs.cs361.paint.shapes.Line;
+import pk.edu.seecs.cs361.paint.shapes.Pen;
 import pk.edu.seecs.cs361.paint.utils.ActionBarManager;
 import pk.edu.seecs.cs361.paint.view.ToolboxView;
 import yuku.ambilwarna.AmbilWarnaDialog;
@@ -27,7 +32,7 @@ import yuku.ambilwarna.AmbilWarnaDialog;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     // A custom OpenGL ES canvas to draw on
-    private PaintCanvas paintCanvas;
+    private PaintView paintView;
 
     // Toolbox contains the drawing tools
     private ToolboxView toolbox;
@@ -51,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        paintCanvas.clear();
+                        paintView.clear();
                         revertConfirmation.dismiss();
                     }
                 })
@@ -68,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        paintCanvas.save();
+                        paintView.save();
                         revertConfirmation.dismiss();
                         finish();
                     }
@@ -95,13 +100,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
-        paintCanvas = (PaintCanvas) findViewById(R.id.canvas);
+        paintView = (PaintView) findViewById(R.id.canvas);
         String savedDoodle = getIntent().getStringExtra("DOODLE");
         if (savedDoodle != null && !savedDoodle.equals("")) {
-            paintCanvas.init(metrics, savedDoodle);
+            paintView.loadFromPath(metrics, savedDoodle);
         }
 
-        paintCanvas = (PaintCanvas) findViewById(R.id.canvas);
+        paintView = (PaintView) findViewById(R.id.canvas);
         Intent data = getIntent().getParcelableExtra("FROM_GALLERY");
         if (data != null) {
             Uri selectedImage = data.getData();
@@ -115,10 +120,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
 
-            paintCanvas.init(metrics, BitmapFactory.decodeFile(picturePath));
+            paintView.loadFromBitmap(metrics, BitmapFactory.decodeFile(picturePath));
         } else {
-            paintCanvas.init(metrics);
-            paintCanvas.setCanvasColor(getIntent().getIntExtra("BG_COLOR", Color.BLACK));
+            paintView.init(metrics);
+            paintView.getCanvas().setColor(getIntent().getIntExtra("BG_COLOR", Color.BLACK));
         }
 
         // Select Pen tool by default
@@ -134,11 +139,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void openDialog(boolean supportsAlpha) {
-        AmbilWarnaDialog dialog = new AmbilWarnaDialog(this, paintCanvas.getBrushColor(), supportsAlpha, new AmbilWarnaDialog.OnAmbilWarnaListener() {
+        AmbilWarnaDialog dialog = new AmbilWarnaDialog(this, paintView.getBrush().getStrokeColor(), supportsAlpha, new AmbilWarnaDialog.OnAmbilWarnaListener() {
             @Override
             public void onOk(AmbilWarnaDialog dialog, int color) {
-                paintCanvas.setBrushColor(color);
-                paintCanvas.setFillColor(color);
+                paintView.getBrush().setStrokeColor(color);
+                paintView.getBrush().setFillColor(color);
             }
 
             @Override
@@ -155,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         inflater.inflate(R.menu.main, menu);
 
         ActionBarManager actionBarManager = new ActionBarManager(menu);
-        paintCanvas.setCanvasActionListener(actionBarManager);
+        paintView.setCanvasActionListener(actionBarManager);
         return true;
     }
 
@@ -163,11 +168,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.undo:
-                paintCanvas.undo();
+                paintView.undo();
                 return true;
 
             case R.id.redo:
-                paintCanvas.redo();
+                paintView.redo();
                 return true;
 
             case R.id.revert:
@@ -185,27 +190,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (v.getId() == toolbox.getChildAt(i).getId()) {
                 switch (i) {
                     case 0: // PEN
-                        paintCanvas.enablePen();
+                        paintView.setShapeType(Pen.class);
                         break;
                     case 1: // LINE
-                        paintCanvas.enableLine();
+                        paintView.setShapeType(Line.class);
                         break;
                     case 2: // BOX
                         if (toolbox.getSelectedTool() == 2) {
-                            if (paintCanvas.toggle3D()) {
-                                ((ImageButton) toolbox.getChildAt(i)).setImageResource(R.drawable.ic_box);
+                            if (paintView.toggle2D()) {
+                                ((ImageButton) toolbox.getChildAt(i)).setImageResource(R.drawable.ic_quad2d);
                             } else {
-                                ((ImageButton) toolbox.getChildAt(i)).setImageResource(R.drawable.ic_square);
+                                ((ImageButton) toolbox.getChildAt(i)).setImageResource(R.drawable.ic_quad3d);
                             }
                         }
 
-                        paintCanvas.enableBox();
+                        paintView.setShapeType(paintView.isOrtho() ? Quad2D.class : Quad3D.class);
+
                         break;
                     case 3: // CIRCLE
-                        paintCanvas.enableCircle();
+                        paintView.setShapeType(Circle.class);
                         break;
                     case 4: // STROKE WIDTH
-                        if (paintCanvas.toggleFilled()) {
+                        if (paintView.getBrush().toggleFill()) {
                             ((ImageButton) toolbox.getChildAt(i)).setImageResource(R.drawable.ic_fill);
                         } else {
                             ((ImageButton) toolbox.getChildAt(i)).setImageResource(R.drawable.ic_fill_none);
