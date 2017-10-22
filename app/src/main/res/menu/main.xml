@@ -23,4 +23,10 @@
         android:title="Revert"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/eraser"
+        android:icon="@drawable/ic_eraser"
+        android:title="Eraser"
+        app:showAsAction="always" />
+
 </menu>

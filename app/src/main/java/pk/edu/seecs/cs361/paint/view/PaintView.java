@@ -1,11 +1,9 @@
 package pk.edu.seecs.cs361.paint.view;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -13,10 +11,10 @@ import pk.edu.seecs.cs361.paint.core.CanvasActionListener;
 import pk.edu.seecs.cs361.paint.core.PaintBrush;
 import pk.edu.seecs.cs361.paint.core.PaintCanvas;
 import pk.edu.seecs.cs361.paint.core.Shapes;
+import pk.edu.seecs.cs361.paint.shapes.Eraser;
 import pk.edu.seecs.cs361.paint.shapes.Pen;
 import pk.edu.seecs.cs361.paint.shapes.Shape;
 import pk.edu.seecs.cs361.paint.shapes.ShapeFactory;
-import pk.edu.seecs.cs361.paint.utils.DoodleDatabase;
 
 
 /**
@@ -37,9 +35,6 @@ public class PaintView extends View {
     private Class<? extends Shape> shapeType = Pen.class;
     private boolean ortho = true;
 
-    private String projectName = null;
-    private Bitmap savedBitmap = null;
-
     private CanvasActionListener canvasActionListener;
 
     public PaintView(Context context) {
@@ -50,54 +45,8 @@ public class PaintView extends View {
         super(context, attrs);
     }
 
-    public void loadFromBitmap(DisplayMetrics metrics, Bitmap srcBmp) {
-        init(metrics);
-
-        float deviceAspect = metrics.widthPixels / (float) metrics.heightPixels;
-        float bmpAspect = srcBmp.getWidth() / (float) srcBmp.getHeight();
-
-        if (deviceAspect != bmpAspect) {
-            if (srcBmp.getWidth() >= srcBmp.getHeight()) {
-                srcBmp = Bitmap.createBitmap(
-                        srcBmp,
-                        srcBmp.getWidth() / 2 - srcBmp.getHeight() / 2,
-                        0,
-                        srcBmp.getHeight(),
-                        srcBmp.getHeight()
-                );
-            } else {
-                srcBmp = Bitmap.createBitmap(
-                        srcBmp,
-                        0,
-                        srcBmp.getHeight() / 2 - srcBmp.getWidth() / 2,
-                        srcBmp.getWidth(),
-                        srcBmp.getWidth()
-                );
-            }
-
-            if (metrics.widthPixels > metrics.heightPixels) {
-                int w = metrics.widthPixels;
-                int h = (int) (metrics.widthPixels * srcBmp.getHeight() / (float) srcBmp.getWidth());
-                savedBitmap = Bitmap.createScaledBitmap(srcBmp, w, h, false);
-            } else {
-                int h = metrics.heightPixels;
-                int w = (int) (metrics.heightPixels * srcBmp.getWidth() / (float) srcBmp.getHeight());
-                savedBitmap = Bitmap.createScaledBitmap(srcBmp, w, h, false);
-            }
-        } else {
-            savedBitmap = Bitmap.createScaledBitmap(srcBmp, metrics.widthPixels, metrics.heightPixels, false);
-        }
-    }
-
-    public void loadFromPath(DisplayMetrics metrics, String bmpPath) {
-        Bitmap srcBmp = DoodleDatabase.loadDoodle(bmpPath);
-        loadFromBitmap(metrics, srcBmp);
-
-        projectName = bmpPath;
-    }
-
-    public void init(DisplayMetrics metrics) {
-        mCanvas = new PaintCanvas(metrics);
+    public void setCanvas(PaintCanvas canvas) {
+        mCanvas = canvas;
     }
 
     public PaintBrush getBrush() {
@@ -124,15 +73,11 @@ public class PaintView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.save();
-        this.mCanvas.drawColor(this.mCanvas.getColor());
 
-        if (savedBitmap != null) {
-            this.mCanvas.drawBitmap(savedBitmap, 0, 0, null);
-        }
+        mCanvas.drawBackground();
+        mCanvas.drawShapes(shapes);
 
-        shapes.paint(mCanvas);
-
-        canvas.drawBitmap(this.mCanvas.getBitmap(), 0, 0, null);
+        canvas.drawBitmap(mCanvas.getBitmap(), 0, 0, null);
         canvas.restore();
     }
 
@@ -160,6 +105,9 @@ public class PaintView extends View {
 
     private void touchStart(PointF touchAt) {
         Shape shape = ShapeFactory.get(shapeType, mBrush);
+        if (shape.getClass().equals(Eraser.class)) {
+            ((Eraser) shape).initEraser(mCanvas);
+        }
         shapes.add(shape);
 
         iTouch.set(touchAt);
@@ -221,11 +169,7 @@ public class PaintView extends View {
     }
 
     public void save() {
-        if (projectName == null) {
-            DoodleDatabase.saveDoodle(this.mCanvas.getBitmap());
-        } else {
-            DoodleDatabase.saveDoodle(this.mCanvas.getBitmap(), projectName);
-        }
+        mCanvas.saveProject();
     }
 
     public void setCanvasActionListener(CanvasActionListener canvasActionListener) {
