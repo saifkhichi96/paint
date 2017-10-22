@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="pk.edu.seecs.cs361.paint.MainActivity">
+    tools:context="pk.edu.seecs.cs361.paint.sfllhkhan95.doodle.MainActivity">
 
     <!-- Drawing tools -->
-    <pk.edu.seecs.cs361.paint.view.ToolboxView
+    <sfllhkhan95.doodle.view.ToolboxView
         android:id="@+id/toolbox"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
@@ -64,10 +64,10 @@
             android:background="@android:color/transparent"
             android:src="@drawable/ic_color_picker" />
 
-    </pk.edu.seecs.cs361.paint.view.ToolboxView>
+    </sfllhkhan95.doodle.view.ToolboxView>
 
     <!-- Painting canvas -->
-    <pk.edu.seecs.cs361.paint.view.PaintView
+    <sfllhkhan95.doodle.view.PaintView
         android:id="@+id/canvas"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -6,7 +6,7 @@
     android:background="?colorPrimaryDark"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context="pk.edu.seecs.cs361.paint.SplashScreen">
+    tools:context="pk.edu.seecs.cs361.paint.sfllhkhan95.doodle.SplashScreen">
 
     <ImageView
         android:layout_width="75dp"
