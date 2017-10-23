@@ -48,7 +48,7 @@ public class PaintBrush extends Paint implements Cloneable {
     }
 
     public void setSize(int size) {
-        this.size = size;
+        this.size = DEFAULT_SIZE + size;
     }
 
     public boolean toggleFill() {

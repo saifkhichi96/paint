@@ -104,20 +104,22 @@ public class PaintView extends View {
     }
 
     private void touchStart(PointF touchAt) {
-        Shape shape = ShapeFactory.get(shapeType, mBrush);
-        if (shape.getClass().equals(Eraser.class)) {
-            ((Eraser) shape).initEraser(mCanvas);
-        }
-        shapes.add(shape);
-
         iTouch.set(touchAt);
-        Shape currentShape = shapes.getCurrent();
-        if (currentShape != null) {
-            currentShape.moveTo(touchAt.x, touchAt.y);
-        }
+        fTouch = null;
     }
 
     private void touchMove(PointF touchAt) {
+        if (fTouch == null) {
+            fTouch = new PointF();
+
+            Shape shape = ShapeFactory.get(shapeType, mBrush);
+            shape.moveTo(iTouch.x, iTouch.y);
+            if (shape.getClass().equals(Eraser.class)) {
+                ((Eraser) shape).initEraser(mCanvas);
+            }
+            shapes.add(shape);
+        }
+
         float dx = Math.abs(touchAt.x - fTouch.x);
         float dy = Math.abs(touchAt.y - fTouch.y);
         if (dx < TOUCH_TOLERANCE && dy < TOUCH_TOLERANCE) {
@@ -132,6 +134,8 @@ public class PaintView extends View {
     }
 
     private void touchUp() {
+        if (iTouch == null || fTouch == null) return;
+
         Shape currentShape = shapes.getCurrent();
         if (currentShape != null) {
             currentShape.draw(iTouch, fTouch);
