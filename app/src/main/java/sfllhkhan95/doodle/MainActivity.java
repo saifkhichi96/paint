@@ -210,6 +210,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return true;
 
             case R.id.eraser:
+                toolbox.deselectAll();
                 paintView.setShapeType(Eraser.class);
                 return true;
         }

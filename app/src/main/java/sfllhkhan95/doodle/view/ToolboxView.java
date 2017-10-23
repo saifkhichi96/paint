@@ -68,7 +68,7 @@ public class ToolboxView extends LinearLayout {
         setToolColor(id, Color.parseColor("#883997"));
     }
 
-    private void deselectAll() {
+    public void deselectAll() {
         selectedTool = -1;
         for (int i = 0; i < this.getChildCount(); i++) {
             setToolColor(i, Color.WHITE);
