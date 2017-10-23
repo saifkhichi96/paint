@@ -64,4 +64,8 @@ public class Shapes extends ArrayList<Shape> {
         return this.size() > 0 ? this.get(this.size() - 1) : null;
     }
 
+    public int getPointer() {
+        return pointer;
+    }
+
 }

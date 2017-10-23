@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // Dialog boxes to confirm certain permanent actions (i.e. revert and save)
     private AlertDialog revertConfirmation;
     private AlertDialog saveConfirmation;
+    private AlertDialog exitConfirmation;
 
     private boolean fullScreen = false;
     private View actionBar;
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Create confirmation dailogs
         revertConfirmation = new AlertDialog.Builder(this)
-                .setTitle("Are you sure?")
+                .setTitle("Revert to original?")
                 .setMessage("This action will erase everything drawn on canvas. It cannot be reversed. Do you really wish to proceed?")
                 .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
@@ -101,19 +102,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .create();
 
         saveConfirmation = new AlertDialog.Builder(this)
-                .setTitle("Save doodle to Galley?")
+                .setTitle("Save project to galley?")
                 .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         paintView.save();
-                        revertConfirmation.dismiss();
-                        finish();
+                        MainActivity.super.onBackPressed();
                     }
                 })
                 .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        revertConfirmation.dismiss();
+                        saveConfirmation.dismiss();
+                    }
+                })
+                .create();
+
+        exitConfirmation = new AlertDialog.Builder(this)
+                .setTitle("Exit without saving?")
+                .setMessage("This project has unsaved changes. Do you really wish to proceed?")
+                .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        MainActivity.super.onBackPressed();
+                    }
+                })
+                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        exitConfirmation.dismiss();
                     }
                 })
                 .create();
@@ -273,4 +290,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    @Override
+    public void onBackPressed() {
+        if (paintView.isModified()) {
+            exitConfirmation.show();
+        } else {
+            super.onBackPressed();
+        }
+    }
 }
