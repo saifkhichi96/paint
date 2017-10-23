@@ -278,7 +278,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         switch (v.getId()) {
             case R.id.save:
-                saveConfirmation.show();
+                if (paintView.isModified()) {
+                    saveConfirmation.show();
+                }
                 break;
 
             case R.id.fullScreen:
