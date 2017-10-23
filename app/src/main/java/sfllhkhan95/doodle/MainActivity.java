@@ -1,5 +1,6 @@
 package sfllhkhan95.doodle;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -138,9 +139,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Add click event listeners to toolbox buttons
         toolbox = (ToolboxView) findViewById(R.id.toolbox);
         toolbox.addUnselectable(4);
-        toolbox.addUnselectable(5);
         toolbox.setOnClickListener(this);
 
+        findViewById(R.id.penColorPicker).setOnClickListener(this);
+        findViewById(R.id.fillColorPicker).setOnClickListener(this);
         findViewById(R.id.fullScreen).setOnClickListener(this);
         findViewById(R.id.save).setOnClickListener(this);
 
@@ -175,30 +177,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Select Pen tool by default
         toolbox.selectTool(0);
-
-        ImageButton btnPick = (ImageButton) findViewById(R.id.colorPicker);
-        btnPick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openDialog(false);
-            }
-        });
-    }
-
-    private void openDialog(boolean supportsAlpha) {
-        AmbilWarnaDialog dialog = new AmbilWarnaDialog(this, paintView.getBrush().getStrokeColor(), supportsAlpha, new AmbilWarnaDialog.OnAmbilWarnaListener() {
-            @Override
-            public void onOk(AmbilWarnaDialog dialog, int color) {
-                paintView.getBrush().setStrokeColor(color);
-                paintView.getBrush().setFillColor(color);
-            }
-
-            @Override
-            public void onCancel(AmbilWarnaDialog dialog) {
-                Toast.makeText(getApplicationContext(), "Action canceled!", Toast.LENGTH_SHORT).show();
-            }
-        });
-        dialog.show();
     }
 
     @Override
@@ -268,15 +246,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             ((ImageButton) toolbox.getChildAt(i)).setImageResource(R.drawable.ic_fill_none);
                         }
                         break;
-                    case 5: // COLOR PICKER
-                        // TODO: Implement color picker
-                        // Display color picker here. And set color using paintCanvas.setBrushColor once a color is picked.
-                        break;
                 }
             }
         }
 
         switch (v.getId()) {
+            case R.id.fillColorPicker: // FILL COLOR PICKER
+                FillColorPicker fillColorPicker = new FillColorPicker(this);
+                fillColorPicker.show();
+                break;
+
+            case R.id.penColorPicker:
+                StrokeColorPicker strokeColorPicker = new StrokeColorPicker(this);
+                strokeColorPicker.show();
+                break;
+
             case R.id.save:
                 if (paintView.isModified()) {
                     saveConfirmation.show();
@@ -298,6 +282,50 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             exitConfirmation.show();
         } else {
             super.onBackPressed();
+        }
+    }
+
+    private class StrokeColorPicker extends AmbilWarnaDialog {
+
+        /**
+         * Create an AmbilWarnaDialog.
+         *
+         * @param context activity context
+         */
+        StrokeColorPicker(Context context) {
+            super(context, paintView.getBrush().getStrokeColor(), true, new OnAmbilWarnaListener() {
+                @Override
+                public void onCancel(AmbilWarnaDialog dialog) {
+                    Toast.makeText(getApplicationContext(), "Action canceled!", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onOk(AmbilWarnaDialog dialog, int color) {
+                    paintView.getBrush().setStrokeColor(color);
+                }
+            });
+        }
+    }
+
+    private class FillColorPicker extends AmbilWarnaDialog {
+
+        /**
+         * Create an AmbilWarnaDialog.
+         *
+         * @param context activity context
+         */
+        FillColorPicker(Context context) {
+            super(context, paintView.getBrush().getStrokeColor(), true, new OnAmbilWarnaListener() {
+                @Override
+                public void onCancel(AmbilWarnaDialog dialog) {
+                    Toast.makeText(getApplicationContext(), "Action canceled!", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onOk(AmbilWarnaDialog dialog, int color) {
+                    paintView.getBrush().setFillColor(color);
+                }
+            });
         }
     }
 }
