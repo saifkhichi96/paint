@@ -20,7 +20,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
-import android.widget.Toast;
 
 import sfllhkhan95.doodle.core.PaintCanvas;
 import sfllhkhan95.doodle.shapes.Circle;
@@ -295,9 +294,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         StrokeColorPicker(Context context) {
             super(context, paintView.getBrush().getStrokeColor(), true, new OnAmbilWarnaListener() {
                 @Override
-                public void onCancel(AmbilWarnaDialog dialog) {
-                    Toast.makeText(getApplicationContext(), "Action canceled!", Toast.LENGTH_SHORT).show();
-                }
+                public void onCancel(AmbilWarnaDialog dialog) { }
 
                 @Override
                 public void onOk(AmbilWarnaDialog dialog, int color) {
@@ -317,9 +314,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         FillColorPicker(Context context) {
             super(context, paintView.getBrush().getFillColor(), true, new OnAmbilWarnaListener() {
                 @Override
-                public void onCancel(AmbilWarnaDialog dialog) {
-                    Toast.makeText(getApplicationContext(), "Action canceled!", Toast.LENGTH_SHORT).show();
-                }
+                public void onCancel(AmbilWarnaDialog dialog) { }
 
                 @Override
                 public void onOk(AmbilWarnaDialog dialog, int color) {
@@ -328,5 +323,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             });
         }
     }
-    
+
 }
