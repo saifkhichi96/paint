@@ -315,7 +315,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
          * @param context activity context
          */
         FillColorPicker(Context context) {
-            super(context, paintView.getBrush().getStrokeColor(), true, new OnAmbilWarnaListener() {
+            super(context, paintView.getBrush().getFillColor(), true, new OnAmbilWarnaListener() {
                 @Override
                 public void onCancel(AmbilWarnaDialog dialog) {
                     Toast.makeText(getApplicationContext(), "Action canceled!", Toast.LENGTH_SHORT).show();
@@ -328,4 +328,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             });
         }
     }
+    
 }
