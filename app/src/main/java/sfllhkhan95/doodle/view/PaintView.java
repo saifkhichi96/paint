@@ -180,4 +180,8 @@ public class PaintView extends View {
         this.canvasActionListener = canvasActionListener;
     }
 
+    public boolean isModified() {
+        return shapes.getPointer() > 0;
+    }
+
 }
