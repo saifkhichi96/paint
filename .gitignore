@@ -32,13 +32,19 @@ proguard/
 # Android Studio captures folder
 captures/
 
-# Intellij
-*.iml
+# User-specific configurations
+.idea/libraries/
 .idea/workspace.xml
 .idea/tasks.xml
-.idea/gradle.xml
-.idea/dictionaries
-.idea/libraries
+.idea/.name
+.idea/compiler.xml
+.idea/copyright/profiles_settings.xml
+.idea/encodings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/scopes/scope_settings.xml
+.idea/vcs.xml
+*.iml
 
 # Keystore files
 *.jks
@@ -54,6 +60,12 @@ freeline.py
 freeline/
 freeline_project_description.json
 
-# OS files
+# OS-specific files
 Desktop.ini
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
