@@ -52,7 +52,7 @@
         android:layout_alignParentBottom="true"
         android:background="#C000"
         android:orientation="horizontal"
-        android:visibility="visible"
+        android:visibility="gone"
         android:weightSum="6">
 
         <LinearLayout
