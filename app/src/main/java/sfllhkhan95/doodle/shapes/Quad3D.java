@@ -9,7 +9,7 @@ import sfllhkhan95.doodle.core.PaintBrush;
  */
 public class Quad3D extends Shape {
 
-    public Quad3D(PaintBrush paintBrush) {
+    Quad3D(PaintBrush paintBrush) {
         super(paintBrush);
     }
 

@@ -13,7 +13,7 @@ public class ShapeFactory {
     public static Shape get(Class<? extends Shape> type, PaintBrush paintBrush) {
         Shape shape = null;
         try {
-            Constructor<? extends Shape> ctor = type.getConstructor(PaintBrush.class);
+            Constructor<? extends Shape> ctor = type.getDeclaredConstructor(PaintBrush.class);
             shape = ctor.newInstance(paintBrush);
         } catch (NoSuchMethodException | IllegalAccessException |
                 InstantiationException | InvocationTargetException e) {

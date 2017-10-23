@@ -18,9 +18,9 @@ import sfllhkhan95.doodle.view.PaintView;
  */
 public abstract class Shape extends Path {
 
-    protected final PaintBrush paintBrush;
+    final PaintBrush paintBrush;
 
-    public Shape(PaintBrush paintBrush) {
+    Shape(PaintBrush paintBrush) {
         this.paintBrush = paintBrush.clone();
         this.reset();
     }

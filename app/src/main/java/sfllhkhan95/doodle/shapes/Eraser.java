@@ -8,7 +8,7 @@ import sfllhkhan95.doodle.core.PaintCanvas;
  */
 public class Eraser extends Pen {
 
-    public Eraser(PaintBrush paintBrush) {
+    Eraser(PaintBrush paintBrush) {
         super(paintBrush);
     }
 
