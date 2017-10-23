@@ -51,7 +51,7 @@ public class Shapes extends ArrayList<Shape> {
         super.clear();
     }
 
-    public void paint(PaintCanvas canvas) {
+    void paint(PaintCanvas canvas) {
         int i = 0;
         for (Shape shape : this) {
             if (++i > pointer) break;

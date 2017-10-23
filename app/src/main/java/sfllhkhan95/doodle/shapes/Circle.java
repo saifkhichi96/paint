@@ -10,7 +10,7 @@ import sfllhkhan95.doodle.core.PaintBrush;
  */
 public class Circle extends Shape {
 
-    public Circle(PaintBrush paintBrush) {
+    Circle(PaintBrush paintBrush) {
         super(paintBrush);
     }
 

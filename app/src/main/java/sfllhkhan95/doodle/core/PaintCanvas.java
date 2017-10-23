@@ -101,7 +101,7 @@ public class PaintCanvas extends Canvas {
         }
     }
 
-    public void setProjectName(String title) {
+    private void setProjectName(String title) {
         this.projectName = title;
     }
 

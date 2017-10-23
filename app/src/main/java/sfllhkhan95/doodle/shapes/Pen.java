@@ -9,7 +9,7 @@ import sfllhkhan95.doodle.core.PaintBrush;
  */
 public class Pen extends Shape {
 
-    public Pen(PaintBrush paintBrush) {
+    Pen(PaintBrush paintBrush) {
         super(paintBrush);
     }
 
