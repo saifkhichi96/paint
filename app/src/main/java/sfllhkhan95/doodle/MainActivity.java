@@ -16,7 +16,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import sfllhkhan95.doodle.core.PaintCanvas;
@@ -43,13 +45,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private AlertDialog revertConfirmation;
     private AlertDialog saveConfirmation;
 
+    private boolean fullScreen = false;
+    private View actionBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+        );
         setContentView(R.layout.activity_main);
 
-        setSupportActionBar((Toolbar) findViewById(R.id.actionBar));
+        actionBar = findViewById(R.id.actionBar);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setTitle("");
+
+        final SeekBar brushController = (SeekBar) findViewById(R.id.brushController);
+        brushController.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (seekBar.equals(brushController)) {
+                    paintView.getBrush().setSize(progress);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
         // Create confirmation dailogs
         revertConfirmation = new AlertDialog.Builder(this)
@@ -94,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         toolbox.addUnselectable(5);
         toolbox.setOnClickListener(this);
 
+        findViewById(R.id.fullScreen).setOnClickListener(this);
         findViewById(R.id.save).setOnClickListener(this);
 
         // Initialize canvas where everything is drawn
@@ -106,8 +137,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent galleryImage = getIntent().getParcelableExtra("FROM_GALLERY");
         if (savedDoodle != null && !savedDoodle.equals("")) {
             canvas = PaintCanvas.loadFromPath(metrics, savedDoodle);
-        }
-        else if (galleryImage != null) {
+        } else if (galleryImage != null) {
             Uri selectedImage = galleryImage.getData();
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
@@ -182,7 +212,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.eraser:
                 paintView.setShapeType(Eraser.class);
                 return true;
-
         }
 
         return false;
@@ -232,6 +261,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.save:
                 saveConfirmation.show();
+                break;
+
+            case R.id.fullScreen:
+                fullScreen = !fullScreen;
+                findViewById(R.id.tools).setVisibility(fullScreen ? View.GONE : View.VISIBLE);
+                actionBar.setVisibility(fullScreen ? View.GONE : View.VISIBLE);
                 break;
         }
 
