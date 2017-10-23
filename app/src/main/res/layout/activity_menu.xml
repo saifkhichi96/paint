@@ -95,7 +95,7 @@
                     android:layout_height="40dp"
                     android:background="@color/colorPrimaryDark"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_camera" />
+                    android:src="@drawable/ic_gallery" />
 
                 <TextView
                     android:layout_width="wrap_content"
