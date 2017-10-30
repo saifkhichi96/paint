@@ -1,7 +1,6 @@
 package sfllhkhan95.doodle.utils;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Environment;
 
 import java.io.File;
@@ -29,12 +28,12 @@ public class DoodleDatabase {
         saveDoodle(doodle, fname);
     }
 
-    public static Bitmap loadDoodle(String fname) {
+    public static Bitmap loadDoodle(String fname, int wd, int ht) {
         String root = Environment.getExternalStorageDirectory().toString() + "/" + DIR;
         File myDir = new File(root);
         myDir.mkdirs();
 
-        return BitmapFactory.decodeFile(root + fname);
+        return DoodleFactory.loadFromPath(root + fname, wd, ht);
     }
 
     public static String[] listDoodles() {

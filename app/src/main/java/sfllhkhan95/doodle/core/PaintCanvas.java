@@ -62,7 +62,7 @@ public class PaintCanvas extends Canvas {
     }
 
     public static PaintCanvas loadFromPath(DisplayMetrics metrics, String bmpPath) {
-        Bitmap srcBmp = DoodleDatabase.loadDoodle(bmpPath);
+        Bitmap srcBmp = DoodleDatabase.loadDoodle(bmpPath, metrics.widthPixels, metrics.heightPixels);
         PaintCanvas canvas = loadFromBitmap(metrics, srcBmp);
         canvas.setProjectName(bmpPath);
 
@@ -73,7 +73,7 @@ public class PaintCanvas extends Canvas {
         int height = metrics.heightPixels;
         int width = metrics.widthPixels;
 
-        bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
         setBitmap(bitmap);
     }
 

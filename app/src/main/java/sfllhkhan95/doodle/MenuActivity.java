@@ -43,7 +43,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                 title.setText(doodle);
 
                 ImageView thumbnail = view.findViewById(R.id.doodleThumbnail);
-                thumbnail.setImageBitmap(DoodleDatabase.loadDoodle(doodle));
+                thumbnail.setImageBitmap(DoodleDatabase.loadDoodle(doodle, 100, 100));
 
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -81,7 +81,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
