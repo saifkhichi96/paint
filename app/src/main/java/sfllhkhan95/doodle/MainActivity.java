@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.BitmapFactory;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,6 +29,7 @@ import sfllhkhan95.doodle.shapes.Pen;
 import sfllhkhan95.doodle.shapes.Quad2D;
 import sfllhkhan95.doodle.shapes.Quad3D;
 import sfllhkhan95.doodle.utils.ActionBarManager;
+import sfllhkhan95.doodle.utils.DoodleFactory;
 import sfllhkhan95.doodle.view.PaintView;
 import sfllhkhan95.doodle.view.ToolboxView;
 import yuku.ambilwarna.AmbilWarnaDialog;
@@ -167,7 +168,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
 
-            canvas = PaintCanvas.loadFromBitmap(metrics, BitmapFactory.decodeFile(picturePath));
+            Bitmap bitmapFromFile = DoodleFactory.loadFromPath(picturePath, metrics.widthPixels, metrics.heightPixels);
+            canvas = PaintCanvas.loadFromBitmap(metrics, bitmapFromFile);
         } else {
             canvas = new PaintCanvas(metrics);
             canvas.setColor(getIntent().getIntExtra("BG_COLOR", Color.BLACK));
@@ -294,7 +296,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         StrokeColorPicker(Context context) {
             super(context, paintView.getBrush().getStrokeColor(), true, new OnAmbilWarnaListener() {
                 @Override
-                public void onCancel(AmbilWarnaDialog dialog) { }
+                public void onCancel(AmbilWarnaDialog dialog) {
+                }
 
                 @Override
                 public void onOk(AmbilWarnaDialog dialog, int color) {
@@ -314,7 +317,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         FillColorPicker(Context context) {
             super(context, paintView.getBrush().getFillColor(), true, new OnAmbilWarnaListener() {
                 @Override
-                public void onCancel(AmbilWarnaDialog dialog) { }
+                public void onCancel(AmbilWarnaDialog dialog) {
+                }
 
                 @Override
                 public void onOk(AmbilWarnaDialog dialog, int color) {
