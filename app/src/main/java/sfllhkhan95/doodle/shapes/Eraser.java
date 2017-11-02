@@ -13,7 +13,6 @@ public class Eraser extends Pen {
     }
 
     public void initEraser(PaintCanvas canvas) {
-        paintBrush.setFillColor(canvas.getColor());
         paintBrush.setStrokeColor(canvas.getColor());
     }
 

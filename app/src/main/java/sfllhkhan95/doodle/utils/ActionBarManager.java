@@ -5,6 +5,7 @@ import android.view.MenuItem;
 
 import sfllhkhan95.doodle.R;
 import sfllhkhan95.doodle.core.CanvasActionListener;
+import sfllhkhan95.doodle.view.PaintView;
 
 /**
  * @author saifkhichi96
@@ -22,7 +23,6 @@ public class ActionBarManager implements CanvasActionListener {
         redoAction = menu.findItem(R.id.redo);
         revertAction = menu.findItem(R.id.revert);
     }
-
 
     private void enable(MenuItem item) {
         item.setEnabled(true);
@@ -66,4 +66,19 @@ public class ActionBarManager implements CanvasActionListener {
         disable(redoAction);
     }
 
+    public void sync(PaintView paintView) {
+        if (paintView.isModified()) {
+            enable(revertAction);
+            enable(undoAction);
+        } else {
+            disable(revertAction);
+            disable(undoAction);
+        }
+
+        if (paintView.canRedo()) {
+            enable(redoAction);
+        } else {
+            disable(redoAction);
+        }
+    }
 }

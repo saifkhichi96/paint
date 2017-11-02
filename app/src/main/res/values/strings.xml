@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Doodle</string>
+    <string name="drawer_open">Show layers</string>
+    <string name="drawer_close">Hide layers</string>
 </resources>

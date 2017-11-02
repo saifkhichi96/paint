@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/pen"
+        android:icon="@drawable/ic_brush"
+        android:title="Pen" />
+
+    <item
+        android:id="@+id/shapes"
+        android:icon="@drawable/ic_shape"
+        android:title="Shapes">
+        <menu>
+            <item
+                android:id="@+id/line"
+                android:icon="@drawable/ic_shape_line"
+                android:title="Line" />
+
+            <item
+                android:id="@+id/rect"
+                android:icon="@drawable/ic_shape_rect"
+                android:title="Rectangle" />
+
+            <item
+                android:id="@+id/box"
+                android:icon="@drawable/ic_shape_box"
+                android:title="Cube" />
+
+            <item
+                android:id="@+id/circle"
+                android:icon="@drawable/ic_shape_circle"
+                android:title="Circle" />
+
+            <item
+                android:id="@+id/fillColorPicker"
+                android:checkable="true"
+                android:icon="@drawable/ic_color"
+                android:title="Select fill color" />
+        </menu>
+    </item>
+
+
+    <item
+        android:id="@+id/colorBucket"
+        android:icon="@drawable/ic_color_bucket"
+        android:title="Color bucket" />
+
+    <item
+        android:id="@+id/eraser"
+        android:icon="@drawable/ic_eraser"
+        android:title="Eraser" />
+
+    <item
+        android:id="@+id/penColorPicker"
+        android:checkable="true"
+        android:icon="@drawable/ic_brush_color"
+        android:title="Select stroke color" />
+
+</menu>

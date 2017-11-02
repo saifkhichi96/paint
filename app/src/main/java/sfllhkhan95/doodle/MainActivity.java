@@ -1,7 +1,5 @@
 package sfllhkhan95.doodle;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -9,7 +7,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
@@ -18,7 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 
 import sfllhkhan95.doodle.core.PaintCanvas;
@@ -29,26 +26,31 @@ import sfllhkhan95.doodle.shapes.Pen;
 import sfllhkhan95.doodle.shapes.Quad2D;
 import sfllhkhan95.doodle.shapes.Quad3D;
 import sfllhkhan95.doodle.utils.ActionBarManager;
+import sfllhkhan95.doodle.utils.DialogFactory;
 import sfllhkhan95.doodle.utils.DoodleFactory;
+import sfllhkhan95.doodle.utils.OnToolSelectedListener;
+import sfllhkhan95.doodle.view.FillColorPicker;
 import sfllhkhan95.doodle.view.PaintView;
-import sfllhkhan95.doodle.view.ToolboxView;
-import yuku.ambilwarna.AmbilWarnaDialog;
+import sfllhkhan95.doodle.view.StrokeColorPicker;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements
+        SeekBar.OnSeekBarChangeListener, OnToolSelectedListener {
+
+    // Brush controller
+    SeekBar brushController;
 
     // A custom OpenGL ES canvas to draw on
     private PaintView paintView;
 
     // Toolbox contains the drawing tools
-    private ToolboxView toolbox;
+    private LinearLayout toolbox;
 
     // Dialog boxes to confirm certain permanent actions (i.e. revert and save)
-    private AlertDialog revertConfirmation;
-    private AlertDialog saveConfirmation;
-    private AlertDialog exitConfirmation;
+    private DialogFactory dialogFactory;
 
-    private boolean fullScreen = false;
-    private View actionBar;
+    // Action bars
+    private CustomToolbar toolbar;
+    private boolean isMaximized;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,99 +61,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         );
         setContentView(R.layout.activity_main);
 
-        actionBar = findViewById(R.id.actionBar);
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-        getSupportActionBar().setTitle("");
+        this.toolbar = new CustomToolbar();
 
-        final SeekBar brushController = (SeekBar) findViewById(R.id.brushController);
-        brushController.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (seekBar.equals(brushController)) {
-                    paintView.getBrush().setSize(progress);
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
-        // Create confirmation dailogs
-        revertConfirmation = new AlertDialog.Builder(this)
-                .setTitle("Revert to original?")
-                .setMessage("This action will erase everything drawn on canvas. It cannot be reversed. Do you really wish to proceed?")
-                .setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        paintView.clear();
-                        revertConfirmation.dismiss();
-                    }
-                })
-                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        revertConfirmation.dismiss();
-                    }
-                })
-                .create();
-
-        saveConfirmation = new AlertDialog.Builder(this)
-                .setTitle("Save project to galley?")
-                .setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        paintView.save();
-                        MainActivity.super.onBackPressed();
-                    }
-                })
-                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        saveConfirmation.dismiss();
-                    }
-                })
-                .create();
-
-        exitConfirmation = new AlertDialog.Builder(this)
-                .setTitle("Exit without saving?")
-                .setMessage("This project has unsaved changes. Do you really wish to proceed?")
-                .setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        MainActivity.super.onBackPressed();
-                    }
-                })
-                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        exitConfirmation.dismiss();
-                    }
-                })
-                .create();
-
-        // Add click event listeners to toolbox buttons
-        toolbox = (ToolboxView) findViewById(R.id.toolbox);
-        toolbox.addUnselectable(4);
-        toolbox.setOnClickListener(this);
-
-        findViewById(R.id.penColorPicker).setOnClickListener(this);
-        findViewById(R.id.fillColorPicker).setOnClickListener(this);
-        findViewById(R.id.fullScreen).setOnClickListener(this);
-        findViewById(R.id.save).setOnClickListener(this);
+        this.brushController = (SeekBar) findViewById(R.id.brushController);
+        this.brushController.setOnSeekBarChangeListener(this);
 
         // Initialize canvas where everything is drawn
+        paintView = (PaintView) findViewById(R.id.canvas);
+        initCanvas();
+
+        // Create confirmation dialogs
+        dialogFactory = new DialogFactory(this, paintView);
+
+        // Add click event listeners to toolbox buttons
+        toolbox = (LinearLayout) findViewById(R.id.toolbox);
+
+        // Start in windowed mode
+        this.isMaximized = true;
+        toggleMaximized();
+    }
+
+    private void initCanvas() {
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
         PaintCanvas canvas;
-        paintView = (PaintView) findViewById(R.id.canvas);
         String savedDoodle = getIntent().getStringExtra("DOODLE");
         Intent galleryImage = getIntent().getParcelableExtra("FROM_GALLERY");
         if (savedDoodle != null && !savedDoodle.equals("")) {
@@ -172,27 +106,60 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             canvas = PaintCanvas.loadFromBitmap(metrics, bitmapFromFile);
         } else {
             canvas = new PaintCanvas(metrics);
-            canvas.setColor(getIntent().getIntExtra("BG_COLOR", Color.BLACK));
+            canvas.setColor(getIntent().getIntExtra("BG_COLOR", Color.TRANSPARENT));
         }
         paintView.setCanvas(canvas);
+    }
 
-        // Select Pen tool by default
-        toolbox.selectTool(0);
+    private void toggleMaximized() {
+        this.isMaximized = !this.isMaximized;
+        onMaximizeToggled(this.isMaximized);
+    }
+
+    private void onMaximizeToggled(boolean isMaximized) {
+        findViewById(R.id.container).setVisibility(isMaximized ? View.GONE : View.VISIBLE);
+        findViewById(R.id.tools).setVisibility(isMaximized ? View.GONE : View.VISIBLE);
+        toolbar.configure(isMaximized);
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        if (seekBar.equals(brushController)) {
+            paintView.getBrush().setSize(progress);
+        }
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
+        if (!isMaximized) {
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.main, menu);
 
-        ActionBarManager actionBarManager = new ActionBarManager(menu);
-        paintView.setCanvasActionListener(actionBarManager);
+            ActionBarManager mActionBarManager = new ActionBarManager(menu);
+            paintView.setCanvasActionListener(mActionBarManager);
+            mActionBarManager.sync(paintView);
+        }
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                toggleMaximized();
+                return true;
+
             case R.id.undo:
                 paintView.undo();
                 return true;
@@ -202,12 +169,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return true;
 
             case R.id.revert:
-                revertConfirmation.show();
+                dialogFactory.revertConfirmationDialog(this).show();
                 return true;
 
-            case R.id.eraser:
-                toolbox.deselectAll();
-                paintView.setShapeType(Eraser.class);
+            case R.id.save:
+                if (paintView.isModified()) {
+                    dialogFactory.saveConfirmationDialog(this).show();
+                }
                 return true;
         }
 
@@ -215,117 +183,74 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onClick(View v) {
-        for (int i = 0; i < toolbox.getChildCount(); i++) {
-            if (v.getId() == toolbox.getChildAt(i).getId()) {
-                switch (i) {
-                    case 0: // PEN
-                        paintView.setShapeType(Pen.class);
-                        break;
-                    case 1: // LINE
-                        paintView.setShapeType(Line.class);
-                        break;
-                    case 2: // BOX
-                        if (toolbox.getSelectedTool() == 2) {
-                            if (paintView.toggle2D()) {
-                                ((ImageButton) toolbox.getChildAt(i)).setImageResource(R.drawable.ic_quad2d);
-                            } else {
-                                ((ImageButton) toolbox.getChildAt(i)).setImageResource(R.drawable.ic_quad3d);
-                            }
-                        }
-
-                        paintView.setShapeType(paintView.isOrtho() ? Quad2D.class : Quad3D.class);
-
-                        break;
-                    case 3: // CIRCLE
-                        paintView.setShapeType(Circle.class);
-                        break;
-                    case 4: // STROKE WIDTH
-                        if (paintView.getBrush().toggleFill()) {
-                            ((ImageButton) toolbox.getChildAt(i)).setImageResource(R.drawable.ic_fill);
-                        } else {
-                            ((ImageButton) toolbox.getChildAt(i)).setImageResource(R.drawable.ic_fill_none);
-                        }
-                        break;
-                }
-            }
-        }
-
-        switch (v.getId()) {
-            case R.id.fillColorPicker: // FILL COLOR PICKER
-                FillColorPicker fillColorPicker = new FillColorPicker(this);
-                fillColorPicker.show();
-                break;
-
-            case R.id.penColorPicker:
-                StrokeColorPicker strokeColorPicker = new StrokeColorPicker(this);
-                strokeColorPicker.show();
-                break;
-
-            case R.id.save:
-                if (paintView.isModified()) {
-                    saveConfirmation.show();
-                }
-                break;
-
-            case R.id.fullScreen:
-                fullScreen = !fullScreen;
-                findViewById(R.id.tools).setVisibility(fullScreen ? View.GONE : View.VISIBLE);
-                actionBar.setVisibility(fullScreen ? View.GONE : View.VISIBLE);
-                break;
-        }
-
-    }
-
-    @Override
     public void onBackPressed() {
         if (paintView.isModified()) {
-            exitConfirmation.show();
+            dialogFactory.exitConfirmationDialog(this).show();
         } else {
             super.onBackPressed();
         }
     }
 
-    private class StrokeColorPicker extends AmbilWarnaDialog {
+    @Override
+    public void onToolSelected(boolean reset, int id) {
+        if (reset) {
+            paintView.setShapeType(null);
+        }
+        switch (id) {
+            case R.id.pen:
+                paintView.setShapeType(Pen.class);
+                break;
 
-        /**
-         * Create an AmbilWarnaDialog.
-         *
-         * @param context activity context
-         */
-        StrokeColorPicker(Context context) {
-            super(context, paintView.getBrush().getStrokeColor(), true, new OnAmbilWarnaListener() {
-                @Override
-                public void onCancel(AmbilWarnaDialog dialog) {
-                }
+            case R.id.line:
+                paintView.setShapeType(Line.class);
+                break;
+            case R.id.rect:
+                paintView.setShapeType(Quad2D.class);
+                break;
+            case R.id.box:
+                paintView.setShapeType(Quad3D.class);
+                break;
+            case R.id.circle:
+                paintView.setShapeType(Circle.class);
+                break;
 
-                @Override
-                public void onOk(AmbilWarnaDialog dialog, int color) {
-                    paintView.getBrush().setStrokeColor(color);
-                }
-            });
+            case R.id.penColorPicker:
+                StrokeColorPicker strokeColorPicker = new StrokeColorPicker(this, paintView);
+                strokeColorPicker.show();
+                break;
+            case R.id.fillColorPicker:
+                FillColorPicker fillColorPicker = new FillColorPicker(this, paintView);
+                fillColorPicker.show();
+                break;
+
+            case R.id.eraser:
+                paintView.setShapeType(Eraser.class);
+                break;
         }
     }
 
-    private class FillColorPicker extends AmbilWarnaDialog {
+    private class CustomToolbar {
+        private Toolbar primary;
+        private Toolbar secondary;
 
-        /**
-         * Create an AmbilWarnaDialog.
-         *
-         * @param context activity context
-         */
-        FillColorPicker(Context context) {
-            super(context, paintView.getBrush().getFillColor(), true, new OnAmbilWarnaListener() {
-                @Override
-                public void onCancel(AmbilWarnaDialog dialog) {
-                }
+        public CustomToolbar() {
+            primary = (Toolbar) findViewById(R.id.primaryToolbar);
+            primary.setNavigationIcon(R.drawable.ic_action_maximize);
+            primary.setOverflowIcon(getResources().getDrawable(R.drawable.ic_action_layers));
+            primary.setTitle("");
 
-                @Override
-                public void onOk(AmbilWarnaDialog dialog, int color) {
-                    paintView.getBrush().setFillColor(color);
-                }
-            });
+            secondary = (Toolbar) findViewById(R.id.secondaryToolbar);
+            secondary.setNavigationIcon(R.drawable.ic_action_minimize);
+            secondary.setOverflowIcon(getResources().getDrawable(R.drawable.ic_action_layers));
+            secondary.setTitle("");
+        }
+
+        public void configure(boolean isMaximized) {
+            primary.setVisibility(isMaximized ? View.GONE : View.VISIBLE);
+            secondary.setVisibility(isMaximized ? View.VISIBLE : View.GONE);
+
+            setSupportActionBar(isMaximized ? secondary : primary);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
-
 }

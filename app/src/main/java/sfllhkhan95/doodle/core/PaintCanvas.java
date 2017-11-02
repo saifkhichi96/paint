@@ -20,6 +20,14 @@ public class PaintCanvas extends Canvas {
     private Bitmap bitmap;
     private String projectName = null;
 
+    public PaintCanvas(DisplayMetrics metrics) {
+        int height = metrics.heightPixels;
+        int width = metrics.widthPixels;
+
+        bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+        setBitmap(bitmap);
+    }
+
     public static PaintCanvas loadFromBitmap(DisplayMetrics metrics, Bitmap srcBmp) {
         PaintCanvas canvas = new PaintCanvas(metrics);
 
@@ -67,14 +75,6 @@ public class PaintCanvas extends Canvas {
         canvas.setProjectName(bmpPath);
 
         return canvas;
-    }
-
-    public PaintCanvas(DisplayMetrics metrics) {
-        int height = metrics.heightPixels;
-        int width = metrics.widthPixels;
-
-        bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
-        setBitmap(bitmap);
     }
 
     public int getColor() {

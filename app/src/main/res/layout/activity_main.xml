@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -13,8 +14,8 @@
         android:layout_height="match_parent" />
 
     <!-- Action bar -->
-    <RelativeLayout
-        android:id="@+id/actionBar"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/primaryToolbar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:layout_alignParentTop="true"
@@ -22,144 +23,60 @@
         android:elevation="4dp"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:visibility="gone">
+        android:paddingRight="10dp" />
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+    <!-- Action bar -->
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/secondaryToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_alignParentTop="true"
+        android:background="#0000"
+        android:elevation="4dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" />
+
+    <!-- Drawing tools -->
+    <RelativeLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#8888">
+
+        <sfllhkhan95.doodle.view.ToolboxView
+            android:id="@+id/toolbox"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <!-- Save button -->
-        <TextView
-            android:id="@+id/save"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="5dp"
-            android:text="SAVE"
-            android:textColor="#000"
-            android:textStyle="bold" />
+            android:orientation="horizontal" />
 
     </RelativeLayout>
 
-    <!-- Drawing tools -->
     <LinearLayout
         android:id="@+id/tools"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_alignParentBottom="true"
-        android:background="#C000"
+        android:layout_height="35dp"
+        android:layout_above="@+id/container"
+        android:background="#8888"
         android:orientation="horizontal"
-        android:visibility="gone"
         android:weightSum="6">
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="5"
-            android:orientation="vertical"
-            android:weightSum="2">
-
-            <SeekBar
-                android:id="@+id/brushController"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:max="15"
-                android:progress="5" />
-
-            <sfllhkhan95.doodle.view.ToolboxView
-                android:id="@+id/toolbox"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:weightSum="5">
-
-                <ImageButton
-                    android:id="@+id/pen"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_pen" />
-
-                <ImageButton
-                    android:id="@+id/line"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_line" />
-
-                <ImageButton
-                    android:id="@+id/box"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_quad2d" />
-
-                <ImageButton
-                    android:id="@+id/circle"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_circle" />
-
-                <ImageButton
-                    android:id="@+id/filled"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_fill_none" />
-
-            </sfllhkhan95.doodle.view.ToolboxView>
-
-        </LinearLayout>
-
-        <LinearLayout
+        <ImageButton
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:weightSum="2">
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_brush_size" />
 
-            <ImageButton
-                android:id="@+id/penColorPicker"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_stroke_color" />
-
-            <ImageButton
-                android:id="@+id/fillColorPicker"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_fill_color" />
-
-        </LinearLayout>
+        <SeekBar
+            android:id="@+id/brushController"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:max="15"
+            android:progress="5" />
 
     </LinearLayout>
-
-    <!-- Zoom button -->
-    <ImageButton
-        android:id="@+id/fullScreen"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/actionBar"
-        android:layout_margin="5dp"
-        android:background="#A000"
-        android:padding="2dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/ic_action_zoom" />
 
 </RelativeLayout>
