@@ -11,9 +11,11 @@ import sfllhkhan95.doodle.core.CanvasActionListener;
 import sfllhkhan95.doodle.core.PaintBrush;
 import sfllhkhan95.doodle.core.PaintCanvas;
 import sfllhkhan95.doodle.core.Shapes;
+import sfllhkhan95.doodle.shapes.ColorPicker;
 import sfllhkhan95.doodle.shapes.Eraser;
 import sfllhkhan95.doodle.shapes.Shape;
 import sfllhkhan95.doodle.shapes.ShapeFactory;
+import sfllhkhan95.doodle.utils.OnColorPickedListener;
 
 
 /**
@@ -30,6 +32,7 @@ public class PaintView extends View {
     private Class<? extends Shape> shapeType = null;
 
     private CanvasActionListener canvasActionListener;
+    private OnColorPickedListener onColorPickedListener;
 
     public PaintView(Context context) {
         this(context, null);
@@ -81,7 +84,7 @@ public class PaintView extends View {
                 invalidate();
                 break;
             case MotionEvent.ACTION_UP:
-                touchUp();
+                touchUp(touchAt);
                 invalidate();
                 break;
         }
@@ -90,11 +93,27 @@ public class PaintView extends View {
     }
 
     private void touchStart(PointF touchAt) {
+        if (this.shapeType == ColorPicker.class) {
+            int color = mCanvas.getColor(touchAt);
+            if (this.onColorPickedListener != null) {
+                this.onColorPickedListener.onColorPicked(color);
+            }
+            return;
+        }
+
         iTouch.set(touchAt);
         fTouch = null;
     }
 
     private void touchMove(PointF touchAt) {
+        if (this.shapeType == ColorPicker.class) {
+            int color = mCanvas.getColor(touchAt);
+            if (this.onColorPickedListener != null) {
+                this.onColorPickedListener.onColorPicked(color);
+            }
+            return;
+        }
+
         if (fTouch == null) {
             fTouch = new PointF();
 
@@ -119,7 +138,15 @@ public class PaintView extends View {
         }
     }
 
-    private void touchUp() {
+    private void touchUp(PointF touchAt) {
+        if (this.shapeType == ColorPicker.class) {
+            int color = mCanvas.getColor(touchAt);
+            if (this.onColorPickedListener != null) {
+                this.onColorPickedListener.onColorPicked(color);
+            }
+            return;
+        }
+
         if (iTouch == null || fTouch == null) return;
 
         Shape currentShape = shapes.getCurrent();
@@ -164,6 +191,10 @@ public class PaintView extends View {
 
     public void setCanvasActionListener(CanvasActionListener canvasActionListener) {
         this.canvasActionListener = canvasActionListener;
+    }
+
+    public void setOnColorPickedListener(OnColorPickedListener onColorPickedListener) {
+        this.onColorPickedListener = onColorPickedListener;
     }
 
     public boolean isModified() {

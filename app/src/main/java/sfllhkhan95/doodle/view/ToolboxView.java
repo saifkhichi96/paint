@@ -32,7 +32,7 @@ public class ToolboxView extends LinearLayout {
     private OnToolSelectedListener toolSelectedListener;
 
     public ToolboxView(Context context, @Nullable AttributeSet attrs) {
-        super(context);
+        super(context, attrs);
         LayoutParams params = new LayoutParams(context, attrs);
         params.weight = 1;
 
@@ -63,7 +63,7 @@ public class ToolboxView extends LinearLayout {
     }
 
     public ToolboxView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context);
+        super(context, attrs, defStyleAttr);
         LayoutParams params = new LayoutParams(context, attrs);
         params.weight = 1;
 
@@ -196,6 +196,10 @@ public class ToolboxView extends LinearLayout {
         for (int i = 0; i < root.getChildCount(); i++) {
             setToolColor(root.getChildAt(i).getId(), Color.WHITE);
         }
+    }
+
+    public void setPickerColor(int color) {
+        setToolColor(R.id.penColorPicker, color);
     }
 
     public void setOnToolSelectedListener(OnToolSelectedListener toolSelectedListener) {
