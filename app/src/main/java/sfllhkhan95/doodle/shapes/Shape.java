@@ -33,11 +33,9 @@ public abstract class Shape extends Path {
         paintBrush.setStrokeWidth(paintBrush.getSize());
         canvas.drawPath(this, paintBrush);
 
-        if (paintBrush.isFilled()) {
-            paintBrush.setStyle(Paint.Style.FILL);
-            paintBrush.setColor(paintBrush.getFillColor());
-            canvas.drawPath(this, paintBrush);
-        }
+        paintBrush.setStyle(Paint.Style.FILL);
+        paintBrush.setColor(paintBrush.getFillColor());
+        canvas.drawPath(this, paintBrush);
     }
 
 }

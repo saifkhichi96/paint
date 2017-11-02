@@ -12,7 +12,6 @@ import sfllhkhan95.doodle.core.PaintBrush;
 import sfllhkhan95.doodle.core.PaintCanvas;
 import sfllhkhan95.doodle.core.Shapes;
 import sfllhkhan95.doodle.shapes.Eraser;
-import sfllhkhan95.doodle.shapes.Pen;
 import sfllhkhan95.doodle.shapes.Shape;
 import sfllhkhan95.doodle.shapes.ShapeFactory;
 
@@ -23,17 +22,12 @@ import sfllhkhan95.doodle.shapes.ShapeFactory;
 public class PaintView extends View {
 
     private static final float TOUCH_TOLERANCE = 5;
-
+    private final Shapes shapes = new Shapes();
     private PointF iTouch = new PointF();
     private PointF fTouch = new PointF();
-
     private PaintBrush mBrush = new PaintBrush();
     private PaintCanvas mCanvas;
-
-    private final Shapes shapes = new Shapes();
-
-    private Class<? extends Shape> shapeType = Pen.class;
-    private boolean ortho = true;
+    private Class<? extends Shape> shapeType = null;
 
     private CanvasActionListener canvasActionListener;
 
@@ -45,10 +39,6 @@ public class PaintView extends View {
         super(context, attrs);
     }
 
-    public void setCanvas(PaintCanvas canvas) {
-        mCanvas = canvas;
-    }
-
     public PaintBrush getBrush() {
         return mBrush;
     }
@@ -57,17 +47,12 @@ public class PaintView extends View {
         return mCanvas;
     }
 
+    public void setCanvas(PaintCanvas canvas) {
+        mCanvas = canvas;
+    }
+
     public void setShapeType(Class<? extends Shape> shapeType) {
         this.shapeType = shapeType;
-    }
-
-    public boolean toggle2D() {
-        ortho = !ortho;
-        return ortho;
-    }
-
-    public boolean isOrtho() {
-        return ortho;
     }
 
     @Override
@@ -83,6 +68,7 @@ public class PaintView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (shapeType == null) return false;
         PointF touchAt = new PointF(event.getX(), event.getY());
 
         switch (event.getAction()) {
@@ -184,4 +170,7 @@ public class PaintView extends View {
         return shapes.getPointer() > 0;
     }
 
+    public boolean canRedo() {
+        return shapes.getPointer() < shapes.size();
+    }
 }

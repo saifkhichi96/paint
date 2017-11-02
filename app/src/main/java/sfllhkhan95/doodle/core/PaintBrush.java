@@ -16,8 +16,6 @@ public class PaintBrush extends Paint implements Cloneable {
     private int fillColor = DEFAULT_FILL_COLOR;
     private int size = DEFAULT_SIZE;
 
-    private boolean filled = false;
-
     public PaintBrush() {
         this.setColor(strokeColor);
         this.setStyle(Paint.Style.STROKE);
@@ -49,15 +47,6 @@ public class PaintBrush extends Paint implements Cloneable {
 
     public void setSize(int size) {
         this.size = DEFAULT_SIZE + size;
-    }
-
-    public boolean toggleFill() {
-        this.filled = !this.filled;
-        return this.filled;
-    }
-
-    public boolean isFilled() {
-        return filled;
     }
 
     @Override

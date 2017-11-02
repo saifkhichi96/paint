@@ -1,5 +1,7 @@
 package sfllhkhan95.doodle.shapes;
 
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.PointF;
 
 import sfllhkhan95.doodle.core.PaintBrush;
@@ -11,6 +13,14 @@ public class Pen extends Shape {
 
     Pen(PaintBrush paintBrush) {
         super(paintBrush);
+    }
+
+    @Override
+    public void paint(Canvas canvas) {
+        paintBrush.setStyle(Paint.Style.STROKE);
+        paintBrush.setColor(paintBrush.getStrokeColor());
+        paintBrush.setStrokeWidth(paintBrush.getSize());
+        canvas.drawPath(this, paintBrush);
     }
 
     @Override
