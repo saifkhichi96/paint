@@ -67,13 +67,14 @@ public class ToolboxView extends LinearLayout {
         LayoutParams params = new LayoutParams(context, attrs);
         params.weight = 1;
 
-        primaryToolbox = new LinearLayout(context, attrs);
+        primaryToolbox = new LinearLayout(context, attrs, defStyleAttr);
         primaryToolbox.setLayoutParams(params);
 
-        secondaryToolbox = new LinearLayout(context, attrs);
+        secondaryToolbox = new LinearLayout(context, attrs, defStyleAttr);
         secondaryToolbox.setLayoutParams(params);
 
-        LayoutParams p = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, params.height * 2);
+        LayoutParams p = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
         setLayoutParams(p);
 
         this.setOrientation(VERTICAL);
@@ -82,6 +83,12 @@ public class ToolboxView extends LinearLayout {
         addView(secondaryToolbox);
         addView(primaryToolbox);
         init();
+
+        try {
+            this.setOnToolSelectedListener((OnToolSelectedListener) context);
+        } catch (Exception ignored) {
+
+        }
 
         secondaryToolbox.setVisibility(GONE);
     }
