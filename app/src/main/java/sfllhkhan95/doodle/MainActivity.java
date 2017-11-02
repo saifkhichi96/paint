@@ -15,11 +15,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 
 import sfllhkhan95.doodle.core.PaintCanvas;
 import sfllhkhan95.doodle.shapes.Circle;
+import sfllhkhan95.doodle.shapes.ColorPicker;
 import sfllhkhan95.doodle.shapes.Eraser;
 import sfllhkhan95.doodle.shapes.Line;
 import sfllhkhan95.doodle.shapes.Pen;
@@ -28,13 +28,16 @@ import sfllhkhan95.doodle.shapes.Quad3D;
 import sfllhkhan95.doodle.utils.ActionBarManager;
 import sfllhkhan95.doodle.utils.DialogFactory;
 import sfllhkhan95.doodle.utils.DoodleFactory;
+import sfllhkhan95.doodle.utils.OnColorPickedListener;
 import sfllhkhan95.doodle.utils.OnToolSelectedListener;
 import sfllhkhan95.doodle.view.FillColorPicker;
 import sfllhkhan95.doodle.view.PaintView;
 import sfllhkhan95.doodle.view.StrokeColorPicker;
+import sfllhkhan95.doodle.view.ToolboxView;
 
 public class MainActivity extends AppCompatActivity implements
-        SeekBar.OnSeekBarChangeListener, OnToolSelectedListener {
+        SeekBar.OnSeekBarChangeListener, OnToolSelectedListener,
+        OnColorPickedListener {
 
     // Brush controller
     SeekBar brushController;
@@ -43,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements
     private PaintView paintView;
 
     // Toolbox contains the drawing tools
-    private LinearLayout toolbox;
+    private ToolboxView toolbox;
 
     // Dialog boxes to confirm certain permanent actions (i.e. revert and save)
     private DialogFactory dialogFactory;
@@ -74,7 +77,8 @@ public class MainActivity extends AppCompatActivity implements
         dialogFactory = new DialogFactory(this, paintView);
 
         // Add click event listeners to toolbox buttons
-        toolbox = (LinearLayout) findViewById(R.id.toolbox);
+        toolbox = (ToolboxView) findViewById(R.id.toolbox);
+        toolbox.setPickerColor(paintView.getBrush().getStrokeColor());
 
         // Start in windowed mode
         this.isMaximized = true;
@@ -201,6 +205,11 @@ public class MainActivity extends AppCompatActivity implements
                 paintView.setShapeType(Pen.class);
                 break;
 
+            case R.id.colorPicker:
+                paintView.setShapeType(ColorPicker.class);
+                paintView.setOnColorPickedListener(this);
+                break;
+
             case R.id.line:
                 paintView.setShapeType(Line.class);
                 break;
@@ -227,6 +236,14 @@ public class MainActivity extends AppCompatActivity implements
                 paintView.setShapeType(Eraser.class);
                 break;
         }
+
+        toolbox.setPickerColor(paintView.getBrush().getStrokeColor());
+    }
+
+    @Override
+    public void onColorPicked(int color) {
+        paintView.getBrush().setStrokeColor(color);
+        toolbox.setPickerColor(color);
     }
 
     private class CustomToolbar {

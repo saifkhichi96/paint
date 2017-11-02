@@ -3,6 +3,7 @@ package sfllhkhan95.doodle.core;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.PointF;
 import android.util.DisplayMetrics;
 
 import sfllhkhan95.doodle.utils.DoodleDatabase;
@@ -113,4 +114,7 @@ public class PaintCanvas extends Canvas {
         }
     }
 
+    public int getColor(PointF touchAt) {
+        return bitmap.getPixel((int) touchAt.x, (int) touchAt.y);
+    }
 }

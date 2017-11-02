@@ -34,16 +34,16 @@
             <item
                 android:id="@+id/fillColorPicker"
                 android:checkable="true"
-                android:icon="@drawable/ic_color"
+                android:icon="@drawable/ic_color_bucket"
                 android:title="Select fill color" />
         </menu>
     </item>
 
 
     <item
-        android:id="@+id/colorBucket"
-        android:icon="@drawable/ic_color_bucket"
-        android:title="Color bucket" />
+        android:id="@+id/colorPicker"
+        android:icon="@drawable/ic_color_picker"
+        android:title="Color picker" />
 
     <item
         android:id="@+id/eraser"
@@ -53,7 +53,7 @@
     <item
         android:id="@+id/penColorPicker"
         android:checkable="true"
-        android:icon="@drawable/ic_brush_color"
+        android:icon="@drawable/ic_color"
         android:title="Select stroke color" />
 
 </menu>

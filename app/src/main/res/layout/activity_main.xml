@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:layout_alignParentTop="true"
-        android:background="#8888"
+        android:background="#A888"
         android:elevation="4dp"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
@@ -43,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#8888">
+        android:background="#A888">
 
         <sfllhkhan95.doodle.view.ToolboxView
             android:id="@+id/toolbox"
@@ -58,7 +58,7 @@
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_above="@+id/container"
-        android:background="#8888"
+        android:background="#A888"
         android:orientation="horizontal"
         android:weightSum="6">
 
