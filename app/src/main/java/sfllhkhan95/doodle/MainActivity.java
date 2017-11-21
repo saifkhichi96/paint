@@ -19,7 +19,6 @@ import android.widget.SeekBar;
 
 import sfllhkhan95.doodle.core.PaintCanvas;
 import sfllhkhan95.doodle.shapes.Circle;
-import sfllhkhan95.doodle.shapes.ColorPicker;
 import sfllhkhan95.doodle.shapes.Eraser;
 import sfllhkhan95.doodle.shapes.Line;
 import sfllhkhan95.doodle.shapes.Pen;
@@ -30,9 +29,8 @@ import sfllhkhan95.doodle.utils.DialogFactory;
 import sfllhkhan95.doodle.utils.DoodleDatabase;
 import sfllhkhan95.doodle.utils.OnColorPickedListener;
 import sfllhkhan95.doodle.utils.OnToolSelectedListener;
-import sfllhkhan95.doodle.view.FillColorPicker;
+import sfllhkhan95.doodle.view.ColorPicker;
 import sfllhkhan95.doodle.view.PaintView;
-import sfllhkhan95.doodle.view.StrokeColorPicker;
 import sfllhkhan95.doodle.view.ToolboxView;
 
 public class MainActivity extends AppCompatActivity implements
@@ -206,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements
                 break;
 
             case R.id.colorPicker:
-                paintView.setShapeType(ColorPicker.class);
+                paintView.setShapeType(sfllhkhan95.doodle.shapes.ColorPicker.class);
                 paintView.setOnColorPickedListener(this);
                 break;
 
@@ -224,12 +222,19 @@ public class MainActivity extends AppCompatActivity implements
                 break;
 
             case R.id.penColorPicker:
-                StrokeColorPicker strokeColorPicker = new StrokeColorPicker(this, paintView);
-                strokeColorPicker.show();
+                ColorPicker strokePicker = new ColorPicker(this, paintView.getBrush().getStrokeColor());
+                strokePicker.setOnColorPickedListener(this);
+                strokePicker.show();
                 break;
             case R.id.fillColorPicker:
-                FillColorPicker fillColorPicker = new FillColorPicker(this, paintView);
-                fillColorPicker.show();
+                ColorPicker fillPicker = new ColorPicker(this, paintView.getBrush().getFillColor());
+                fillPicker.setOnColorPickedListener(new OnColorPickedListener() {
+                    @Override
+                    public void onColorPicked(int color) {
+                        paintView.getBrush().setFillColor(color);
+                    }
+                });
+                fillPicker.show();
                 break;
 
             case R.id.eraser:
