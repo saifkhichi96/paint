@@ -1,141 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/menuActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#eee"
     tools:context=".MenuActivity">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/tapAnywhere"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="25dp"
+            android:src="@android:drawable/ic_menu_add"
+            android:tint="#FFF" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:background="#333"
             android:gravity="center"
-            android:padding="5dp"
-            android:text="NEW PROJECT"
+            android:text="Tap anywhere to start new project"
+            android:textAllCaps="true"
             android:textColor="#FFF"
+            android:textSize="18sp"
             android:textStyle="bold" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:baselineAligned="false"
-            android:orientation="horizontal"
-            android:padding="2dp"
-            android:weightSum="3">
-
-            <LinearLayout
-                android:id="@+id/whiteDoodle"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:gravity="top"
-                android:orientation="horizontal"
-                android:padding="5dp">
-
-                <ImageButton
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@color/colorPrimaryDark"
-                    android:padding="1dp"
-                    android:src="#fff" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="5dp"
-                    android:paddingStart="5dp"
-                    android:text="White Canvas"
-                    android:textColor="#333" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/blackDoodle"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:gravity="top"
-                android:orientation="horizontal"
-                android:padding="5dp">
-
-                <ImageButton
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@color/colorPrimaryDark"
-                    android:padding="1dp"
-                    android:src="#000" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="5dp"
-                    android:paddingStart="5dp"
-                    android:text="Black Canvas"
-                    android:textColor="#333" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/fromImage"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:gravity="top"
-                android:orientation="horizontal"
-                android:padding="5dp">
-
-                <ImageButton
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@color/colorPrimaryDark"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_gallery" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="5dp"
-                    android:paddingStart="5dp"
-                    android:text="From Gallery"
-                    android:textColor="#333" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#333"
-            android:gravity="center"
-            android:padding="5dp"
-            android:text="SAVED DOODLES"
-            android:textColor="#FFF"
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:id="@+id/savedDoodles"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:padding="10dp"
-                android:text="There are no saved doodles yet!"
-                android:textColor="#888" />
-
-        </LinearLayout>
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-</ScrollView>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize" />
+
+        <GridView
+            android:id="@+id/savedDoodles"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:clickable="true"
+            android:columnWidth="100dp"
+            android:drawSelectorOnTop="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:numColumns="auto_fit"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="5dp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

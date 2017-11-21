@@ -2,6 +2,7 @@ package sfllhkhan95.doodle.utils;
 
 import android.graphics.Bitmap;
 import android.os.Environment;
+import android.support.annotation.Nullable;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -19,29 +20,36 @@ public class DoodleDatabase {
     private final static String DIR = "Pictures/Doodles/";
     private final static String EXT = ".jpg";
 
-    public static void saveDoodle(final Bitmap doodle) {
-        // Create file for storage with CURRENT_TIMESTAMP as name
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddMMyyyy_hhmmss", Locale.US);
-        String timestamp = simpleDateFormat.format(new Date());
-        String fname = PREFIX + timestamp + EXT;
+    private final static File rootDir;
+    private final static String rootDirPath;
 
-        saveDoodle(doodle, fname);
+    static {
+        rootDirPath = Environment.getExternalStorageDirectory().toString() + "/" + DIR;
+        rootDir = new File(rootDirPath);
+        rootDir.mkdirs();
     }
 
-    public static Bitmap loadDoodle(String fname, int wd, int ht) {
-        String root = Environment.getExternalStorageDirectory().toString() + "/" + DIR;
-        File myDir = new File(root);
-        myDir.mkdirs();
+    public static void saveDoodle(final Bitmap doodle) {
+        // Create file for storage with CURRENT_TIMESTAMP as name
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd_hhmmss", Locale.US);
+        String timestamp = simpleDateFormat.format(new Date());
+        String filename = PREFIX + timestamp + EXT;
 
-        return DoodleFactory.loadFromPath(root + fname, wd, ht);
+        saveDoodle(doodle, filename);
+    }
+
+    @Nullable
+    public static Bitmap loadDoodle(String filename, int wd, int ht) {
+        File file = new File(rootDir, filename);
+        if (file.exists()) {
+            return DoodleFactory.loadFromPath(rootDirPath + filename, wd, ht);
+        } else {
+            return null;
+        }
     }
 
     public static String[] listDoodles() {
-        String root = Environment.getExternalStorageDirectory().toString() + "/" + DIR;
-        File myDir = new File(root);
-        myDir.mkdirs();
-
-        return myDir.list(new FilenameFilter() {
+        return rootDir.list(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
                 return name.startsWith(PREFIX) && name.endsWith(EXT);
@@ -49,21 +57,9 @@ public class DoodleDatabase {
         });
     }
 
-    public static void saveDoodle(Bitmap doodle, String fname) {
-        // Create or open storage directory
-        String root = Environment.getExternalStorageDirectory().toString() + "/" + DIR;
-        File myDir = new File(root);
-        myDir.mkdirs();
-
-        // Create file
-        File file = new File(myDir, fname);
-
-        // If a file with this name already exists, delete it.
-        if (file.exists()) {
-            file.delete();
-        }
-
-        // Write doodle to file
+    public static void saveDoodle(Bitmap doodle, String filename) {
+        File file = new File(rootDir, filename);
+        if (file.exists()) file.delete();
         try {
             FileOutputStream out = new FileOutputStream(file);
             doodle.compress(Bitmap.CompressFormat.JPEG, 90, out);
@@ -73,4 +69,10 @@ public class DoodleDatabase {
             e.printStackTrace();
         }
     }
+
+    public static boolean contains(String filename) {
+        File file = new File(rootDir, filename);
+        return (file.exists());
+    }
+
 }
