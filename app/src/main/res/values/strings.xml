@@ -6,4 +6,5 @@
     <string name="confirmDeleteMessage">This action will permanently delete the project. Do you really wish to continue?</string>
     <string name="labelYes">Yes</string>
     <string name="labelNo">No</string>
+    <string name="errorSharing">Error sharing Doodle. Please try again</string>
 </resources>
