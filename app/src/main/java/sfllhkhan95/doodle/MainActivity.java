@@ -1,11 +1,13 @@
 package sfllhkhan95.doodle;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +18,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.SeekBar;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import sfllhkhan95.doodle.core.PaintCanvas;
 import sfllhkhan95.doodle.shapes.Circle;
@@ -36,6 +43,8 @@ import sfllhkhan95.doodle.view.ToolboxView;
 public class MainActivity extends AppCompatActivity implements
         SeekBar.OnSeekBarChangeListener, OnToolSelectedListener,
         OnColorPickedListener {
+
+    private static final int SHARE = 100;
 
     // Brush controller
     SeekBar brushController;
@@ -179,9 +188,52 @@ public class MainActivity extends AppCompatActivity implements
                     dialogFactory.saveConfirmationDialog(this).show();
                 }
                 return true;
+
+            case R.id.share:
+                Bitmap doodle = paintView.getCanvas().getBitmap();
+
+                // Compress bitmap image
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                doodle.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+
+                // Write compressed data to a temporary file
+                String path = Environment.getExternalStorageDirectory() + File.separator + "tmp_doodle.jpg";
+                File tempFile = new File(path);
+                try {
+                    tempFile.createNewFile();
+                    FileOutputStream fo = new FileOutputStream(tempFile);
+                    fo.write(bytes.toByteArray());
+
+                    // Create a share intent
+                    Intent share = new Intent(Intent.ACTION_SEND);
+                    share.setType("image/jpeg");
+                    share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(tempFile));
+
+                    // Start share sequence
+                    startActivityForResult(Intent.createChooser(share, "Share Doodle"), SHARE);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setMessage(getString(R.string.errorSharing))
+                            .create()
+                            .show();
+                }
+                break;
         }
 
         return false;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100) {
+            String path = Environment.getExternalStorageDirectory() + File.separator + "tmp_doodle.jpg";
+            File tempFile = new File(path);
+            if (tempFile.exists()) {
+                tempFile.delete();
+            }
+        }
     }
 
     @Override
