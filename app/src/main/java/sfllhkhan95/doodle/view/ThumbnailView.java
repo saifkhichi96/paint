@@ -16,7 +16,13 @@ public class ThumbnailView {
     }
 
     public void setThumbnail(Thumbnail thumbnail) {
-        nameView.setText(thumbnail.getName());
+        String name = thumbnail.getName();
+        int startFrom = name.indexOf('_');
+        int endAt = name.indexOf('.');
+        if (startFrom != -1 && endAt != -1) {
+            name = name.substring(startFrom + 1, endAt);
+        }
+        nameView.setText(name);
         iconView.setImageBitmap(thumbnail.getIcon());
     }
 
