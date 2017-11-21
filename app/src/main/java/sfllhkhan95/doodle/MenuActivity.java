@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,8 @@ public class MenuActivity extends AppCompatActivity {
     private final ProjectScanner scanner = new ProjectScanner();
     private final ThumbnailInflater inflater = new ThumbnailInflater();
     private String[] savedProjects;
+
+    private boolean backPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +101,24 @@ public class MenuActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (backPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.backPressedOnce = true;
+        Toast.makeText(this, "Press back twice to exit!", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                backPressedOnce = false;
+            }
+        }, 1000);
     }
 
     @UiThread
