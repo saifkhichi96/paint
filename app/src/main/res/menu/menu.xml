@@ -8,7 +8,7 @@
         android:title="From Gallery"
         app:showAsAction="always" />
 
-    <group android:menuCategory="container">
+    <!--group android:menuCategory="container">
         <item
             android:id="@+id/undo"
             android:title="Settings"
@@ -23,6 +23,6 @@
             android:id="@+id/redo"
             android:title="About"
             app:showAsAction="never" />
-    </group>
+    </group-->
 
 </menu>
