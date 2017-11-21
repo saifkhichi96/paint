@@ -1,5 +1,7 @@
 package sfllhkhan95.doodle;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -100,7 +102,7 @@ public class MenuActivity extends AppCompatActivity {
 
     @UiThread
     private class ThumbnailInflater implements Runnable,
-            AdapterView.OnItemClickListener {
+            AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
         @Nullable
         private List<Thumbnail> getThumbnails() {
@@ -141,6 +143,7 @@ public class MenuActivity extends AppCompatActivity {
                 doodlesView.setAdapter(adapter);
 
                 doodlesView.setOnItemClickListener(this);
+                doodlesView.setOnItemLongClickListener(this);
             }
         }
 
@@ -158,6 +161,34 @@ public class MenuActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
+        @Override
+        public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {
+            if (position > 0) {
+                new AlertDialog.Builder(MenuActivity.this)
+                        .setTitle(getString(R.string.confirmDeleteTitle))
+                        .setMessage(getString(R.string.confirmDeleteMessage))
+                        .setPositiveButton(getString(R.string.labelYes), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Thumbnail item = (Thumbnail) parent.getItemAtPosition(position);
+                                DoodleDatabase.removeDoodle(item.getName());
+                                run();
+
+                                dialog.dismiss();
+                            }
+                        })
+                        .setNegativeButton(getString(R.string.labelNo), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .create()
+                        .show();
+                return true;
+            }
+            return false;
+        }
     }
 
     private class ProjectScanner extends Thread {
@@ -180,7 +211,7 @@ public class MenuActivity extends AppCompatActivity {
             mHandler.post(this);
         }
 
-        public void finish() {
+        void finish() {
             isListening = false;
         }
 

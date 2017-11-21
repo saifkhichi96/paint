@@ -75,4 +75,10 @@ public class DoodleDatabase {
         return (file.exists());
     }
 
+    public static File removeDoodle(String filename) {
+        File file = new File(rootDir, filename);
+        if (file.exists()) file.delete();
+        return file;
+    }
+
 }
