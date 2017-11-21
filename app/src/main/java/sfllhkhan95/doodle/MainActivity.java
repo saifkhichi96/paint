@@ -27,7 +27,7 @@ import sfllhkhan95.doodle.shapes.Quad2D;
 import sfllhkhan95.doodle.shapes.Quad3D;
 import sfllhkhan95.doodle.utils.ActionBarManager;
 import sfllhkhan95.doodle.utils.DialogFactory;
-import sfllhkhan95.doodle.utils.DoodleFactory;
+import sfllhkhan95.doodle.utils.DoodleDatabase;
 import sfllhkhan95.doodle.utils.OnColorPickedListener;
 import sfllhkhan95.doodle.utils.OnToolSelectedListener;
 import sfllhkhan95.doodle.view.FillColorPicker;
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
 
-            Bitmap bitmapFromFile = DoodleFactory.loadFromPath(picturePath, metrics.widthPixels, metrics.heightPixels);
+            Bitmap bitmapFromFile = DoodleDatabase.loadDoodle(picturePath, metrics.widthPixels, metrics.heightPixels);
             canvas = PaintCanvas.loadFromBitmap(metrics, bitmapFromFile);
         } else {
             canvas = new PaintCanvas(metrics);
