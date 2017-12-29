@@ -7,7 +7,7 @@ import android.graphics.BitmapFactory;
  * Created by saifkhichi96 on 30/10/2017.
  */
 
-class DoodleFactory {
+public class DoodleFactory {
 
     private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
         // Raw height and width of image
@@ -35,7 +35,7 @@ class DoodleFactory {
         return BitmapFactory.decodeFile(path);
     }
 
-    static Bitmap loadFromPath(String path, int reqWidth, int reqHeight) {
+    public static Bitmap loadFromPath(String path, int reqWidth, int reqHeight) {
         // First decode with inJustDecodeBounds=true to check dimensions
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
