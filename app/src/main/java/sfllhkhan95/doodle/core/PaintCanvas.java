@@ -115,6 +115,11 @@ public class PaintCanvas extends Canvas {
     }
 
     public int getColor(PointF touchAt) {
-        return bitmap.getPixel((int) touchAt.x, (int) touchAt.y);
+        try {
+            return bitmap.getPixel((int) touchAt.x, (int) touchAt.y);
+        } catch (IllegalArgumentException ex) {
+            ex.printStackTrace();
+            return DEFAULT_BG_COLOR;
+        }
     }
 }
