@@ -1,13 +1,16 @@
 package sfllhkhan95.doodle;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.FileUriExposedException;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -165,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements
         return true;
     }
 
+    @TargetApi(Build.VERSION_CODES.N)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -212,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements
 
                     // Start share sequence
                     startActivityForResult(Intent.createChooser(share, "Share Doodle"), SHARE);
-                } catch (IOException e) {
+                } catch (IOException | FileUriExposedException e) {
                     e.printStackTrace();
                     new AlertDialog.Builder(MainActivity.this)
                             .setMessage(getString(R.string.errorSharing))
