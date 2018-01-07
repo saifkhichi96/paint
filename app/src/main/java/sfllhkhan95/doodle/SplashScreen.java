@@ -9,6 +9,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -40,6 +42,15 @@ public class SplashScreen extends AppCompatActivity {
                     finish();
                 }
             }, delay);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        if (mAuth.getCurrentUser() == null) {
+            mAuth.signInAnonymously();
         }
     }
 
