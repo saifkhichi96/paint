@@ -8,8 +8,8 @@ android {
         applicationId "sfllhkhan95.doodle"
         minSdkVersion 14
         targetSdkVersion 26
-        versionCode 8
-        versionName "2.3"
+        versionCode 9
+        versionName "2.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
