@@ -7,4 +7,5 @@
     <string name="labelYes">Yes</string>
     <string name="labelNo">No</string>
     <string name="errorSharing">Error sharing Doodle. Please try again</string>
+    <string name="facebook_app_id">140472159955272</string>
 </resources>
