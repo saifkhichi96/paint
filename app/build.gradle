@@ -34,6 +34,8 @@ dependencies {
     compile 'com.facebook.android:facebook-messenger:4.29.0'
     compile 'com.google.firebase:firebase-core:11.8.0'
     compile 'com.google.firebase:firebase-auth:11.8.0'
+
+    implementation 'com.facebook.android:facebook-android-sdk:4.29.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
