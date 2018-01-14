@@ -4,7 +4,7 @@ Minimalistic paint application for Android. Doodle is a complete art tool to hel
 It comes with a variety of brush sizes and an extensive set of vibrant colours to bring your creative ideas to life. Full Screen mode helps you focus on your projects by minimising the distractions. You can load images from Gallery into the application to base your drawing on. This app is also compatible with stylus.
 
 # Platforms
-- Android 4.0 onwards
+- Android (Supports v4.0.3 onwards)
 
 # Features
 - Load and save projects to Gallery.
@@ -17,6 +17,8 @@ It comes with a variety of brush sizes and an extensive set of vibrant colours t
 - Undo
 - Redo
 - Revert
+- Login with Facebook
+- Messenger Expressions
 .. and many more.
 
 With its easy-to-use and intuitive design, Doodle is the perfect addition to your art toolbox. [Download](https://play.google.com/store/apps/details?id=sfllhkhan95.doodle) now and doodle away!
