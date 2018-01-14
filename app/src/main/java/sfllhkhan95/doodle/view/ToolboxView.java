@@ -118,9 +118,19 @@ public class ToolboxView extends LinearLayout {
                                 secondaryToolbox.setVisibility(VISIBLE);
 
                                 selectTool(primaryToolbox, v.getId());
-                                selectTool(secondaryToolbox, v.getId());
+
+                                if (hasOnToolSelectedListener()) {
+                                    int id = secondaryToolbox.getChildAt(0).getId();
+                                    selectTool(secondaryToolbox, id);
+
+                                    toolSelectedListener.onToolSelected(!nonSticky.contains(id), id);
+                                }
                             } else {
                                 secondaryToolbox.setVisibility(GONE);
+
+                                if (hasOnToolSelectedListener()) {
+                                    toolSelectedListener.onToolSelected(!nonSticky.contains(v.getId()), v.getId());
+                                }
                             }
                         } else {
                             if (root.equals(primaryToolbox)) {
@@ -129,10 +139,10 @@ public class ToolboxView extends LinearLayout {
                             } else {
                                 selectTool(secondaryToolbox, v.getId());
                             }
-                        }
 
-                        if (hasOnToolSelectedListener()) {
-                            toolSelectedListener.onToolSelected(!nonSticky.contains(v.getId()), v.getId());
+                            if (hasOnToolSelectedListener()) {
+                                toolSelectedListener.onToolSelected(!nonSticky.contains(v.getId()), v.getId());
+                            }
                         }
                     }
                 }
@@ -190,8 +200,6 @@ public class ToolboxView extends LinearLayout {
     public void deselectAll(LinearLayout root) {
         if (root.equals(primaryToolbox))
             primarySelected = -1;
-        else
-            ;
 
         for (int i = 0; i < root.getChildCount(); i++) {
             setToolColor(root.getChildAt(i).getId(), Color.WHITE);
