@@ -2,8 +2,11 @@ package sfllhkhan95.doodle;
 
 import android.app.Application;
 
+import com.crashlytics.android.Crashlytics;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Doodle is the Application class which bootstraps everything and initializes the global
@@ -21,6 +24,9 @@ public class Doodle extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        // Disable crash reporting in DEBUG mode
+        Crashlytics crashlytics = new Crashlytics.Builder().disabled(BuildConfig.DEBUG).build();
+        Fabric.with(this, crashlytics);
 
         /* The following method call initializes the Facebook SDK, and is recommended to
          * be called as early as possible. The behavior of Facebook SDK functions is
