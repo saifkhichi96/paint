@@ -1,5 +1,7 @@
 package sfllhkhan95.doodle.shapes;
 
+import android.graphics.Paint;
+
 import sfllhkhan95.doodle.core.PaintBrush;
 import sfllhkhan95.doodle.core.PaintCanvas;
 
@@ -16,4 +18,11 @@ public class Eraser extends Pen {
         paintBrush.setStrokeColor(canvas.getColor());
     }
 
+    @Override
+    public void paint(PaintCanvas canvas) {
+        paintBrush.setStyle(Paint.Style.STROKE);
+        paintBrush.setColor(canvas.getColor());
+        paintBrush.setStrokeWidth(paintBrush.getSize());
+        canvas.drawPath(this, paintBrush);
+    }
 }

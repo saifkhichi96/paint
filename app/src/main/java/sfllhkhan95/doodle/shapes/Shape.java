@@ -1,11 +1,11 @@
 package sfllhkhan95.doodle.shapes;
 
-import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
 
 import sfllhkhan95.doodle.core.PaintBrush;
+import sfllhkhan95.doodle.core.PaintCanvas;
 import sfllhkhan95.doodle.view.PaintView;
 
 /**
@@ -27,7 +27,7 @@ public abstract class Shape extends Path {
 
     public abstract void draw(PointF a, PointF b);
 
-    public void paint(Canvas canvas) {
+    public void paint(PaintCanvas canvas) {
         paintBrush.setStyle(Paint.Style.STROKE);
         paintBrush.setColor(paintBrush.getStrokeColor());
         paintBrush.setStrokeWidth(paintBrush.getSize());
