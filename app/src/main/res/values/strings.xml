@@ -1,11 +1,17 @@
 <resources>
     <string name="app_name">Doodle</string>
+
     <string name="drawer_open">Show layers</string>
     <string name="drawer_close">Hide layers</string>
+
     <string name="confirmDeleteTitle">Are you sure?</string>
     <string name="confirmDeleteMessage">This action will permanently delete the project. Do you really wish to continue?</string>
+
     <string name="labelYes">Yes</string>
     <string name="labelNo">No</string>
-    <string name="errorSharing">Error sharing Doodle. Please try again</string>
+
+    <string name="unknownError">Unknown error. Upgrade application to latest version or contact support if error persists.</string>
+
     <string name="facebook_app_id">140472159955272</string>
+    <string name="fb_login_protocol_scheme">fb140472159955272</string>
 </resources>

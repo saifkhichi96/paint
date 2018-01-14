@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
@@ -78,5 +79,15 @@
             android:progress="5" />
 
     </LinearLayout>
+
+    <sfllhkhan95.doodle.view.MessengerShareButton
+        android:id="@+id/messenger_share_button"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_below="@id/primaryToolbar"
+        android:layout_margin="16dp"
+        android:visibility="gone"
+        custom:actionText="Composing"
+        custom:descriptionText="New Message" />
 
 </RelativeLayout>
