@@ -233,6 +233,16 @@ public class MainActivity extends AppCompatActivity implements
                 toggleMaximized();
                 return true;
 
+            case R.id.canvas:
+                Random rand = new Random();
+                int r = rand.nextInt(255);
+                int g = rand.nextInt(255);
+                int b = rand.nextInt(255);
+                paintView.getCanvas().setColor(Color.rgb(r, g, b));
+                onColorPicked(Color.rgb(255 - r, 255 - g, 255 - b));
+                paintView.invalidate();
+                break;
+
             case R.id.undo:
                 paintView.undo();
                 return true;
