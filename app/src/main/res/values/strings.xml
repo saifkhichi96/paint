@@ -14,4 +14,11 @@
 
     <string name="facebook_app_id">140472159955272</string>
     <string name="fb_login_protocol_scheme">fb140472159955272</string>
+
+    <string name="privacy_policy_url">https://www.iubenda.com/privacy-policy/35502767</string>
+    <string name="developer_page_url">http://saifkhichi.com</string>
+
+    <string name="menu_item_pick_gallery_image">From Gallery</string>
+    <string name="menu_item_privacy_policy">Privacy Policy</string>
+    <string name="menu_item_about">About</string>
 </resources>

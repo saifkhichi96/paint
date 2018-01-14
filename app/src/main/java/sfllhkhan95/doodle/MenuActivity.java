@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -127,6 +128,15 @@ public class MenuActivity extends AppCompatActivity implements SignInListener {
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
+                break;
+
+            case R.id.privacy_policy:
+                startActivity(new Intent(getApplicationContext(), PrivacyPolicy.class));
+                break;
+
+            case R.id.about_developer:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.developer_page_url)));
+                startActivity(browserIntent);
                 break;
         }
 

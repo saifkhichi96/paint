@@ -5,24 +5,19 @@
     <item
         android:id="@+id/fromImage"
         android:icon="@drawable/ic_gallery"
-        android:title="From Gallery"
+        android:title="@string/menu_item_pick_gallery_image"
         app:showAsAction="always" />
 
-    <!--group android:menuCategory="container">
+    <group android:menuCategory="container">
         <item
-            android:id="@+id/undo"
-            android:title="Settings"
+            android:id="@+id/privacy_policy"
+            android:title="@string/menu_item_privacy_policy"
             app:showAsAction="never" />
 
         <item
-            android:id="@+id/revert"
-            android:title="Help &amp; Feedback"
+            android:id="@+id/about_developer"
+            android:title="@string/menu_item_about"
             app:showAsAction="never" />
-
-        <item
-            android:id="@+id/redo"
-            android:title="About"
-            app:showAsAction="never" />
-    </group-->
+    </group>
 
 </menu>

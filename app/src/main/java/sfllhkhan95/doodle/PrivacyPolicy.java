@@ -1,0 +1,18 @@
+package sfllhkhan95.doodle;
+
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.webkit.WebView;
+
+public class PrivacyPolicy extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        WebView webView = new WebView(this);
+        webView.loadUrl(getResources().getString(R.string.privacy_policy_url));
+        setContentView(webView);
+    }
+
+}
