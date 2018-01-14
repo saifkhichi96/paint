@@ -26,6 +26,7 @@ import java.util.List;
 import sfllhkhan95.doodle.models.Thumbnail;
 import sfllhkhan95.doodle.utils.DoodleDatabase;
 import sfllhkhan95.doodle.utils.ThumbnailAdapter;
+import sfllhkhan95.doodle.view.ProfileDialog;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -37,12 +38,15 @@ public class MenuActivity extends AppCompatActivity {
 
     private boolean backPressedOnce = false;
 
+    private ProfileDialog mProfileDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_avatar_placeholder));
         toolbar.setTitle("HOME");
         setSupportActionBar(toolbar);
 
@@ -52,6 +56,19 @@ public class MenuActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.putExtra("BG_COLOR", Color.BLACK);
                 startActivity(intent);
+            }
+        });
+
+        mProfileDialog = new ProfileDialog(this);
+        mProfileDialog.setShareClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("MESSENGER", true);
+                intent.putExtra("BG_COLOR", Color.BLACK);
+
+                startActivity(intent);
+                overridePendingTransition(0, 0);
             }
         });
     }
@@ -69,6 +86,12 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mProfileDialog.stopTracking();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
@@ -78,6 +101,10 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                mProfileDialog.show();
+                break;
+
             case R.id.fromImage:
                 Intent i = new Intent(
                         Intent.ACTION_PICK,
@@ -93,7 +120,7 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        mProfileDialog.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             intent.putExtra("FROM_GALLERY", data);
