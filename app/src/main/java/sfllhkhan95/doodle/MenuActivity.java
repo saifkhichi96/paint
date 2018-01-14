@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -25,10 +26,11 @@ import java.util.List;
 
 import sfllhkhan95.doodle.models.Thumbnail;
 import sfllhkhan95.doodle.utils.DoodleDatabase;
+import sfllhkhan95.doodle.utils.SignInListener;
 import sfllhkhan95.doodle.utils.ThumbnailAdapter;
 import sfllhkhan95.doodle.view.ProfileDialog;
 
-public class MenuActivity extends AppCompatActivity {
+public class MenuActivity extends AppCompatActivity implements SignInListener {
 
     private static final int RESULT_LOAD_IMAGE = 200;
 
@@ -39,15 +41,14 @@ public class MenuActivity extends AppCompatActivity {
     private boolean backPressedOnce = false;
 
     private ProfileDialog mProfileDialog;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_avatar_placeholder));
-        toolbar.setTitle("HOME");
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         findViewById(R.id.menuActivity).setOnClickListener(new View.OnClickListener() {
@@ -60,6 +61,7 @@ public class MenuActivity extends AppCompatActivity {
         });
 
         mProfileDialog = new ProfileDialog(this);
+        mProfileDialog.setSignInListener(this);
         mProfileDialog.setShareClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,6 +73,20 @@ public class MenuActivity extends AppCompatActivity {
                 overridePendingTransition(0, 0);
             }
         });
+
+        onSignedOut();
+    }
+
+    @Override
+    public void onSignedIn(String userName, Bitmap profilePicture) {
+        setTitle(userName);
+        toolbar.setNavigationIcon(new BitmapDrawable(getResources(), profilePicture));
+    }
+
+    @Override
+    public void onSignedOut() {
+        setTitle("Not signed in");
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_avatar_placeholder));
     }
 
     @Override

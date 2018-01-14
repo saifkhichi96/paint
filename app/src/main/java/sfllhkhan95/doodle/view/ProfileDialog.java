@@ -35,6 +35,7 @@ import java.net.URL;
 
 import sfllhkhan95.doodle.R;
 import sfllhkhan95.doodle.utils.ActiveUserTracker;
+import sfllhkhan95.doodle.utils.SignInListener;
 
 public class ProfileDialog extends Dialog implements ActiveUserTracker,
         OnCompleteListener<AuthResult>, FacebookCallback<LoginResult> {
@@ -47,6 +48,7 @@ public class ProfileDialog extends Dialog implements ActiveUserTracker,
     private Profile currentProfile;
 
     private View.OnClickListener mShareClickListener;
+    private SignInListener signInListener;
 
     private MessengerShareButton mShareButton;
     private TextView mHeadlineView;
@@ -135,6 +137,10 @@ public class ProfileDialog extends Dialog implements ActiveUserTracker,
             setHeadline("You are not connected!");
             setBodyText("Sign in now to express yourself in your Messenger conversations through Doodle.");
             hideShareButton();
+
+            if (signInListener != null) {
+                signInListener.onSignedOut();
+            }
         }
     }
 
@@ -202,9 +208,8 @@ public class ProfileDialog extends Dialog implements ActiveUserTracker,
     }
 
     public void onAvatarReceived(Bitmap avatarBitmap) {
-        Bitmap currentAvatar = avatarBitmap;
-        if (isSignedIn()) {
-            // TODO: Display user avatar
+        if (isSignedIn() && signInListener != null) {
+            signInListener.onSignedIn(currentProfile.getFirstName(), avatarBitmap);
         }
     }
 
@@ -237,6 +242,10 @@ public class ProfileDialog extends Dialog implements ActiveUserTracker,
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void setSignInListener(SignInListener signInListener) {
+        this.signInListener = signInListener;
     }
 
     private static class AvatarLoader extends AsyncTask<String, Void, Bitmap> {
