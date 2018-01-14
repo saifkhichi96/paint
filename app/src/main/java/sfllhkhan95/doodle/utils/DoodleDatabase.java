@@ -78,8 +78,12 @@ public class DoodleDatabase {
                 return (name.startsWith(PREFIX) || name.startsWith(PREFIX_V1)) && name.endsWith(EXT);
             }
         });
+        if (list == null) {
+            return null;
+        }
 
         List<String> newList = new ArrayList<>();
+
         for (String name : list) {
             // If file is from an older version, upgrade filename
             if (name.startsWith(PREFIX_V1)) {
