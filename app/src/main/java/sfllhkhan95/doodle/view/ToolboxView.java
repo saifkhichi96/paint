@@ -206,7 +206,11 @@ public class ToolboxView extends LinearLayout {
         }
     }
 
-    public void setPickerColor(int color) {
+    public void updateFillColorPicker(int color) {
+        setToolColor(R.id.fillColorPicker, color);
+    }
+
+    public void updatePenColorPicker(int color) {
         setToolColor(R.id.penColorPicker, color);
     }
 

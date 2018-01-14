@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements
 
         // Add click event listeners to toolbox buttons
         toolbox = (ToolboxView) findViewById(R.id.toolbox);
-        toolbox.setPickerColor(paintView.getBrush().getStrokeColor());
+        toolbox.updatePenColorPicker(paintView.getBrush().getStrokeColor());
 
         // Start in windowed mode
         this.isMaximized = true;
@@ -359,6 +359,7 @@ public class MainActivity extends AppCompatActivity implements
                     @Override
                     public void onColorPicked(int color) {
                         paintView.getBrush().setFillColor(color);
+                        toolbox.updateFillColorPicker(color);
                     }
                 });
                 fillPicker.show();
@@ -369,13 +370,14 @@ public class MainActivity extends AppCompatActivity implements
                 break;
         }
 
-        toolbox.setPickerColor(paintView.getBrush().getStrokeColor());
+        toolbox.updateFillColorPicker(paintView.getBrush().getFillColor());
+        toolbox.updatePenColorPicker(paintView.getBrush().getStrokeColor());
     }
 
     @Override
     public void onColorPicked(int color) {
         paintView.getBrush().setStrokeColor(color);
-        toolbox.setPickerColor(color);
+        toolbox.updatePenColorPicker(color);
     }
 
     public void onShareClicked() {
