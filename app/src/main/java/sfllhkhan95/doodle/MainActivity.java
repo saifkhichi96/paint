@@ -23,8 +23,13 @@ import android.view.WindowManager;
 import android.widget.SeekBar;
 
 import com.crashlytics.android.Crashlytics;
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.messenger.MessengerThreadParams;
 import com.facebook.messenger.MessengerUtils;
+
+import org.json.JSONException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -109,13 +114,25 @@ public class MainActivity extends AppCompatActivity implements
                 messengerShareButton.setDescriptionText("Messenger Conversation");
 
                 MessengerThreadParams mThreadParams = MessengerUtils.getMessengerThreadParamsForIntent(intent);
-                String metadata = mThreadParams.metadata;
                 List<String> participantIds = mThreadParams.participants;
-                if (participantIds != null && participantIds.size() > 1) {
-                    // FIXME: This shows user id. Retrieve user's actual full name and display that
+                if (participantIds != null && participantIds.size() > 0) {
                     String replyingTo = participantIds.get(0);
+                    GraphRequest request = GraphRequest.newGraphPathRequest(
+                            AccessToken.getCurrentAccessToken(),
+                            "/" + replyingTo,
+                            new GraphRequest.Callback() {
+                                @Override
+                                public void onCompleted(GraphResponse response) {
+                                    try {
+                                        messengerShareButton.setDescriptionText(response.getJSONObject().get("name").toString());
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
 
-                    messengerShareButton.setDescriptionText(replyingTo);
+                                }
+                            });
+
+                    request.executeAsync();
                 }
             }
 
