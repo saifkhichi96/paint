@@ -30,7 +30,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
-import java.util.Random;
 
 import sfllhkhan95.doodle.core.PaintCanvas;
 import sfllhkhan95.doodle.shapes.Circle;
@@ -44,6 +43,7 @@ import sfllhkhan95.doodle.utils.DialogFactory;
 import sfllhkhan95.doodle.utils.DoodleFactory;
 import sfllhkhan95.doodle.utils.OnColorPickedListener;
 import sfllhkhan95.doodle.utils.OnToolSelectedListener;
+import sfllhkhan95.doodle.view.CanvasColorPicker;
 import sfllhkhan95.doodle.view.ColorPicker;
 import sfllhkhan95.doodle.view.MessengerShareButton;
 import sfllhkhan95.doodle.view.PaintView;
@@ -234,13 +234,16 @@ public class MainActivity extends AppCompatActivity implements
                 return true;
 
             case R.id.canvas:
-                Random rand = new Random();
-                int r = rand.nextInt(255);
-                int g = rand.nextInt(255);
-                int b = rand.nextInt(255);
-                paintView.getCanvas().setColor(Color.rgb(r, g, b));
-                onColorPicked(Color.rgb(255 - r, 255 - g, 255 - b));
-                paintView.invalidate();
+                CanvasColorPicker canvasColorPicker = new CanvasColorPicker(this, paintView.getCanvas().getColor());
+                canvasColorPicker.setOnColorPickedListener(new OnColorPickedListener() {
+                    @Override
+                    public void onColorPicked(int color) {
+                        paintView.getCanvas().setColor(color);
+                        MainActivity.this.onColorPicked(~color | 0xFF000000);
+                        paintView.invalidate();
+                    }
+                });
+                canvasColorPicker.show();
                 break;
 
             case R.id.undo:
