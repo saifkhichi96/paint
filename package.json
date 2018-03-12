@@ -3,8 +3,8 @@
   "version": "3.0.1",
   "description": "Minimalistic paint application for Android. Doodle is a complete art tool to help bring out your inner artist. The application offers a wide range of features, which allows you to express yourself without limits.",
   "dependencies": {
-    "ambilwarna": "yukuku/ambilwarna",
-    "colorpicker": "QuadFlask/colorpicker"
+    "yukuku/ambilwarna": "2.0.1",
+    "QuadFlask/colorpicker": "0.0.13"
   },
   "repository": {
     "type": "git",
