@@ -29,7 +29,7 @@
     <!-- Action bar -->
     <android.support.v7.widget.Toolbar
         android:id="@+id/secondaryToolbar"
-        android:layout_width="match_parent"
+        android:layout_width="?actionBarSize"
         android:layout_height="?actionBarSize"
         android:layout_alignParentTop="true"
         android:background="#0000"
