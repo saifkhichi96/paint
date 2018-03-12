@@ -22,7 +22,7 @@ public class Eraser extends Pen {
     public void paint(PaintCanvas canvas) {
         paintBrush.setStyle(Paint.Style.STROKE);
         paintBrush.setColor(canvas.getColor());
-        paintBrush.setStrokeWidth(paintBrush.getSize());
+        paintBrush.setStrokeWidth(paintBrush.getSize() * 2.5f);
         canvas.drawPath(this, paintBrush);
     }
 }
