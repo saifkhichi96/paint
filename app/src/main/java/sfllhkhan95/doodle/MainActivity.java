@@ -125,10 +125,9 @@ public class MainActivity extends AppCompatActivity implements
                                 public void onCompleted(GraphResponse response) {
                                     try {
                                         messengerShareButton.setDescriptionText(response.getJSONObject().get("name").toString());
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
+                                    } catch (NullPointerException | JSONException e) {
+                                        Crashlytics.logException(e);
                                     }
-
                                 }
                             });
 
