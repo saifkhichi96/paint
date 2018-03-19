@@ -126,14 +126,14 @@ public class ProfileDialog extends Dialog implements ActiveUserTracker,
 
     private void updateUI() {
         if (isSignedIn()) {
-            Toast.makeText(getContext(), "Signed in!", Toast.LENGTH_SHORT).show();
-
             setHeadline("Hi, " + currentProfile.getFirstName() + "!");
             setBodyText("Now, you can express yourself in your Messenger conversations with Doodle. Try it out now!");
             showShareButton();
-        } else {
-            Toast.makeText(getContext(), "Signed out!", Toast.LENGTH_SHORT).show();
 
+            if (signInListener != null) {
+                signInListener.onSignedIn(currentProfile.getFirstName(), null);
+            }
+        } else {
             setHeadline("You are not connected!");
             setBodyText("Sign in now to express yourself in your Messenger conversations through Doodle.");
             hideShareButton();
@@ -246,6 +246,7 @@ public class ProfileDialog extends Dialog implements ActiveUserTracker,
 
     public void setSignInListener(SignInListener signInListener) {
         this.signInListener = signInListener;
+        updateUI();
     }
 
     private static class AvatarLoader extends AsyncTask<String, Void, Bitmap> {
