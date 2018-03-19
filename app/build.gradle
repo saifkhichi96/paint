@@ -21,21 +21,20 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:design:27.0.1'
-    compile 'com.android.support:appcompat-v7:27.0.1'
-    compile('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
+    implementation 'com.android.support:design:27.0.1'
+    implementation 'com.android.support:appcompat-v7:27.0.1'
+    implementation('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
         transitive = true
     }
-    compile 'com.facebook.android:facebook-messenger:4.29.0'
-    compile 'com.github.yukuku:ambilwarna:2.0.1'
-    compile 'com.github.QuadFlask:colorpicker:0.0.13'
-    compile 'com.google.firebase:firebase-core:11.8.0'
-    compile 'com.google.firebase:firebase-auth:11.8.0'
-
+    implementation 'com.facebook.android:facebook-messenger:4.29.0'
+    implementation 'com.github.yukuku:ambilwarna:2.0.1'
+    implementation 'com.github.QuadFlask:colorpicker:0.0.13'
+    implementation 'com.google.firebase:firebase-core:11.8.0'
+    implementation 'com.google.firebase:firebase-auth:11.8.0'
     implementation 'com.facebook.android:facebook-android-sdk:4.29.0'
 }
 
