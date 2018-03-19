@@ -3,6 +3,7 @@ package sfllhkhan95.doodle;
 import android.app.Application;
 
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.core.CrashlyticsCore;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 
@@ -25,7 +26,11 @@ public class Doodle extends Application {
     public void onCreate() {
         super.onCreate();
         // Disable crash reporting in DEBUG mode
-        Crashlytics crashlytics = new Crashlytics.Builder().disabled(BuildConfig.DEBUG).build();
+        Crashlytics crashlytics = new Crashlytics.Builder()
+                .core(new CrashlyticsCore.Builder()
+                        .disabled(BuildConfig.DEBUG)
+                        .build())
+                .build();
         Fabric.with(this, crashlytics);
 
         /* The following method call initializes the Facebook SDK, and is recommended to
