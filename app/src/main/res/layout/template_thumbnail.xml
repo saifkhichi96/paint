@@ -13,16 +13,37 @@
         android:layout_height="100dp"
         android:scaleType="centerCrop" />
 
-    <TextView
-        android:id="@+id/projectTitle"
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:fontFamily="casual"
-        android:gravity="center"
-        android:maxLines="1"
-        android:textAllCaps="true"
-        android:textColor="#FFF"
-        android:textSize="12sp" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/projectTitle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/deleteButton"
+            android:layout_toStartOf="@id/deleteButton"
+            android:fontFamily="casual"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textAllCaps="true"
+            android:textColor="#FFF"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/deleteButton"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:scaleType="centerInside"
+            android:src="@android:drawable/ic_menu_delete"
+            android:tint="#FFF"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
 
 </LinearLayout>
