@@ -111,7 +111,11 @@ public class UserDetailsDialog extends Dialog implements OnUpdateListener {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        mAuthHandler.getCallbackManager().onActivityResult(requestCode, resultCode, data);
+        try {
+            mAuthHandler.getCallbackManager().onActivityResult(requestCode, resultCode, data);
+        } catch (NullPointerException ignored) {
+            //
+        }
     }
 
 }
