@@ -13,7 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import sfllhkhan95.doodle.ums.view.UserDetailsDialog;
+import sfllhkhan95.doodle.auth.view.UserDetailsDialog;
 import sfllhkhan95.doodle.utils.DoodleDatabase;
 import sfllhkhan95.doodle.utils.ThumbnailInflater;
 

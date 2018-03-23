@@ -1,4 +1,4 @@
-package sfllhkhan95.doodle.ums;
+package sfllhkhan95.doodle.auth;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -21,7 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import pk.aspirasoft.persist.PersistentValue;
-import sfllhkhan95.doodle.ums.models.User;
+import sfllhkhan95.doodle.auth.models.User;
 
 public class AuthHandler implements FacebookCallback<LoginResult>, OnCompleteListener<AuthResult> {
 
