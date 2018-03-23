@@ -7,7 +7,7 @@
         android:title="Pen" />
 
     <item
-        android:id="@+id/shapes"
+        android:id="@+id/tools"
         android:icon="@drawable/ic_shape"
         android:title="Shapes">
         <menu>
