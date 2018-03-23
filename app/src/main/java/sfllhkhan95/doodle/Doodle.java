@@ -8,6 +8,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 
 import io.fabric.sdk.android.Fabric;
+import pk.aspirasoft.persist.PersistentStorage;
 
 /**
  * Doodle is the Application class which bootstraps everything and initializes the global
@@ -25,6 +26,8 @@ public class Doodle extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        PersistentStorage.init(this, "DDODLE_PREFS");
+
         // Disable crash reporting in DEBUG mode
         Crashlytics crashlytics = new Crashlytics.Builder()
                 .core(new CrashlyticsCore.Builder()
