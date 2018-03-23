@@ -2,7 +2,8 @@ package pk.aspirasoft.core.io;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.annotation.Nullable;
+
+import org.jetbrains.annotations.Nullable;
 
 import java.io.InputStream;
 

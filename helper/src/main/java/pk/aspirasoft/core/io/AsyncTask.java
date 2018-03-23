@@ -1,6 +1,6 @@
 package pk.aspirasoft.core.io;
 
-import android.support.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 
 public abstract class AsyncTask<T> extends android.os.AsyncTask<String, Void, TResult<T>> {

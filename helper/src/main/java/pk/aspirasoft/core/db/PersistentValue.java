@@ -1,4 +1,4 @@
-package pk.aspirasoft.persist;
+package pk.aspirasoft.core.db;
 
 /**
  * PersistentValue is a generic class which represents a single data value which is stored

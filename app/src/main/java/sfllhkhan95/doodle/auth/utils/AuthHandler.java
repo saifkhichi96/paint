@@ -20,7 +20,7 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import pk.aspirasoft.persist.PersistentValue;
+import pk.aspirasoft.core.db.PersistentValue;
 import sfllhkhan95.doodle.auth.models.User;
 
 public class AuthHandler implements FacebookCallback<LoginResult>, OnCompleteListener<AuthResult> {

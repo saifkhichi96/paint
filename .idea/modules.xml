@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/doodle-android.iml" filepath="$PROJECT_DIR$/doodle-android.iml" />
-      <module fileurl="file://$PROJECT_DIR$/persist/persist.iml" filepath="$PROJECT_DIR$/persist/persist.iml" />
+      <module fileurl="file://$PROJECT_DIR$/helper/persist.iml" filepath="$PROJECT_DIR$/helper/persist.iml" />
     </modules>
   </component>
 </project>
