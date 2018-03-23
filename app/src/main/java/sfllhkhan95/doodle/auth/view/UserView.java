@@ -1,4 +1,4 @@
-package sfllhkhan95.doodle.ums.view;
+package sfllhkhan95.doodle.auth.view;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import pk.aspirasoft.core.io.OnCompleteListener;
 import sfllhkhan95.doodle.R;
-import sfllhkhan95.doodle.ums.FacebookUserPhotoDownloader;
-import sfllhkhan95.doodle.ums.models.User;
+import sfllhkhan95.doodle.auth.FacebookUserPhotoDownloader;
+import sfllhkhan95.doodle.auth.models.User;
 
 
 public class UserView implements OnCompleteListener<Bitmap> {

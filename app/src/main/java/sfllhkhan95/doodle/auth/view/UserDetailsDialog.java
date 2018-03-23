@@ -1,4 +1,4 @@
-package sfllhkhan95.doodle.ums.view;
+package sfllhkhan95.doodle.auth.view;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -11,9 +11,9 @@ import android.widget.TextView;
 import com.facebook.login.widget.LoginButton;
 
 import sfllhkhan95.doodle.R;
-import sfllhkhan95.doodle.ums.AuthHandler;
-import sfllhkhan95.doodle.ums.OnUpdateListener;
-import sfllhkhan95.doodle.ums.models.User;
+import sfllhkhan95.doodle.auth.AuthHandler;
+import sfllhkhan95.doodle.auth.OnUpdateListener;
+import sfllhkhan95.doodle.auth.models.User;
 import sfllhkhan95.doodle.view.MessengerShareButton;
 
 

@@ -1,4 +1,4 @@
-package sfllhkhan95.doodle.ums;
+package sfllhkhan95.doodle.auth;
 
 public interface OnUpdateListener {
 
