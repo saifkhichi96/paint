@@ -17,7 +17,7 @@ import pk.aspirasoft.persist.PersistentStorage;
  * @author saifkhichi96
  * @version 1.0
  */
-public class Doodle extends Application {
+public class DoodleApplication extends Application {
 
     /**
      * Called when the application is starting, before any other application objects
