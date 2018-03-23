@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 import android.support.annotation.UiThread;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,15 +32,12 @@ public class ThumbnailInflater implements Runnable, AdapterView.OnItemClickListe
         this.savedProjects = savedProjects;
     }
 
-    @Nullable
+    @NonNull
     private List<Thumbnail> getThumbnails() {
-        List<Thumbnail> thumbnails = null;
-        if (savedProjects != null && savedProjects.length > 0) {
-            thumbnails = new ArrayList<>();
-
-            Bitmap icon = BitmapFactory.decodeResource(activity.getResources(), android.R.drawable.ic_menu_add);
-            thumbnails.add(new Thumbnail(this, icon, "NEW PROJECT"));
-
+        List<Thumbnail> thumbnails = new ArrayList<>();
+        Bitmap icon = BitmapFactory.decodeResource(activity.getResources(), android.R.drawable.ic_menu_add);
+        thumbnails.add(new Thumbnail(this, icon, "NEW PROJECT"));
+        if (savedProjects != null) {
             for (String projectName : savedProjects) {
                 Bitmap thumbnailBitmap;
                 if ((thumbnailBitmap = DoodleDatabase.loadDoodle(projectName, 100, 100)) != null) {
@@ -55,23 +52,15 @@ public class ThumbnailInflater implements Runnable, AdapterView.OnItemClickListe
     @Override
     public void run() {
         List<Thumbnail> thumbnails = getThumbnails();
-        if (thumbnails == null) {
-            activity.findViewById(R.id.savedDoodles).setVisibility(View.GONE);
-            activity.findViewById(R.id.tapAnywhere).setVisibility(View.VISIBLE);
-        } else {
-            activity.findViewById(R.id.savedDoodles).setVisibility(View.VISIBLE);
-            activity.findViewById(R.id.tapAnywhere).setVisibility(View.GONE);
+        ThumbnailAdapter adapter = new ThumbnailAdapter(
+                activity,
+                R.layout.template_thumbnail,
+                thumbnails);
 
-            ThumbnailAdapter adapter = new ThumbnailAdapter(
-                    activity,
-                    R.layout.template_thumbnail,
-                    thumbnails);
+        GridView doodlesView = activity.findViewById(R.id.savedDoodles);
+        doodlesView.setAdapter(adapter);
 
-            GridView doodlesView = activity.findViewById(R.id.savedDoodles);
-            doodlesView.setAdapter(adapter);
-
-            doodlesView.setOnItemClickListener(this);
-        }
+        doodlesView.setOnItemClickListener(this);
     }
 
     @Override

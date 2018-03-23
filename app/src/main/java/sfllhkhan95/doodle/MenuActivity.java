@@ -1,13 +1,10 @@
 package sfllhkhan95.doodle;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -17,46 +14,39 @@ import android.view.View;
 import android.widget.Toast;
 
 import sfllhkhan95.doodle.utils.DoodleDatabase;
-import sfllhkhan95.doodle.utils.SignInListener;
 import sfllhkhan95.doodle.utils.ThumbnailInflater;
-import sfllhkhan95.doodle.view.ProfileDialog;
+import sfllhkhan95.doodle.view.UserDetailsDialog;
 
-public class MenuActivity extends AppCompatActivity implements SignInListener {
+public class MenuActivity extends AppCompatActivity {
 
     private static final int RESULT_LOAD_IMAGE = 200;
 
-    private final ProjectScanner scanner = new ProjectScanner();
-    private ThumbnailInflater inflater;
+    private final ProjectScanner projectScanner = new ProjectScanner();
+    private ThumbnailInflater thumbnailInflater;
 
     private boolean backPressedOnce = false;
 
-    private ProfileDialog mProfileDialog;
-    private Toolbar toolbar;
+    private UserDetailsDialog mUserDetailsDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        inflater = new ThumbnailInflater(this);
+        thumbnailInflater = new ThumbnailInflater(this);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        findViewById(R.id.menuActivity).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.profileButton).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra("BG_COLOR", Color.BLACK);
-                startActivity(intent);
+            public void onClick(View view) {
+                mUserDetailsDialog.show();
             }
         });
 
-        onSignedOut();
-
-        mProfileDialog = new ProfileDialog(this);
-        mProfileDialog.setSignInListener(this);
-        mProfileDialog.setShareClickListener(new View.OnClickListener() {
+        mUserDetailsDialog = new UserDetailsDialog(this, R.style.DialogTheme);
+        mUserDetailsDialog.setShareClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -70,35 +60,21 @@ public class MenuActivity extends AppCompatActivity implements SignInListener {
     }
 
     @Override
-    public void onSignedIn(String userName, @Nullable Bitmap profilePicture) {
-        setTitle(userName);
-        if (profilePicture != null) {
-            toolbar.setNavigationIcon(new BitmapDrawable(getResources(), profilePicture));
-        }
-    }
-
-    @Override
-    public void onSignedOut() {
-        setTitle("Not signed in");
-        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_avatar_placeholder));
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
-        scanner.start();
+        projectScanner.start();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        scanner.finish();
+        projectScanner.finish();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mProfileDialog.stopTracking();
+        mUserDetailsDialog.getAuthHandler().stopTracking();
     }
 
     @Override
@@ -111,10 +87,6 @@ public class MenuActivity extends AppCompatActivity implements SignInListener {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
-                mProfileDialog.show();
-                break;
-
             case R.id.fromImage:
                 Intent i = new Intent(
                         Intent.ACTION_PICK,
@@ -139,14 +111,12 @@ public class MenuActivity extends AppCompatActivity implements SignInListener {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        mProfileDialog.onActivityResult(requestCode, resultCode, data);
+        mUserDetailsDialog.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             intent.putExtra("FROM_GALLERY", data);
             startActivity(intent);
         }
-
-
     }
 
     @Override
@@ -174,8 +144,8 @@ public class MenuActivity extends AppCompatActivity implements SignInListener {
 
         @Override
         public void run() {
-            inflater.setSavedProjects(DoodleDatabase.listDoodles());
-            runOnUiThread(inflater);
+            thumbnailInflater.setSavedProjects(DoodleDatabase.listDoodles());
+            runOnUiThread(thumbnailInflater);
 
             if (isListening) {
                 mHandler.postDelayed(this, 100);
