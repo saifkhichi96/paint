@@ -26,10 +26,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MenuActivity"
+            android:name=".projects.MenuActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainActivity"
+            android:name=".core.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.PICK" />
@@ -56,7 +56,7 @@
         </activity>
 
         <provider
-            android:name=".utils.GenericFileProvider"
+            android:name=".projects.utils.GenericFileProvider"
             android:authorities="${applicationId}.sfllhkhan95.doodle.provider"
             android:exported="false"
             android:grantUriPermissions="true">

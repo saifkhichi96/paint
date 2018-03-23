@@ -15,6 +15,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import sfllhkhan95.doodle.projects.MenuActivity;
+
 public class SplashScreen extends AppCompatActivity {
 
     private static final int STORAGE_PERMISSION_REQUEST = 200;
