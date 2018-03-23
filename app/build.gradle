@@ -36,6 +36,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:11.8.0'
     implementation 'com.google.firebase:firebase-auth:11.8.0'
     implementation 'com.facebook.android:facebook-android-sdk:4.29.0'
+    compile project(path: ':persist')
 }
 
 apply plugin: 'com.google.gms.google-services'
