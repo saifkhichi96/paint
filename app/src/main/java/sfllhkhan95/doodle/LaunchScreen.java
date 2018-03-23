@@ -17,7 +17,7 @@ import java.util.TimerTask;
 
 import sfllhkhan95.doodle.projects.MenuActivity;
 
-public class SplashScreen extends AppCompatActivity {
+public class LaunchScreen extends AppCompatActivity {
 
     private static final int STORAGE_PERMISSION_REQUEST = 200;
 
