@@ -34,7 +34,7 @@
             <item
                 android:id="@+id/fillColorPicker"
                 android:checkable="true"
-                android:icon="@drawable/ic_color_bucket"
+                android:icon="@drawable/ic_color_fill"
                 android:title="Select fill color" />
         </menu>
     </item>
@@ -53,7 +53,7 @@
     <item
         android:id="@+id/penColorPicker"
         android:checkable="true"
-        android:icon="@drawable/ic_color"
+        android:icon="@drawable/ic_color_brush"
         android:title="Select stroke color" />
 
 </menu>
