@@ -1,4 +1,4 @@
-package sfllhkhan95.doodle.models;
+package sfllhkhan95.doodle.ums.models;
 
 import com.facebook.Profile;
 import com.google.firebase.auth.FirebaseUser;

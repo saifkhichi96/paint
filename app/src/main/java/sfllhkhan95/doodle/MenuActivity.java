@@ -13,9 +13,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import sfllhkhan95.doodle.ums.view.UserDetailsDialog;
 import sfllhkhan95.doodle.utils.DoodleDatabase;
 import sfllhkhan95.doodle.utils.ThumbnailInflater;
-import sfllhkhan95.doodle.view.UserDetailsDialog;
 
 public class MenuActivity extends AppCompatActivity {
 
