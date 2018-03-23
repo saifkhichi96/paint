@@ -1,4 +1,4 @@
-package sfllhkhan95.doodle.utils;
+package sfllhkhan95.doodle.ums;
 
 
 import android.graphics.Bitmap;
