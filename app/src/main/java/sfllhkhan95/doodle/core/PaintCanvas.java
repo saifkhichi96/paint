@@ -36,24 +36,26 @@ public class PaintCanvas extends Canvas {
         float bmpAspect = srcBmp.getWidth() / (float) srcBmp.getHeight();
 
         if (deviceAspect != bmpAspect) {
-            if (srcBmp.getWidth() >= srcBmp.getHeight()) {
+            if (deviceAspect > bmpAspect) { // Device is wider, fit width
+                float targetHeight = srcBmp.getWidth() / deviceAspect;
                 srcBmp = Bitmap.createBitmap(
                         srcBmp,
-                        srcBmp.getWidth() / 2 - srcBmp.getHeight() / 2,
                         0,
-                        srcBmp.getHeight(),
-                        srcBmp.getHeight()
+                        (int) ((srcBmp.getHeight() - targetHeight) / 2),
+                        srcBmp.getWidth(),
+                        (int) targetHeight
                 );
             } else {
+                float targetWidth = srcBmp.getHeight() * deviceAspect;
                 srcBmp = Bitmap.createBitmap(
                         srcBmp,
+                        (int) ((srcBmp.getWidth() - targetWidth) / 2),
                         0,
-                        srcBmp.getHeight() / 2 - srcBmp.getWidth() / 2,
-                        srcBmp.getWidth(),
-                        srcBmp.getWidth()
+                        (int) targetWidth,
+                        srcBmp.getHeight()
                 );
             }
-
+            
             if (metrics.widthPixels > metrics.heightPixels) {
                 int w = metrics.widthPixels;
                 int h = (int) (metrics.widthPixels * srcBmp.getHeight() / (float) srcBmp.getWidth());
