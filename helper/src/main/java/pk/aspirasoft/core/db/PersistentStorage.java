@@ -1,4 +1,4 @@
-package pk.aspirasoft.persist;
+package pk.aspirasoft.core.db;
 
 import android.content.Context;
 import android.content.SharedPreferences;

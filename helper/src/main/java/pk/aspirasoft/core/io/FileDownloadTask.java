@@ -1,6 +1,7 @@
 package pk.aspirasoft.core.io;
 
-import android.support.annotation.Nullable;
+
+import org.jetbrains.annotations.Nullable;
 
 import java.io.InputStream;
 import java.net.URL;

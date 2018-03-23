@@ -8,7 +8,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 
 import io.fabric.sdk.android.Fabric;
-import pk.aspirasoft.persist.PersistentStorage;
+import pk.aspirasoft.core.db.PersistentStorage;
 
 /**
  * Doodle is the Application class which bootstraps everything and initializes the global
