@@ -1,6 +1,15 @@
 <!--?xml version="1.0" encoding="UTF-8"?-->
 <resources>
+    <color name="colorPrimaryLight">#f8D4ff</color>
     <color name="colorPrimary">#ba68c8</color>
     <color name="colorPrimaryDark">#883997</color>
     <color name="colorAccent">#ff6e40</color>
+    <color name="colorAccentLight">#ffa166</color>
+
+    <color name="overlayNight">#442e4482</color>
+
+    <!-- Shades of Grey -->
+    <color name="colorSectionBreak">#b0b0b0</color>
+    <color name="colorSectionHeading">#565656</color>
+    <color name="colorBlack">#000000</color>
 </resources>
