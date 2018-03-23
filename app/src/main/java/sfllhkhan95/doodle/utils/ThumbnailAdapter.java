@@ -16,14 +16,14 @@ import sfllhkhan95.doodle.R;
 import sfllhkhan95.doodle.models.Thumbnail;
 import sfllhkhan95.doodle.view.ThumbnailView;
 
-public class ThumbnailAdapter extends ArrayAdapter {
+public class ThumbnailAdapter extends ArrayAdapter<Thumbnail> {
 
     private final Context context;
     private final int gridLayoutId;
 
     private final List<Thumbnail> thumbnails;
 
-    public ThumbnailAdapter(Context context, int gridLayoutId, List<Thumbnail> thumbnails) {
+    ThumbnailAdapter(Context context, int gridLayoutId, List<Thumbnail> thumbnails) {
         super(context, gridLayoutId, thumbnails);
         this.gridLayoutId = gridLayoutId;
         this.context = context;

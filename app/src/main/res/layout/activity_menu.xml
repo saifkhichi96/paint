@@ -1,42 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/menuActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MenuActivity">
 
     <LinearLayout
-        android:id="@+id/tapAnywhere"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginBottom="25dp"
-            android:src="@android:drawable/ic_menu_add"
-            android:tint="#FFF" />
-
-        <TextView
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Tap anywhere to start new project"
-            android:textAllCaps="true"
-            android:textColor="#FFF"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
-    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="75dp"
         android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
@@ -59,5 +31,15 @@
             android:verticalSpacing="5dp" />
 
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/profileButton"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="#0000"
+        android:scaleType="centerInside"
+        android:src="@drawable/user_details_open_button" />
 
 </RelativeLayout>
