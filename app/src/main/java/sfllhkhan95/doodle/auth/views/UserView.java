@@ -1,4 +1,4 @@
-package sfllhkhan95.doodle.auth.view;
+package sfllhkhan95.doodle.auth.views;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import pk.aspirasoft.core.io.OnCompleteListener;
 import sfllhkhan95.doodle.R;
-import sfllhkhan95.doodle.auth.FacebookUserPhotoDownloader;
+import sfllhkhan95.doodle.auth.utils.FacebookUserPhotoDownloader;
 import sfllhkhan95.doodle.auth.models.User;
 
 
@@ -39,7 +39,7 @@ public class UserView implements OnCompleteListener<Bitmap> {
         DEFAULT_AVATAR = BitmapFactory.decodeResource(parent.getResources(), R.drawable.avatar_placeholder);
     }
 
-    UserView(Dialog parent) {
+    public UserView(Dialog parent) {
         mUserNameView = parent.findViewById(R.id.headline);
         mUserEmailView = parent.findViewById(R.id.email);
         mJoinDateView = parent.findViewById(R.id.userSince);
@@ -50,7 +50,7 @@ public class UserView implements OnCompleteListener<Bitmap> {
         DEFAULT_AVATAR = BitmapFactory.decodeResource(parent.getContext().getResources(), R.drawable.avatar_placeholder);
     }
 
-    void showUser(User user) {
+    public void showUser(User user) {
         mUserNameView.setText(user.getFirstName());
         mUserEmailView.setText(user.getEmail());
         mJoinDateView.setText(user.getCreationDate());
