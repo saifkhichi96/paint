@@ -100,8 +100,8 @@ public class MainActivity extends AppCompatActivity implements
         paintView = findViewById(R.id.canvas);
         Intent intent = getIntent();
         boolean messengerAction = intent.getBooleanExtra("MESSENGER", false);
+        messengerShareButton = findViewById(R.id.messenger_share_button);
         if (Intent.ACTION_PICK.equals(intent.getAction()) || messengerAction) {
-            messengerShareButton = findViewById(R.id.messenger_share_button);
             messengerShareButton.setVisibility(View.VISIBLE);
             messengerShareButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -281,6 +281,10 @@ public class MainActivity extends AppCompatActivity implements
                 }
                 return true;
 
+            case R.id.messenger:
+                onShareClicked();
+                break;
+
             case R.id.share:
                 Bitmap doodle = paintView.getCanvas().getBitmap();
 
@@ -403,9 +407,9 @@ public class MainActivity extends AppCompatActivity implements
     public void onShareClicked() {
         try {
             // Disallow sharing empty projects
-            if (!paintView.isModified()) {
-                return;
-            }
+            //if (!paintView.isModified()) {
+            //    return;
+            //}
 
             // Get the drawn bitmap from paint canvas
             PaintCanvas canvas = paintView.getCanvas();
