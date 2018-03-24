@@ -4,7 +4,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -13,6 +16,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.IOException;
+
 import sfllhkhan95.doodle.PrivacyPolicy;
 import sfllhkhan95.doodle.R;
 import sfllhkhan95.doodle.auth.UserDetailsDialog;
@@ -20,16 +26,17 @@ import sfllhkhan95.doodle.core.MainActivity;
 import sfllhkhan95.doodle.projects.utils.DoodleDatabase;
 import sfllhkhan95.doodle.projects.utils.ThumbnailInflater;
 
-public class MenuActivity extends AppCompatActivity {
+public class MenuActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final int RESULT_LOAD_IMAGE = 200;
+    private static final int REQUEST_TAKE_PHOTO = 100;
+    private static final int REQUEST_PICK_PHOTO = 200;
 
     private final ProjectScanner projectScanner = new ProjectScanner();
     private ThumbnailInflater thumbnailInflater;
-
     private boolean backPressedOnce = false;
-
     private UserDetailsDialog mUserDetailsDialog;
+
+    private String mCameraPicturePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +48,11 @@ public class MenuActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        findViewById(R.id.profileButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mUserDetailsDialog.show();
-            }
-        });
+        // Register event handlers
+        findViewById(R.id.blankProject).setOnClickListener(this);
+        findViewById(R.id.fromGallery).setOnClickListener(this);
+        findViewById(R.id.fromCamera).setOnClickListener(this);
+        findViewById(R.id.profileButton).setOnClickListener(this);
 
         mUserDetailsDialog = new UserDetailsDialog(this, R.style.DialogTheme);
         mUserDetailsDialog.setShareClickListener(new View.OnClickListener() {
@@ -90,14 +96,6 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.fromImage:
-                Intent i = new Intent(
-                        Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-                startActivityForResult(i, RESULT_LOAD_IMAGE);
-                break;
-
             case R.id.privacy_policy:
                 startActivity(new Intent(getApplicationContext(), PrivacyPolicy.class));
                 break;
@@ -112,13 +110,68 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.blankProject:
+                Intent blankProjectIntent = new Intent(this, MainActivity.class);
+                blankProjectIntent.putExtra("BG_COLOR", Color.BLACK);
+                startActivity(blankProjectIntent);
+                break;
+
+            case R.id.fromGallery:
+                Intent pickPictureIntent = new Intent(Intent.ACTION_PICK,
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+                if (pickPictureIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivityForResult(pickPictureIntent, REQUEST_PICK_PHOTO);
+                }
+                break;
+
+            case R.id.fromCamera:
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    // Create the File where the photo should go
+                    File photoFile = null;
+                    try {
+                        photoFile = createImageFile();
+                        Uri photoURI = FileProvider.getUriForFile(this,
+                                getApplicationContext().getPackageName() + ".sfllhkhan95.doodle.provider",
+                                photoFile);
+
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                        startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                    } catch (Exception ex) {
+                        // Error occurred while creating the File
+                    }
+                }
+                break;
+
+            case R.id.profileButton:
+                mUserDetailsDialog.show();
+                break;
+        }
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         mUserDetailsDialog.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            intent.putExtra("FROM_GALLERY", data);
-            startActivity(intent);
+        switch (requestCode) {
+            case REQUEST_PICK_PHOTO:
+                if (data != null) {
+                    Intent openGalleryImage = new Intent(getApplicationContext(), MainActivity.class);
+                    openGalleryImage.putExtra("FROM_GALLERY", data);
+                    startActivity(openGalleryImage);
+                }
+                break;
+            case REQUEST_TAKE_PHOTO:
+                if (mCameraPicturePath != null && !mCameraPicturePath.isEmpty()) {
+                    Intent openCameraImage = new Intent(getApplicationContext(), MainActivity.class);
+                    openCameraImage.putExtra("FROM_CAMERA", mCameraPicturePath);
+                    startActivity(openCameraImage);
+                }
+                break;
         }
     }
 
@@ -138,6 +191,21 @@ public class MenuActivity extends AppCompatActivity {
                 backPressedOnce = false;
             }
         }, 1000);
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String imageFileName = "CAMERA_IMAGE";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCameraPicturePath = image.getAbsolutePath();
+        return image;
     }
 
     private class ProjectScanner extends Thread {
