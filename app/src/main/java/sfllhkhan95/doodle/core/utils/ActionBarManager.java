@@ -16,11 +16,15 @@ public class ActionBarManager implements CanvasActionListener {
     private final MenuItem undoAction;
     private final MenuItem redoAction;
     private final MenuItem revertAction;
+    private final MenuItem saveAction;
+    //private final MenuItem saveAsAction;
 
     public ActionBarManager(Menu menu) {
         undoAction = menu.findItem(R.id.undo);
         redoAction = menu.findItem(R.id.redo);
         revertAction = menu.findItem(R.id.revert);
+        saveAction = menu.findItem(R.id.save);
+        //saveAsAction = menu.findItem(R.id.save_as);
     }
 
     private void enable(MenuItem item) {
@@ -36,6 +40,8 @@ public class ActionBarManager implements CanvasActionListener {
         enable(revertAction);
         enable(undoAction);
         disable(redoAction);
+        enable(saveAction);
+        //enable(saveAsAction);
     }
 
     @Override
@@ -43,6 +49,8 @@ public class ActionBarManager implements CanvasActionListener {
         if (!canUndo) {
             disable(revertAction);
             disable(undoAction);
+            disable(saveAction);
+            //disable(saveAsAction);
         }
 
         enable(redoAction);
@@ -56,6 +64,8 @@ public class ActionBarManager implements CanvasActionListener {
 
         enable(revertAction);
         enable(undoAction);
+        enable(saveAction);
+        //enable(saveAsAction);
     }
 
     @Override
@@ -63,15 +73,21 @@ public class ActionBarManager implements CanvasActionListener {
         disable(revertAction);
         disable(undoAction);
         disable(redoAction);
+        disable(saveAction);
+        //disable(saveAsAction);
     }
 
     public void sync(PaintView paintView) {
         if (paintView.isModified()) {
             enable(revertAction);
             enable(undoAction);
+            enable(saveAction);
+            //enable(saveAsAction);
         } else {
             disable(revertAction);
             disable(undoAction);
+            disable(saveAction);
+            //disable(saveAsAction);
         }
 
         if (paintView.canRedo()) {
