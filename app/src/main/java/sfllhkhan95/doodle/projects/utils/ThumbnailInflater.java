@@ -35,7 +35,7 @@ public class ThumbnailInflater implements Runnable, AdapterView.OnItemClickListe
     @NonNull
     private List<Thumbnail> getThumbnails() {
         List<Thumbnail> thumbnails = new ArrayList<>();
-        Bitmap icon = BitmapFactory.decodeResource(activity.getResources(), android.R.drawable.ic_menu_add);
+        Bitmap icon = BitmapFactory.decodeResource(activity.getResources(), R.drawable.ic_create_project);
         thumbnails.add(new Thumbnail(this, icon, "NEW PROJECT"));
         if (savedProjects != null) {
             for (String projectName : savedProjects) {

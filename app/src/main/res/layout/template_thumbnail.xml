@@ -4,33 +4,19 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
     android:background="#000"
-    android:orientation="vertical"
-    android:padding="3dp">
-
-    <ImageView
-        android:id="@+id/projectIcon"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:scaleType="centerCrop" />
+    android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal">
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="3dp">
 
-        <TextView
-            android:id="@+id/projectTitle"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/deleteButton"
-            android:layout_toStartOf="@id/deleteButton"
-            android:fontFamily="casual"
-            android:gravity="center"
-            android:maxLines="1"
-            android:textAllCaps="true"
-            android:textColor="#FFF"
-            android:textSize="12sp" />
+        <ImageView
+            android:id="@+id/projectIcon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/avatar_placeholder" />
 
         <ImageView
             android:id="@+id/deleteButton"
@@ -38,12 +24,24 @@
             android:layout_height="20dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:background="#000"
             android:scaleType="centerInside"
             android:src="@android:drawable/ic_menu_delete"
-            android:tint="#FFF"
+            android:tint="@color/colorAccentLight"
             android:visibility="gone" />
 
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/projectTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="casual"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="Project Name"
+        android:textAllCaps="true"
+        android:textColor="@color/colorAccentLight"
+        android:textSize="12sp" />
 
 </LinearLayout>
