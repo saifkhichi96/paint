@@ -83,7 +83,9 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mUserDetailsDialog.getAuthHandler().stopTracking();
+        if (mUserDetailsDialog.getAuthHandler() != null) {
+            mUserDetailsDialog.getAuthHandler().stopTracking();
+        }
     }
 
     @Override
