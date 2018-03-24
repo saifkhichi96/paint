@@ -129,7 +129,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.fromCamera:
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
                 if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                     // Create the File where the photo should go
                     File photoFile = null;
@@ -157,6 +156,8 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         mUserDetailsDialog.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode != RESULT_OK) return;
         switch (requestCode) {
             case REQUEST_PICK_PHOTO:
                 if (data != null) {
