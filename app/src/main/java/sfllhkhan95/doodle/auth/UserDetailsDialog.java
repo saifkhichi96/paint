@@ -11,11 +11,11 @@ import android.widget.TextView;
 import com.facebook.login.widget.LoginButton;
 
 import sfllhkhan95.doodle.R;
+import sfllhkhan95.doodle.auth.models.User;
 import sfllhkhan95.doodle.auth.utils.AuthHandler;
 import sfllhkhan95.doodle.auth.utils.OnUpdateListener;
-import sfllhkhan95.doodle.auth.models.User;
-import sfllhkhan95.doodle.auth.views.UserView;
 import sfllhkhan95.doodle.auth.views.MessengerShareButton;
+import sfllhkhan95.doodle.auth.views.UserView;
 
 
 public class UserDetailsDialog extends Dialog implements OnUpdateListener {
@@ -25,7 +25,7 @@ public class UserDetailsDialog extends Dialog implements OnUpdateListener {
     private AuthHandler mAuthHandler;
 
     private UserView mUserView;
-    private TextView mBodyTextView;
+    private TextView mSocialInfoView;
 
     private MessengerShareButton mShareButton;
     private View.OnClickListener mShareClickListener;
@@ -43,8 +43,8 @@ public class UserDetailsDialog extends Dialog implements OnUpdateListener {
         }
 
         // Assign views
-        mBodyTextView = findViewById(R.id.body);
-        mShareButton = findViewById(R.id.messenger_button);
+        mSocialInfoView = findViewById(R.id.socialSectionInfo);
+        mShareButton = findViewById(R.id.messengerShareButton);
         mUserView = new UserView(this);
 
         // Assign click listeners
@@ -64,7 +64,7 @@ public class UserDetailsDialog extends Dialog implements OnUpdateListener {
         }
 
         // Set up Facebook login button
-        LoginButton mLoginButton = findViewById(R.id.login_button);
+        LoginButton mLoginButton = findViewById(R.id.loginButton);
         mAuthHandler.registerFacebookLoginButton(mLoginButton);
 
         // Display appropriate view
@@ -78,11 +78,13 @@ public class UserDetailsDialog extends Dialog implements OnUpdateListener {
 
             setBodyText("Now, you can express yourself in your Messenger conversations with Doodle. Try it out now!");
             showShareButton();
+            showBackupSection();
         } else {
             mUserView.showUser(DEFAULT_USER);
 
             setBodyText("Sign in now to express yourself in your Messenger conversations through Doodle.");
             hideShareButton();
+            hideBackupSection();
         }
     }
 
@@ -95,8 +97,8 @@ public class UserDetailsDialog extends Dialog implements OnUpdateListener {
     }
 
     private void setBodyText(String bodyText) {
-        if (mBodyTextView != null) {
-            mBodyTextView.setText(bodyText);
+        if (mSocialInfoView != null) {
+            mSocialInfoView.setText(bodyText);
         }
     }
 
@@ -110,6 +112,16 @@ public class UserDetailsDialog extends Dialog implements OnUpdateListener {
         if (mShareButton != null) {
             mShareButton.setVisibility(View.GONE);
         }
+    }
+
+    private void showBackupSection() {
+        findViewById(R.id.backupSectionInfo).setVisibility(View.GONE);
+        findViewById(R.id.backupSectionBody).setVisibility(View.VISIBLE);
+    }
+
+    private void hideBackupSection() {
+        findViewById(R.id.backupSectionInfo).setVisibility(View.VISIBLE);
+        findViewById(R.id.backupSectionBody).setVisibility(View.GONE);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

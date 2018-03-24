@@ -14,12 +14,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="80dp">
 
+            <!-- Header -->
             <LinearLayout
+                android:id="@+id/header"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:background="@drawable/user_details_header"
+                android:baselineAligned="false"
                 android:orientation="horizontal"
                 android:paddingTop="@dimen/activity_margin_top"
                 android:weightSum="3">
@@ -91,130 +95,267 @@
 
             </LinearLayout>
 
-            <!-- Section Break -->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:layout_marginTop="@dimen/activity_vertical_margin">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_centerVertical="true"
-                    android:background="@color/colorSectionBreak" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:background="@color/colorPrimaryLight"
-                    android:fontFamily="monospace"
-                    android:padding="10dp"
-                    android:text="Social"
-                    android:textAllCaps="true"
-                    android:textColor="@color/colorSectionHeading"
-                    android:textSize="11sp"
-                    android:textStyle="bold" />
-
-            </RelativeLayout>
-
             <!-- Social -->
             <LinearLayout
+                android:id="@+id/socialSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <!-- Section Break -->
+                <RelativeLayout
+                    android:id="@+id/socialSectionHeading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_centerVertical="true"
+                        android:background="@color/colorSectionBreak" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:background="@color/colorPrimaryLight"
+                        android:fontFamily="monospace"
+                        android:padding="10dp"
+                        android:text="Social"
+                        android:textAllCaps="true"
+                        android:textColor="@color/colorSectionHeading"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+                <!-- Login Button -->
+                <com.facebook.login.widget.LoginButton
+                    android:id="@+id/loginButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="12dp"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:textColor="#FFF" />
+
+                <TextView
+                    android:id="@+id/socialSectionInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:gravity="center"
+                    android:text="Sign in now to express yourself in your Messenger conversations through Doodle."
+                    android:textColor="@color/colorAccent" />
+
+                <sfllhkhan95.doodle.auth.views.MessengerShareButton
+                    android:id="@+id/messengerShareButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:visibility="gone"
+                    custom:actionText="Messenger"
+                    custom:descriptionText="New Message" />
+
+            </LinearLayout>
+
+            <!-- Backup and Restore -->
+            <LinearLayout
+                android:id="@+id/backupSection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:orientation="vertical">
 
+                <!-- Section Break -->
+                <RelativeLayout
+                    android:id="@+id/backupSectionHeading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_centerVertical="true"
+                        android:background="@color/colorSectionBreak" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:background="@color/colorPrimaryLight"
+                        android:fontFamily="monospace"
+                        android:padding="10dp"
+                        android:text="Cloud Backup"
+                        android:textAllCaps="true"
+                        android:textColor="@color/colorSectionHeading"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
                 <TextView
-                    android:id="@+id/body"
+                    android:id="@+id/backupSectionInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
                     android:gravity="center"
+                    android:text="Signed in users can back up their projects to cloud storage and never lose them."
                     android:textColor="@color/colorAccent" />
 
-                <sfllhkhan95.doodle.auth.views.MessengerShareButton
-                    android:id="@+id/messenger_button"
+                <LinearLayout
+                    android:id="@+id/backupSectionBody"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/activity_vertical_margin"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    custom:actionText="Messenger"
-                    custom:descriptionText="New Message" />
+                    android:baselineAligned="false"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:paddingTop="10dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="2dp"
+                                android:text="Last Backup: "
+                                android:textAllCaps="true"
+                                android:textColor="@color/colorAccentLight"
+                                android:textSize="11sp" />
+
+                            <TextView
+                                android:id="@+id/lastBackupDate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="2dp"
+                                android:text="Never"
+                                android:textAllCaps="true"
+                                android:textColor="@color/colorAccent"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="2dp"
+                                android:text="Backup Size: "
+                                android:textAllCaps="true"
+                                android:textColor="@color/colorAccentLight"
+                                android:textSize="11sp" />
+
+                            <TextView
+                                android:id="@+id/lastBackupSize"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="2dp"
+                                android:text="N/A"
+                                android:textAllCaps="true"
+                                android:textColor="@color/colorAccent"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <Button
+                            android:id="@+id/backup_button"
+                            android:layout_width="100dp"
+                            android:layout_height="30dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/button_primary"
+                            android:text="Backup"
+                            android:textColor="@color/colorBlack" />
+
+                        <Button
+                            android:id="@+id/restore_button"
+                            android:layout_width="100dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/button_primary"
+                            android:text="Restore"
+                            android:textColor="@color/colorBlack" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
 
-            <!-- Section Break -->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:layout_marginTop="@dimen/activity_vertical_margin">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_centerVertical="true"
-                    android:background="@color/colorSectionBreak" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:background="@color/colorPrimaryLight"
-                    android:fontFamily="monospace"
-                    android:padding="10dp"
-                    android:text="Account"
-                    android:textAllCaps="true"
-                    android:textColor="@color/colorSectionHeading"
-                    android:textSize="11sp"
-                    android:textStyle="bold" />
-
-            </RelativeLayout>
-
             <!-- Account Details -->
             <LinearLayout
+                android:id="@+id/statsSection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:orientation="vertical"
-                android:paddingBottom="80dp">
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
+                <!-- Section Break -->
+                <RelativeLayout
+                    android:id="@+id/statsSectionHeading"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_centerVertical="true"
+                        android:background="@color/colorSectionBreak" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:text="Last Backup: "
+                        android:layout_centerInParent="true"
+                        android:background="@color/colorPrimaryLight"
+                        android:fontFamily="monospace"
+                        android:padding="10dp"
+                        android:text="Stats"
                         android:textAllCaps="true"
-                        android:textColor="@color/colorAccentLight"
-                        android:textSize="11sp" />
-
-                    <TextView
-                        android:id="@+id/lastBackupDate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:text="Never"
-                        android:textAllCaps="true"
-                        android:textColor="@color/colorAccent"
-                        android:textSize="12sp"
+                        android:textColor="@color/colorSectionHeading"
+                        android:textSize="11sp"
                         android:textStyle="bold" />
 
-                </LinearLayout>
+                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/activity_vertical_margin"
                     android:orientation="horizontal">
 
                     <TextView
@@ -266,18 +407,6 @@
 
                 </LinearLayout>
 
-                <com.facebook.login.widget.LoginButton
-                    android:id="@+id/login_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:layout_marginTop="@dimen/activity_vertical_margin"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:text="Login with Facebook"
-                    android:textColor="#FFF" />
-
             </LinearLayout>
 
         </LinearLayout>
@@ -292,6 +421,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:background="@drawable/button"
+        android:elevation="4dp"
         android:padding="7dp"
         android:scaleType="fitCenter"
         android:src="@android:drawable/ic_menu_close_clear_cancel"
