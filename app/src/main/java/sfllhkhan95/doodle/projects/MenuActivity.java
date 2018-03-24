@@ -195,13 +195,10 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
     private File createImageFile() throws IOException {
         // Create an image file name
-        String imageFileName = "CAMERA_IMAGE";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
+        String path = storageDir + File.separator + "CAMERA_IMAGE.jpg";
+        File image = new File(path);
+        image.createNewFile();
 
         // Save a file: path for use with ACTION_VIEW intents
         mCameraPicturePath = image.getAbsolutePath();

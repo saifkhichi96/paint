@@ -302,7 +302,7 @@ public class MainActivity extends AppCompatActivity implements
 
                 // Write compressed data to a temporary file
                 File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-                String path = storageDir + File.separator + "tmp_doodle.jpg";
+                String path = storageDir + File.separator + "SHARE_IMAGE.jpg";
                 File tempFile = new File(path);
                 try {
                     tempFile.createNewFile();
@@ -340,7 +340,7 @@ public class MainActivity extends AppCompatActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_SHARE || requestCode == REQUEST_CODE_SHARE_TO_MESSENGER) {
-            String path = Environment.getExternalStorageDirectory() + File.separator + "tmp_doodle.jpg";
+            String path = Environment.getExternalStorageDirectory() + File.separator + "SHARE_IMAGE.jpg";
             File tempFile = new File(path);
             if (tempFile.exists()) {
                 tempFile.delete();
@@ -434,7 +434,7 @@ public class MainActivity extends AppCompatActivity implements
 
             // Write to a temporary file
             File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-            String path = storageDir + File.separator + "tmp_doodle.jpg";
+            String path = storageDir + File.separator + "SHARE_IMAGE.jpg";
             File tempFile = new File(path);
             tempFile.createNewFile();
 
