@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:name=".DoodleApplication"
         android:allowBackup="true"
@@ -68,6 +70,14 @@
         <activity
             android:name=".PrivacyPolicy"
             android:screenOrientation="portrait" />
+
+        <!-- This is required if you want to do any message handling beyond receiving notifications
+         on apps in the background. -->
+        <service android:name=".notifs.utils.NotificationService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
     </application>
 

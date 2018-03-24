@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import sfllhkhan95.doodle.notifs.utils.NotificationService;
 import sfllhkhan95.doodle.projects.MenuActivity;
 
 public class LaunchScreen extends AppCompatActivity {
@@ -46,6 +47,9 @@ public class LaunchScreen extends AppCompatActivity {
                 }
             }, delay);
         }
+
+        Intent i = new Intent(this, NotificationService.class);
+        startService(i);
     }
 
     @Override
