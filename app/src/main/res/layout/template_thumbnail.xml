@@ -27,8 +27,7 @@
             android:background="#000"
             android:scaleType="centerInside"
             android:src="@android:drawable/ic_menu_delete"
-            android:tint="@color/colorAccentLight"
-            android:visibility="gone" />
+            android:tint="@color/colorAccentLight" />
 
     </RelativeLayout>
 

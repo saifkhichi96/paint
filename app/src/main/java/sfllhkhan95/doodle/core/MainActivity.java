@@ -1,6 +1,5 @@
 package sfllhkhan95.doodle.core;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -37,6 +36,7 @@ import java.io.FileOutputStream;
 import java.util.List;
 
 import sfllhkhan95.doodle.R;
+import sfllhkhan95.doodle.auth.views.MessengerShareButton;
 import sfllhkhan95.doodle.core.models.PaintCanvas;
 import sfllhkhan95.doodle.core.models.tools.Circle;
 import sfllhkhan95.doodle.core.models.tools.Eraser;
@@ -46,14 +46,13 @@ import sfllhkhan95.doodle.core.models.tools.Quad2D;
 import sfllhkhan95.doodle.core.models.tools.Quad3D;
 import sfllhkhan95.doodle.core.utils.ActionBarManager;
 import sfllhkhan95.doodle.core.utils.DialogFactory;
-import sfllhkhan95.doodle.projects.utils.DoodleFactory;
 import sfllhkhan95.doodle.core.utils.OnColorPickedListener;
 import sfllhkhan95.doodle.core.utils.OnToolSelectedListener;
 import sfllhkhan95.doodle.core.views.CanvasColorPicker;
 import sfllhkhan95.doodle.core.views.ColorPicker;
-import sfllhkhan95.doodle.auth.views.MessengerShareButton;
 import sfllhkhan95.doodle.core.views.PaintView;
 import sfllhkhan95.doodle.core.views.ToolboxView;
+import sfllhkhan95.doodle.projects.utils.DoodleFactory;
 
 public class MainActivity extends AppCompatActivity implements
         SeekBar.OnSeekBarChangeListener, OnToolSelectedListener,
@@ -106,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements
             messengerShareButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onShareClicked();
+                    onShareMessenger();
                 }
             });
             if (Intent.ACTION_PICK.equals(intent.getAction())) {
@@ -168,6 +167,7 @@ public class MainActivity extends AppCompatActivity implements
 
         PaintCanvas canvas;
         String savedDoodle = getIntent().getStringExtra("DOODLE");
+        String cameraImage = getIntent().getStringExtra("FROM_CAMERA");
         Intent galleryImage = getIntent().getParcelableExtra("FROM_GALLERY");
         if (savedDoodle != null && !savedDoodle.isEmpty()) {
             canvas = PaintCanvas.loadFromPath(metrics, savedDoodle);
@@ -190,6 +190,14 @@ public class MainActivity extends AppCompatActivity implements
                 Bitmap bitmapFromFile = DoodleFactory.loadFromPath(picturePath, metrics.widthPixels, metrics.heightPixels);
                 canvas = PaintCanvas.loadFromBitmap(metrics, bitmapFromFile);
             } catch (AssertionError ex) {
+                canvas = new PaintCanvas(metrics);
+                canvas.setColor(getIntent().getIntExtra("BG_COLOR", Color.BLACK));
+            }
+        } else if (cameraImage != null) {
+            try {
+                Bitmap bitmapFromFile = DoodleFactory.loadFromPath(cameraImage, metrics.widthPixels, metrics.heightPixels);
+                canvas = PaintCanvas.loadFromBitmap(metrics, bitmapFromFile);
+            } catch (Exception ex) {
                 canvas = new PaintCanvas(metrics);
                 canvas.setColor(getIntent().getIntExtra("BG_COLOR", Color.BLACK));
             }
@@ -282,7 +290,7 @@ public class MainActivity extends AppCompatActivity implements
                 return true;
 
             case R.id.messenger:
-                onShareClicked();
+                onShareMessenger();
                 break;
 
             case R.id.share:
@@ -293,7 +301,8 @@ public class MainActivity extends AppCompatActivity implements
                 doodle.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
 
                 // Write compressed data to a temporary file
-                String path = Environment.getExternalStorageDirectory() + File.separator + "tmp_doodle.jpg";
+                File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                String path = storageDir + File.separator + "tmp_doodle.jpg";
                 File tempFile = new File(path);
                 try {
                     tempFile.createNewFile();
@@ -310,12 +319,16 @@ public class MainActivity extends AppCompatActivity implements
 
                     // Start share sequence
                     startActivityForResult(Intent.createChooser(share, "Share Doodle"), REQUEST_CODE_SHARE);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    new AlertDialog.Builder(MainActivity.this)
-                            .setMessage(getString(R.string.unknownError))
-                            .create()
-                            .show();
+                } catch (Exception e) { // If, for some reason, sharing fails
+                    // Log exception for error tracking
+                    Crashlytics.logException(e);
+
+                    // Display a nice error message to the user
+                    Snackbar.make(
+                            messengerShareButton,
+                            getString(R.string.unknownError),
+                            BaseTransientBottomBar.LENGTH_INDEFINITE
+                    ).show();
                 }
                 return true;
         }
@@ -404,7 +417,7 @@ public class MainActivity extends AppCompatActivity implements
         toolbox.updatePenColorPicker(color);
     }
 
-    public void onShareClicked() {
+    public void onShareMessenger() {
         try {
             // Disallow sharing empty projects
             //if (!paintView.isModified()) {
@@ -420,7 +433,8 @@ public class MainActivity extends AppCompatActivity implements
             bitmapToShare.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
 
             // Write to a temporary file
-            String path = Environment.getExternalStorageDirectory() + File.separator + "tmp_doodle.jpg";
+            File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            String path = storageDir + File.separator + "tmp_doodle.jpg";
             File tempFile = new File(path);
             tempFile.createNewFile();
 
@@ -449,7 +463,7 @@ public class MainActivity extends AppCompatActivity implements
             Snackbar.make(
                     messengerShareButton,
                     getString(R.string.unknownError),
-                    BaseTransientBottomBar.LENGTH_LONG
+                    BaseTransientBottomBar.LENGTH_INDEFINITE
             ).show();
         }
     }

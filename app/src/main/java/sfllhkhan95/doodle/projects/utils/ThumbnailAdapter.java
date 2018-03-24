@@ -48,10 +48,7 @@ public class ThumbnailAdapter extends ArrayAdapter<Thumbnail> {
             thumbnailView = (ThumbnailView) gridItem.getTag();
         }
 
-        if (position > 0) {
-            gridItem.findViewById(R.id.deleteButton).setVisibility(View.VISIBLE);
-            gridItem.findViewById(R.id.deleteButton).setOnClickListener(thumbnails.get(position));
-        }
+        gridItem.findViewById(R.id.deleteButton).setOnClickListener(thumbnails.get(position));
         thumbnailView.setThumbnail(thumbnails.get(position));
         return gridItem;
     }
