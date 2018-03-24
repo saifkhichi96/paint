@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import pk.aspirasoft.core.io.OnCompleteListener;
 import sfllhkhan95.doodle.R;
-import sfllhkhan95.doodle.auth.utils.FacebookUserPhotoDownloader;
 import sfllhkhan95.doodle.auth.models.User;
+import sfllhkhan95.doodle.auth.utils.FacebookUserPhotoDownloader;
 
 
 public class UserView implements OnCompleteListener<Bitmap> {
@@ -56,7 +56,7 @@ public class UserView implements OnCompleteListener<Bitmap> {
         mJoinDateView.setText(user.getCreationDate());
         mLoginDateView.setText(user.getLoginDate());
         mLastBackupView.setText(user.getBackupDate());
-        if (user.getUid().isEmpty()) {
+        if (user.getUid() == null || user.getUid().isEmpty()) {
             mAvatarView.setImageBitmap(DEFAULT_AVATAR);
         } else if (mUserAvatar != null) {
             onSuccess(mUserAvatar);
