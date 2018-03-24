@@ -9,6 +9,40 @@
         app:showAsAction="always" />
 
     <item
+        android:icon="@drawable/ic_action_share"
+        android:title="Share"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/share"
+                android:icon="@drawable/ic_action_share"
+                android:title="Share" />
+
+            <item
+                android:id="@+id/messenger"
+                android:icon="@drawable/ic_action_messenger"
+                android:title="Messenger" />
+        </menu>
+    </item>
+
+    <!--item
+        android:icon="@drawable/ic_action_save"
+        android:title="Save"
+        app:showAsAction="always">
+        <menu-->
+    <item
+        android:id="@+id/save"
+        android:icon="@drawable/ic_action_save"
+        android:title="Save"
+        app:showAsAction="always" />
+    <!--item
+        android:id="@+id/save_as"
+        android:icon="@drawable/ic_action_save_as"
+        android:title="Save As" />
+</menu>
+</item-->
+
+    <item
         android:icon="@drawable/ic_action_layers"
         android:title="Layers"
         app:showAsAction="always">
@@ -32,40 +66,6 @@
                 android:icon="@drawable/ic_action_revert"
                 android:title="Revert"
                 app:showAsAction="never" />
-        </menu>
-    </item>
-
-    <!--item
-        android:icon="@drawable/ic_action_save"
-        android:title="Save"
-        app:showAsAction="always">
-        <menu-->
-    <item
-        android:id="@+id/save"
-        android:icon="@drawable/ic_action_save"
-        android:title="Save"
-        app:showAsAction="always" />
-    <!--item
-        android:id="@+id/save_as"
-        android:icon="@drawable/ic_action_save_as"
-        android:title="Save As" />
-</menu>
-</item-->
-
-    <item
-        android:icon="@drawable/ic_action_share"
-        android:title="Share"
-        app:showAsAction="always">
-        <menu>
-            <item
-                android:id="@+id/share"
-                android:icon="@drawable/ic_action_share"
-                android:title="Share" />
-
-            <item
-                android:id="@+id/messenger"
-                android:icon="@drawable/ic_action_messenger"
-                android:title="Messenger" />
         </menu>
     </item>
 

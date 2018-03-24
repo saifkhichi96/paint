@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private void onMaximizeToggled(boolean isMaximized) {
         findViewById(R.id.container).setVisibility(isMaximized ? View.GONE : View.VISIBLE);
-        findViewById(R.id.tools).setVisibility(isMaximized ? View.GONE : View.VISIBLE);
+        findViewById(R.id.brushSizeBar).setVisibility(isMaximized ? View.GONE : View.VISIBLE);
         toolbar.configure(isMaximized);
     }
 
