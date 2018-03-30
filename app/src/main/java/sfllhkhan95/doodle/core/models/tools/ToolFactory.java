@@ -1,7 +1,6 @@
 package sfllhkhan95.doodle.core.models.tools;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 import sfllhkhan95.doodle.core.models.PaintBrush;
 
@@ -15,8 +14,7 @@ public class ToolFactory {
         try {
             Constructor<? extends Tool> ctor = type.getDeclaredConstructor(PaintBrush.class);
             tool = ctor.newInstance(paintBrush);
-        } catch (NoSuchMethodException | IllegalAccessException |
-                InstantiationException | InvocationTargetException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return tool;
