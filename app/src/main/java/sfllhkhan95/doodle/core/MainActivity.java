@@ -27,6 +27,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.messenger.MessengerThreadParams;
 import com.facebook.messenger.MessengerUtils;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.json.JSONException;
 
@@ -81,6 +82,12 @@ public class MainActivity extends AppCompatActivity implements
     private boolean mReplying;
     private MessengerShareButton messengerShareButton;
 
+    // Firebase Analytics (For event logging)
+    private FirebaseAnalytics mFirebaseAnalytics;
+
+    // Is this a new or existing project?
+    private boolean isExisting = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +102,13 @@ public class MainActivity extends AppCompatActivity implements
         this.brushController = (SeekBar) findViewById(R.id.brushController);
         this.brushController.setOnSeekBarChangeListener(this);
 
+        // Obtain the FirebaseAnalytics instance.
+        this.mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        // Obtain device display metrics (used to setup project resolution)
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
         // Initialize canvas where everything is drawn
         paintView = findViewById(R.id.canvas);
         Intent intent = getIntent();
@@ -105,10 +119,13 @@ public class MainActivity extends AppCompatActivity implements
             messengerShareButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onShareMessenger();
+                    onShareClicked(true);
                 }
             });
             if (Intent.ACTION_PICK.equals(intent.getAction())) {
+                Bundle logParams = new Bundle();
+                mFirebaseAnalytics.logEvent("reply_messenger", logParams);
+
                 mReplying = true;
                 messengerShareButton.setActionText("Replying to");
                 messengerShareButton.setDescriptionText("Messenger Conversation");
@@ -123,27 +140,22 @@ public class MainActivity extends AppCompatActivity implements
                             new GraphRequest.Callback() {
                                 @Override
                                 public void onCompleted(GraphResponse response) {
+                                    String recipientName = "";
                                     try {
-                                        messengerShareButton.setDescriptionText(response.getJSONObject().get("name").toString());
-                                    } catch (NullPointerException | JSONException e) {
-                                        Crashlytics.logException(e);
+                                        recipientName = response.getJSONObject().get("name").toString();
+                                        messengerShareButton.setDescriptionText(recipientName);
+                                    } catch (NullPointerException | JSONException ignored) {
+
                                     }
                                 }
                             });
-
                     request.executeAsync();
                 }
             }
 
-            DisplayMetrics metrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-            PaintCanvas canvas;
-            canvas = new PaintCanvas(metrics);
-            canvas.setColor(getIntent().getIntExtra("BG_COLOR", Color.BLACK));
-            paintView.setCanvas(canvas);
+            initCanvas(startFromScratch(metrics));
         } else {
-            initCanvas();
+            initCanvas(getPaintCanvas(metrics));
         }
 
         // Create confirmation dialogs
@@ -161,52 +173,130 @@ public class MainActivity extends AppCompatActivity implements
         findViewById(R.id.pen).callOnClick();
     }
 
-    private void initCanvas() {
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+    private void initCanvas(PaintCanvas canvas) {
+        if (paintView != null) {
+            paintView.setCanvas(canvas);
+            paintView.setShapeType(Pen.class);  // Select Pen by default
+        }
+    }
 
+    private PaintCanvas getPaintCanvas(DisplayMetrics metrics) {
         PaintCanvas canvas;
         String savedDoodle = getIntent().getStringExtra("DOODLE");
         String cameraImage = getIntent().getStringExtra("FROM_CAMERA");
         Intent galleryImage = getIntent().getParcelableExtra("FROM_GALLERY");
         if (savedDoodle != null && !savedDoodle.isEmpty()) {
-            canvas = PaintCanvas.loadFromPath(metrics, savedDoodle);
+            canvas = resumeProject(metrics, savedDoodle);
         } else if (galleryImage != null) {
-            try {
-                Uri selectedImage = galleryImage.getData();
-                String[] filePathColumn = {MediaStore.Images.Media.DATA};
-
-                assert selectedImage != null;
-                Cursor cursor = getContentResolver().query(selectedImage,
-                        filePathColumn, null, null, null);
-
-                assert cursor != null;
-                cursor.moveToFirst();
-
-                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                String picturePath = cursor.getString(columnIndex);
-                cursor.close();
-
-                Bitmap bitmapFromFile = DoodleFactory.loadFromPath(picturePath, metrics.widthPixels, metrics.heightPixels);
-                canvas = PaintCanvas.loadFromBitmap(metrics, bitmapFromFile);
-            } catch (AssertionError ex) {
-                canvas = new PaintCanvas(metrics);
-                canvas.setColor(getIntent().getIntExtra("BG_COLOR", Color.BLACK));
-            }
+            canvas = startFromGallery(metrics, galleryImage);
         } else if (cameraImage != null) {
-            try {
-                Bitmap bitmapFromFile = DoodleFactory.loadFromPath(cameraImage, metrics.widthPixels, metrics.heightPixels);
-                canvas = PaintCanvas.loadFromBitmap(metrics, bitmapFromFile);
-            } catch (Exception ex) {
-                canvas = new PaintCanvas(metrics);
-                canvas.setColor(getIntent().getIntExtra("BG_COLOR", Color.BLACK));
-            }
+            canvas = startFromCamera(metrics, cameraImage);
         } else {
-            canvas = new PaintCanvas(metrics);
-            canvas.setColor(getIntent().getIntExtra("BG_COLOR", Color.BLACK));
+            canvas = startFromScratch(metrics);
         }
-        paintView.setCanvas(canvas);
-        paintView.setShapeType(Pen.class);  // Select Pen by default
+        return canvas;
+    }
+
+    private PaintCanvas startFromGallery(DisplayMetrics metrics, Intent galleryImage) {
+        Bundle logParams = new Bundle();
+        boolean success = false;
+
+        PaintCanvas canvas;
+        try {
+            Uri selectedImage = galleryImage.getData();
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+            assert selectedImage != null;
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+
+            assert cursor != null;
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+
+            Bitmap bitmapFromFile = DoodleFactory.loadFromPath(picturePath, metrics.widthPixels, metrics.heightPixels);
+            canvas = PaintCanvas.loadFromBitmap(metrics, bitmapFromFile);
+
+            success = true;
+        } catch (AssertionError ex) {
+            canvas = startFromScratch(metrics);
+        } finally { // Log event
+            logParams.putBoolean("success", success);
+            mFirebaseAnalytics.logEvent("from_gallery", logParams);
+        }
+        return canvas;
+    }
+
+    private PaintCanvas startFromCamera(DisplayMetrics metrics, String cameraImage) {
+        Bundle logParams = new Bundle();
+        boolean success = false;
+
+        PaintCanvas canvas;
+        try {
+            Bitmap bitmapFromFile = DoodleFactory.loadFromPath(cameraImage, metrics.widthPixels, metrics.heightPixels);
+            canvas = PaintCanvas.loadFromBitmap(metrics, bitmapFromFile);
+
+            success = true;
+        } catch (Exception ex) {
+            canvas = startFromScratch(metrics);
+        } finally { // Log event
+            logParams.putBoolean("success", success);
+            mFirebaseAnalytics.logEvent("from_camera", logParams);
+        }
+        return canvas;
+    }
+
+    private PaintCanvas startFromScratch(DisplayMetrics metrics) {
+        PaintCanvas canvas = new PaintCanvas(metrics);
+        canvas.setColor(getIntent().getIntExtra("BG_COLOR", Color.BLACK));
+
+        // Log event
+        Bundle logParams = new Bundle();
+        logParams.putBoolean("success", true);
+        mFirebaseAnalytics.logEvent("from_scratch", logParams);
+
+        return canvas;
+    }
+
+    private PaintCanvas resumeProject(DisplayMetrics metrics, String savedDoodle) {
+        isExisting = true;
+        return PaintCanvas.loadFromPath(metrics, savedDoodle);
+    }
+
+    private void share(File tempFile) {
+        // Get a shareable file URI
+        String contentType = "image/jpeg";
+        Uri contentUri = FileProvider.getUriForFile(
+                this,
+                getApplicationContext().getPackageName() + ".sfllhkhan95.doodle.provider",
+                tempFile);
+
+        // Start share sequence
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType(contentType);
+        share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        share.putExtra(Intent.EXTRA_STREAM, contentUri);
+        startActivityForResult(Intent.createChooser(share, "Share Doodle"), REQUEST_CODE_SHARE);
+    }
+
+    private void shareOnMessenger(File tempFile) {
+        // Get a shareable file URI
+        String contentType = "image/jpeg";
+        Uri contentUri = FileProvider.getUriForFile(
+                this,
+                getApplicationContext().getPackageName() + ".sfllhkhan95.doodle.provider",
+                tempFile
+        );
+
+        // Start share sequence
+        if (mReplying) {
+            messengerShareButton.sendReply(this, contentType, contentUri);
+        } else {
+            messengerShareButton.sendMessage(this, contentType, contentUri, REQUEST_CODE_SHARE_TO_MESSENGER);
+        }
     }
 
     private void toggleMaximized() {
@@ -242,6 +332,11 @@ public class MainActivity extends AppCompatActivity implements
         if (!isMaximized) {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.main, menu);
+
+            if (mReplying) {
+                MenuItem item = menu.findItem(R.id.shareButtons);
+                item.setVisible(false);
+            }
 
             ActionBarManager mActionBarManager = new ActionBarManager(menu);
             paintView.setCanvasActionListener(mActionBarManager);
@@ -290,50 +385,54 @@ public class MainActivity extends AppCompatActivity implements
                 return true;
 
             case R.id.messenger:
-                onShareMessenger();
+                onShareClicked(true);
                 break;
 
             case R.id.share:
-                Bitmap doodle = paintView.getCanvas().getBitmap();
-
-                // Compress bitmap image
-                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                doodle.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-
-                // Write compressed data to a temporary file
-                File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-                String path = storageDir + File.separator + "SHARE_IMAGE.jpg";
-                File tempFile = new File(path);
-                try {
-                    tempFile.createNewFile();
-                    FileOutputStream fo = new FileOutputStream(tempFile);
-                    fo.write(bytes.toByteArray());
-
-                    // Create a share intent
-                    Intent share = new Intent(Intent.ACTION_SEND);
-                    share.setType("image/jpeg");
-                    share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-                    Uri photoURI = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".sfllhkhan95.doodle.provider", tempFile);
-                    share.putExtra(Intent.EXTRA_STREAM, photoURI);
-
-                    // Start share sequence
-                    startActivityForResult(Intent.createChooser(share, "Share Doodle"), REQUEST_CODE_SHARE);
-                } catch (Exception e) { // If, for some reason, sharing fails
-                    // Log exception for error tracking
-                    Crashlytics.logException(e);
-
-                    // Display a nice error message to the user
-                    Snackbar.make(
-                            messengerShareButton,
-                            getString(R.string.unknownError),
-                            BaseTransientBottomBar.LENGTH_INDEFINITE
-                    ).show();
-                }
+                onShareClicked(false);
                 return true;
         }
 
         return false;
+    }
+
+    private void onShareClicked(boolean messengerExpression) {
+        if (isExisting || paintView.isModified()) {
+            try {
+                // Get the drawn bitmap from paint canvas
+                PaintCanvas canvas = paintView.getCanvas();
+                Bitmap bitmapToShare = canvas.getBitmap();
+
+                // Compress bitmap
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                bitmapToShare.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+
+                // Write to a temporary file
+                File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                String path = storageDir + File.separator + "SHARE_IMAGE.jpg";
+                File tempFile = new File(path);
+                tempFile.createNewFile();
+
+                FileOutputStream fo = new FileOutputStream(tempFile);
+                fo.write(bytes.toByteArray());
+
+                if (messengerExpression) {
+                    shareOnMessenger(tempFile);
+                } else {
+                    share(tempFile);
+                }
+            } catch (Exception e) { // If, for some reason, sharing fails
+                // Log exception for error tracking
+                Crashlytics.logException(e);
+
+                // Display a nice error message to the user
+                Snackbar.make(
+                        messengerShareButton,
+                        getString(R.string.unknownError),
+                        BaseTransientBottomBar.LENGTH_INDEFINITE
+                ).show();
+            }
+        }
     }
 
     @Override
@@ -415,57 +514,6 @@ public class MainActivity extends AppCompatActivity implements
     public void onColorPicked(int color) {
         paintView.getBrush().setStrokeColor(color);
         toolbox.updatePenColorPicker(color);
-    }
-
-    public void onShareMessenger() {
-        try {
-            // Disallow sharing empty projects
-            //if (!paintView.isModified()) {
-            //    return;
-            //}
-
-            // Get the drawn bitmap from paint canvas
-            PaintCanvas canvas = paintView.getCanvas();
-            Bitmap bitmapToShare = canvas.getBitmap();
-
-            // Compress bitmap
-            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-            bitmapToShare.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-
-            // Write to a temporary file
-            File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-            String path = storageDir + File.separator + "SHARE_IMAGE.jpg";
-            File tempFile = new File(path);
-            tempFile.createNewFile();
-
-            FileOutputStream fo = new FileOutputStream(tempFile);
-            fo.write(bytes.toByteArray());
-
-            // Get a shareable file URI
-            String contentType = "image/jpeg";
-            Uri contentUri = FileProvider.getUriForFile(
-                    this,
-                    getApplicationContext().getPackageName() + ".sfllhkhan95.doodle.provider",
-                    tempFile
-            );
-
-            // Start share sequence
-            if (mReplying) {
-                messengerShareButton.sendReply(this, contentType, contentUri);
-            } else {
-                messengerShareButton.sendMessage(this, contentType, contentUri, REQUEST_CODE_SHARE_TO_MESSENGER);
-            }
-        } catch (Exception e) { // If, for some reason, sharing fails
-            // Log exception for error tracking
-            Crashlytics.logException(e);
-
-            // Display a nice error message to the user
-            Snackbar.make(
-                    messengerShareButton,
-                    getString(R.string.unknownError),
-                    BaseTransientBottomBar.LENGTH_INDEFINITE
-            ).show();
-        }
     }
 
     private class CustomToolbar {
