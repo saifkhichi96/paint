@@ -9,6 +9,7 @@
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/shareButtons"
         android:icon="@drawable/ic_action_share"
         android:title="Share"
         app:showAsAction="always">
