@@ -25,8 +25,8 @@ dependencies {
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    implementation 'com.android.support:design:27.1.1'
-    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:design:27.0.1'
+    implementation 'com.android.support:appcompat-v7:27.0.1'
     implementation('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
         transitive = true
     }
@@ -37,6 +37,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:15.0.0'
     implementation 'com.google.firebase:firebase-messaging:15.0.0'
     implementation 'com.facebook.android:facebook-android-sdk:4.29.0'
+    implementation 'us.feras.mdv:markdownview:1.1.0'
     implementation project(path: ':helper')
 }
 

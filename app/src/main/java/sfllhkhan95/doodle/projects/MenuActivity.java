@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 
 import sfllhkhan95.doodle.DoodleApplication;
+import sfllhkhan95.doodle.FAQsActivity;
 import sfllhkhan95.doodle.PrivacyPolicy;
 import sfllhkhan95.doodle.R;
 import sfllhkhan95.doodle.auth.UserDetailsDialog;
@@ -29,11 +30,9 @@ import sfllhkhan95.doodle.projects.utils.DoodleDatabase;
 import sfllhkhan95.doodle.projects.utils.ThumbnailInflater;
 
 /**
- *
- *
  * @author saifkhichi96
  * @version 1.0
- * created on 23/10/2017 2:27 AM
+ *          created on 23/10/2017 2:27 AM
  */
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -109,6 +108,10 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         switch (item.getItemId()) {
             case R.id.privacy_policy:
                 startActivity(new Intent(getApplicationContext(), PrivacyPolicy.class));
+                break;
+
+            case R.id.faqs:
+                startActivity(new Intent(getApplicationContext(), FAQsActivity.class));
                 break;
 
             case R.id.about_developer:
