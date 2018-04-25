@@ -18,7 +18,13 @@ import sfllhkhan95.doodle.auth.utils.OnUpdateListener;
 import sfllhkhan95.doodle.auth.views.MessengerShareButton;
 import sfllhkhan95.doodle.auth.views.UserView;
 
-
+/**
+ *
+ *
+ * @author saifkhichi96
+ * @version 1.0
+ * created on 23/10/2017 2:28 AM
+ */
 public class UserDetailsDialog extends Dialog implements OnUpdateListener {
 
     private final User DEFAULT_USER = new User();

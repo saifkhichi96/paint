@@ -19,6 +19,9 @@ import sfllhkhan95.doodle.R;
  * A button which can be used to share content to Messenger.
  *
  * @see <a href="https://www.messenger.com/features">Messenger</a>
+ * @author saifkhichi96
+ * @version 1.0
+ * created on 23/10/2017 2:28 AM
  */
 public class MessengerShareButton extends RelativeLayout {
 
@@ -46,7 +49,7 @@ public class MessengerShareButton extends RelativeLayout {
     }
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
-        View view = inflate(context, R.layout.messenger_share_button, this);
+        inflate(context, R.layout.messenger_share_button, this);
 
         mActionStringView = findViewById(R.id.action_message);
         mDescriptionStringView = findViewById(R.id.description_message);

@@ -5,6 +5,13 @@ import android.widget.TextView;
 
 import sfllhkhan95.doodle.projects.models.Thumbnail;
 
+/**
+ *
+ *
+ * @author saifkhichi96
+ * @version 1.0
+ * created on 23/10/2017 2:27 AM
+ */
 public class ThumbnailView {
 
     private final TextView nameView;

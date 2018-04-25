@@ -18,6 +18,13 @@ import java.util.TimerTask;
 import sfllhkhan95.doodle.notifs.utils.NotificationService;
 import sfllhkhan95.doodle.projects.MenuActivity;
 
+/**
+ *
+ *
+ * @author saifkhichi96
+ * @version 1.0
+ * created on 23/10/2017 2:26 AM
+ */
 public class LaunchScreen extends AppCompatActivity {
 
     private static final int STORAGE_PERMISSION_REQUEST = 200;

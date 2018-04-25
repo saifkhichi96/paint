@@ -7,7 +7,11 @@ import java.util.ArrayList;
 import sfllhkhan95.doodle.core.models.tools.Tool;
 
 /**
- * Created by saifkhichi96 on 23/10/2017.
+ *
+ *
+ * @author saifkhichi96
+ * @version 1.0
+ * created on 23/10/2017 2:24 AM
  */
 public class Tools extends ArrayList<Tool> {
 

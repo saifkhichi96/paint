@@ -4,6 +4,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebView;
 
+/**
+ *
+ *
+ * @author saifkhichi96
+ * @version 1.0
+ * created on 23/10/2017 2:26 AM
+ */
 public class PrivacyPolicy extends AppCompatActivity {
 
     @Override
