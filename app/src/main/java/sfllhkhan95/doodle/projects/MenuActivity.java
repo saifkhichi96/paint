@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
 
+import sfllhkhan95.doodle.DoodleApplication;
 import sfllhkhan95.doodle.PrivacyPolicy;
 import sfllhkhan95.doodle.R;
 import sfllhkhan95.doodle.auth.UserDetailsDialog;
@@ -26,6 +28,13 @@ import sfllhkhan95.doodle.core.MainActivity;
 import sfllhkhan95.doodle.projects.utils.DoodleDatabase;
 import sfllhkhan95.doodle.projects.utils.ThumbnailInflater;
 
+/**
+ *
+ *
+ * @author saifkhichi96
+ * @version 1.0
+ * created on 23/10/2017 2:27 AM
+ */
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int REQUEST_TAKE_PHOTO = 100;
@@ -133,7 +142,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                     // Create the File where the photo should go
-                    File photoFile = null;
+                    File photoFile;
                     try {
                         photoFile = createImageFile();
                         Uri photoURI = FileProvider.getUriForFile(this,
@@ -201,7 +210,8 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         String path = storageDir + File.separator + "CAMERA_IMAGE.jpg";
         File image = new File(path);
-        image.createNewFile();
+        boolean created = image.createNewFile();
+        Log.i(DoodleApplication.TAG, created ? "New temporary file created." : "Temporary file already exists. Overwriting!");
 
         // Save a file: path for use with ACTION_VIEW intents
         mCameraPicturePath = image.getAbsolutePath();

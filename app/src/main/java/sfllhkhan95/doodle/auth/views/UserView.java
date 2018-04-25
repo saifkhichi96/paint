@@ -13,7 +13,13 @@ import sfllhkhan95.doodle.R;
 import sfllhkhan95.doodle.auth.models.User;
 import sfllhkhan95.doodle.auth.utils.FacebookUserPhotoDownloader;
 
-
+/**
+ *
+ *
+ * @author saifkhichi96
+ * @version 1.0
+ * created on 23/10/2017 2:28 AM
+ */
 public class UserView implements OnCompleteListener<Bitmap> {
 
     private final Bitmap DEFAULT_AVATAR;

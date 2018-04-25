@@ -14,6 +14,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -36,6 +37,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
 
+import sfllhkhan95.doodle.DoodleApplication;
 import sfllhkhan95.doodle.R;
 import sfllhkhan95.doodle.auth.views.MessengerShareButton;
 import sfllhkhan95.doodle.core.models.PaintCanvas;
@@ -99,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements
 
         this.toolbar = new CustomToolbar();
 
-        this.brushController = (SeekBar) findViewById(R.id.brushController);
+        this.brushController = findViewById(R.id.brushController);
         this.brushController.setOnSeekBarChangeListener(this);
 
         // Obtain the FirebaseAnalytics instance.
@@ -140,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements
                             new GraphRequest.Callback() {
                                 @Override
                                 public void onCompleted(GraphResponse response) {
-                                    String recipientName = "";
+                                    String recipientName;
                                     try {
                                         recipientName = response.getJSONObject().get("name").toString();
                                         messengerShareButton.setDescriptionText(recipientName);
@@ -162,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements
         dialogFactory = new DialogFactory(this, paintView);
 
         // Add click event listeners to toolbox buttons
-        toolbox = (ToolboxView) findViewById(R.id.toolbox);
+        toolbox = findViewById(R.id.toolbox);
         toolbox.updatePenColorPicker(paintView.getBrush().getStrokeColor());
 
         // Start in windowed mode
@@ -221,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements
             canvas = PaintCanvas.loadFromBitmap(metrics, bitmapFromFile);
 
             success = true;
-        } catch (AssertionError ex) {
+        } catch (Exception ex) {
             canvas = startFromScratch(metrics);
         } finally { // Log event
             logParams.putBoolean("success", success);
@@ -411,7 +413,8 @@ public class MainActivity extends AppCompatActivity implements
                 File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
                 String path = storageDir + File.separator + "SHARE_IMAGE.jpg";
                 File tempFile = new File(path);
-                tempFile.createNewFile();
+                boolean created = tempFile.createNewFile();
+                Log.i(DoodleApplication.TAG, created ? "New temporary file created." : "Temporary file already exists. Overwriting!");
 
                 FileOutputStream fo = new FileOutputStream(tempFile);
                 fo.write(bytes.toByteArray());
@@ -442,7 +445,10 @@ public class MainActivity extends AppCompatActivity implements
             String path = Environment.getExternalStorageDirectory() + File.separator + "SHARE_IMAGE.jpg";
             File tempFile = new File(path);
             if (tempFile.exists()) {
-                tempFile.delete();
+                boolean deleted = tempFile.delete();
+                if (!deleted) {
+                    Log.e(DoodleApplication.TAG, "Failed to remove temporary file.");
+                }
             }
         }
     }
@@ -520,24 +526,26 @@ public class MainActivity extends AppCompatActivity implements
         private Toolbar primary;
         private Toolbar secondary;
 
-        public CustomToolbar() {
-            primary = (Toolbar) findViewById(R.id.primaryToolbar);
+        CustomToolbar() {
+            primary = findViewById(R.id.primaryToolbar);
             primary.setNavigationIcon(R.drawable.ic_action_maximize);
             primary.setOverflowIcon(getResources().getDrawable(R.drawable.ic_action_layers));
             primary.setTitle("");
 
-            secondary = (Toolbar) findViewById(R.id.secondaryToolbar);
+            secondary = findViewById(R.id.secondaryToolbar);
             secondary.setNavigationIcon(R.drawable.ic_action_minimize);
             secondary.setOverflowIcon(getResources().getDrawable(R.drawable.ic_action_layers));
             secondary.setTitle("");
         }
 
-        public void configure(boolean isMaximized) {
+        void configure(boolean isMaximized) {
             primary.setVisibility(isMaximized ? View.GONE : View.VISIBLE);
             secondary.setVisibility(isMaximized ? View.VISIBLE : View.GONE);
 
             setSupportActionBar(isMaximized ? secondary : primary);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            }
         }
     }
 }

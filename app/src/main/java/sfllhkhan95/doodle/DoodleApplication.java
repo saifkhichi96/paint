@@ -16,8 +16,11 @@ import pk.aspirasoft.core.db.PersistentStorage;
  *
  * @author saifkhichi96
  * @version 1.0
+ * created on 23/10/2017 2:27 AM
  */
 public class DoodleApplication extends Application {
+
+    public static String TAG = "DoodleLogs";
 
     /**
      * Called when the application is starting, before any other application objects
@@ -46,7 +49,6 @@ public class DoodleApplication extends Application {
          * If you do need a callback, you should manually invoke the callback in your code.
          * (i.e. the following line of code can be safely removed.) */
         FacebookSdk.sdkInitialize(getApplicationContext());
-
 
         /* Activating Facebook SDK's app event logging is required for the app to be
          * eligible for Facebook's App Review submission.
