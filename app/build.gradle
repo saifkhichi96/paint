@@ -33,9 +33,9 @@ dependencies {
     implementation 'com.facebook.android:facebook-messenger:4.29.0'
     implementation 'com.github.yukuku:ambilwarna:2.0.1'
     implementation 'com.github.QuadFlask:colorpicker:0.0.13'
-    implementation 'com.google.firebase:firebase-auth:15.0.0'
-    implementation 'com.google.firebase:firebase-core:15.0.0'
-    implementation 'com.google.firebase:firebase-messaging:15.0.0'
+    implementation 'com.google.firebase:firebase-auth:16.0.1'
+    implementation 'com.google.firebase:firebase-core:16.0.0'
+    implementation 'com.google.firebase:firebase-messaging:17.0.0'
     implementation 'com.facebook.android:facebook-android-sdk:4.29.0'
     implementation 'us.feras.mdv:markdownview:1.1.0'
     implementation project(path: ':helper')
