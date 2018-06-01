@@ -8,7 +8,7 @@ android {
         applicationId "sfllhkhan95.doodle"
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 16
+        versionCode 17
         versionName "3.3.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
