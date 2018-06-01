@@ -336,7 +336,7 @@ public class MainActivity extends AppCompatActivity implements
             inflater.inflate(R.menu.main, menu);
 
             if (mReplying) {
-                MenuItem item = menu.findItem(R.id.shareButtons);
+                MenuItem item = menu.findItem(R.id.share);
                 item.setVisible(false);
             }
 
@@ -386,19 +386,15 @@ public class MainActivity extends AppCompatActivity implements
                 }
                 return true;
 
-            case R.id.messenger:
-                onShareClicked(true);
-                break;
-
             case R.id.share:
-                onShareClicked(false);
+                dialogFactory.shareDialog(this).show();
                 return true;
         }
 
         return false;
     }
 
-    private void onShareClicked(boolean messengerExpression) {
+    public void onShareClicked(boolean messengerExpression) {
         if (isExisting || paintView.isModified()) {
             try {
                 // Get the drawn bitmap from paint canvas
