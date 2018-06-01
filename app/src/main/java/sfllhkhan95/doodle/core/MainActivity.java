@@ -3,7 +3,6 @@ package sfllhkhan95.doodle.core;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -253,7 +252,6 @@ public class MainActivity extends AppCompatActivity implements
 
     private PaintCanvas startFromScratch(DisplayMetrics metrics) {
         PaintCanvas canvas = new PaintCanvas(metrics);
-        canvas.setColor(getIntent().getIntExtra("BG_COLOR", Color.BLACK));
 
         // Log event
         Bundle logParams = new Bundle();

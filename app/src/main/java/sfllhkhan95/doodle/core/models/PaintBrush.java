@@ -1,17 +1,16 @@
 package sfllhkhan95.doodle.core.models;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Paint;
-
-import sfllhkhan95.doodle.R;
 
 /**
  * Created by saifkhichi96 on 23/10/2017.
  */
 public class PaintBrush extends Paint implements Cloneable {
 
-    private static final int DEFAULT_STROKE_COLOR = R.color.colorPrimaryDark;
-    private static final int DEFAULT_FILL_COLOR = R.color.colorPrimaryDark;
+    private static final int DEFAULT_STROKE_COLOR = Color.BLACK;
+    private static final int DEFAULT_FILL_COLOR = Color.BLACK;
     private static final int DEFAULT_SIZE = 10;
 
     private int strokeColor;
@@ -19,8 +18,8 @@ public class PaintBrush extends Paint implements Cloneable {
     private int size = DEFAULT_SIZE;
 
     public PaintBrush(Context context) {
-        strokeColor = context.getResources().getColor(DEFAULT_STROKE_COLOR);
-        fillColor = context.getResources().getColor(DEFAULT_FILL_COLOR);
+        strokeColor = DEFAULT_STROKE_COLOR;
+        fillColor = DEFAULT_FILL_COLOR;
 
         this.setColor(strokeColor);
         this.setStyle(Paint.Style.STROKE);
