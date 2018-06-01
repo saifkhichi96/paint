@@ -7,7 +7,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import sfllhkhan95.doodle.core.utils.CanvasActionListener;
 import sfllhkhan95.doodle.core.models.PaintBrush;
 import sfllhkhan95.doodle.core.models.PaintCanvas;
 import sfllhkhan95.doodle.core.models.Tools;
@@ -15,6 +14,7 @@ import sfllhkhan95.doodle.core.models.tools.ColorPicker;
 import sfllhkhan95.doodle.core.models.tools.Eraser;
 import sfllhkhan95.doodle.core.models.tools.Tool;
 import sfllhkhan95.doodle.core.models.tools.ToolFactory;
+import sfllhkhan95.doodle.core.utils.CanvasActionListener;
 import sfllhkhan95.doodle.core.utils.OnColorPickedListener;
 
 
@@ -207,6 +207,11 @@ public class PaintView extends View {
     }
 
     public void save() {
+        mCanvas.saveProject();
+    }
+
+    public void saveAs() {
+        mCanvas.clearProjectName();
         mCanvas.saveProject();
     }
 

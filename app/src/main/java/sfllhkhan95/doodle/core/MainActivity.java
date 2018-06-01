@@ -382,7 +382,11 @@ public class MainActivity extends AppCompatActivity implements
 
             case R.id.save:
                 if (paintView.isModified()) {
-                    dialogFactory.saveConfirmationDialog(this).show();
+                    if (isExisting) {
+                        dialogFactory.saveAsConfirmationDialog(this).show();
+                    } else {
+                        dialogFactory.saveConfirmationDialog(this).show();
+                    }
                 }
                 return true;
 
