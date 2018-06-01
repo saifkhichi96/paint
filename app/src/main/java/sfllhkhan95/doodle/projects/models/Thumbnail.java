@@ -1,11 +1,10 @@
 package sfllhkhan95.doodle.projects.models;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.view.View;
 
 import sfllhkhan95.doodle.R;
+import sfllhkhan95.doodle.core.utils.DialogFactory;
 import sfllhkhan95.doodle.projects.utils.DoodleDatabase;
 import sfllhkhan95.doodle.projects.utils.ThumbnailInflater;
 
@@ -40,24 +39,19 @@ public class Thumbnail implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        new AlertDialog.Builder(view.getContext())
+        new DialogFactory.ConfirmationDialog(view.getContext())
+                .setHeadline("Delete")
+                .setIcon(android.R.drawable.ic_menu_delete)
                 .setTitle(view.getContext().getResources().getString(R.string.confirmDeleteTitle))
                 .setMessage(view.getContext().getResources().getString(R.string.confirmDeleteMessage))
-                .setPositiveButton(view.getContext().getResources().getString(R.string.labelYes), new DialogInterface.OnClickListener() {
+                .setPositiveButton("Delete", new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(View view) {
                         DoodleDatabase.removeDoodle(Thumbnail.this.getName());
                         inflater.run();
-
-                        dialog.dismiss();
                     }
-                })
-                .setNegativeButton(view.getContext().getResources().getString(R.string.labelNo), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
+                }, true)
+                .setNegativeButton("Cancel", null, true)
                 .create()
                 .show();
     }

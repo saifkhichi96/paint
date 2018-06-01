@@ -1,12 +1,14 @@
 package sfllhkhan95.doodle.core.utils;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -28,22 +30,18 @@ public class DialogFactory {
     }
 
     public Dialog revertConfirmationDialog(Context context) {
-        return new AlertDialog.Builder(context)
-                .setTitle("Revert to original?")
-                .setMessage("This action will erase everything drawn on canvas. It cannot be reversed. Do you really wish to proceed?")
-                .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+        return new ConfirmationDialog(context)
+                .setHeadline("Revert")
+                .setIcon(R.drawable.ic_action_revert)
+                .setTitle("Reset to original?")
+                .setMessage("This action will erase all unsaved changes. It cannot be reversed. Do you really wish to proceed?")
+                .setPositiveButton("Reset", new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(View v) {
                         paintView.clear();
-                        dialog.dismiss();
                     }
-                })
-                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
+                }, true)
+                .setNegativeButton("Cancel", null, true)
                 .create();
     }
 
@@ -91,42 +89,174 @@ public class DialogFactory {
         };
     }
 
-
     public Dialog saveConfirmationDialog(Context context) {
-        return new AlertDialog.Builder(context)
-                .setTitle("Save project to galley?")
-                .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+        return new ConfirmationDialog(context)
+                .setHeadline("Save")
+                .setIcon(R.drawable.ic_action_save_as)
+                .setTitle("Save the current Doodle?")
+                .setMessage("Your project will be saved to Gallery, and you can continue editing it later.")
+                .setPositiveButton("Save", new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(View view) {
                         paintView.save();
                         activity.finish();
                     }
-                })
-                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
+                }, true)
+                .setNegativeButton("Cancel", null, true)
                 .create();
     }
 
     public Dialog exitConfirmationDialog(Context context) {
-        return new AlertDialog.Builder(context)
+        return new ConfirmationDialog(context)
+                .setHeadline("Exit")
+                .setIcon(R.drawable.ic_action_info)
                 .setTitle("Exit without saving?")
-                .setMessage("This project has unsaved changes. Do you really wish to proceed?")
-                .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                .setMessage("All unsaved changes would be discarded. Do you really wish to proceed?")
+                .setPositiveButton("Discard", new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(View v) {
                         activity.finish();
                     }
-                })
-                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
+                }, true)
+                .setIcon(R.drawable.ic_eraser)
+                .setNegativeButton("Cancel", null, true)
                 .create();
     }
+
+    public static class ConfirmationDialog {
+
+        private final Dialog dialog;
+
+        private String title;
+        private String headline;
+        private String message;
+
+        @DrawableRes
+        private int icon = -1;
+
+        private View.OnClickListener positiveButtonListener;
+        private String positiveButtonLabel;
+        private boolean dismissAfterPositive = false;
+
+        private View.OnClickListener negativeButtonListener;
+        private String negativeButtonLabel;
+        private boolean dismissAfterNegative = false;
+
+        public ConfirmationDialog(Context context) {
+            this.dialog = new Dialog(context) {
+                @Override
+                protected void onCreate(Bundle savedInstanceState) {
+                    super.onCreate(savedInstanceState);
+                    setContentView(R.layout.dialog_confirmation);
+
+                    TextView titleView = findViewById(R.id.title);
+                    titleView.setText(title);
+
+                    TextView headlineView = findViewById(R.id.headline);
+                    headlineView.setText(headline);
+
+                    TextView descriptionView = findViewById(R.id.message);
+                    descriptionView.setText(message);
+
+                    if (icon != -1) {
+                        ImageView iconView = findViewById(R.id.icon);
+                        iconView.setImageResource(icon);
+                    }
+
+                    if (!positiveButtonLabel.isEmpty()) {
+                        final Button positiveButton = findViewById(R.id.positiveButton);
+                        positiveButton.setText(positiveButtonLabel);
+                        positiveButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (positiveButtonListener != null) {
+                                    positiveButtonListener.onClick(positiveButton);
+                                }
+                                if (dismissAfterPositive) {
+                                    dismiss();
+                                }
+                            }
+                        });
+                        positiveButton.setVisibility(View.VISIBLE);
+                    }
+
+                    if (!negativeButtonLabel.isEmpty()) {
+                        final Button negativeButton = findViewById(R.id.negativeButton);
+                        negativeButton.setText(negativeButtonLabel);
+                        negativeButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (negativeButtonListener != null) {
+                                    negativeButtonListener.onClick(negativeButton);
+                                }
+                                if (dismissAfterNegative) {
+                                    dismiss();
+                                }
+                            }
+                        });
+                        negativeButton.setVisibility(View.VISIBLE);
+                    }
+
+                    // Initialize AdMob SDK
+                    MobileAds.initialize(this.getContext(), "ca-app-pub-6293532072634065~6156179621");
+
+                    // Load BANNER Ad
+                    final AdView mAdView = this.findViewById(R.id.adView);
+                    mAdView.setAdListener(new AdListener() {
+                        @Override
+                        public void onAdLoaded() {
+                            super.onAdLoaded();
+                            mAdView.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onAdFailedToLoad(int i) {
+                            super.onAdFailedToLoad(i);
+                        }
+                    });
+                    AdRequest adRequest = new AdRequest.Builder().build();
+                    mAdView.loadAd(adRequest);
+                }
+            };
+        }
+
+        public ConfirmationDialog setTitle(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public ConfirmationDialog setHeadline(String headline) {
+            this.headline = headline;
+            return this;
+        }
+
+        public ConfirmationDialog setMessage(String message) {
+            this.message = message;
+            return this;
+        }
+
+        public ConfirmationDialog setIcon(int icon) {
+            this.icon = icon;
+            return this;
+        }
+
+        public ConfirmationDialog setPositiveButton(String label, View.OnClickListener listener, boolean dismiss) {
+            positiveButtonLabel = label;
+            positiveButtonListener = listener;
+            dismissAfterPositive = dismiss;
+            return this;
+        }
+
+        public ConfirmationDialog setNegativeButton(String label, View.OnClickListener listener, boolean dismiss) {
+            negativeButtonLabel = label;
+            negativeButtonListener = listener;
+            dismissAfterNegative = dismiss;
+            return this;
+        }
+
+        public Dialog create() {
+            return dialog;
+        }
+    }
+
 }
