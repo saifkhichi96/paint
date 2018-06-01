@@ -5,7 +5,16 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Bundle;
+import android.view.View;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
+import sfllhkhan95.doodle.R;
+import sfllhkhan95.doodle.core.MainActivity;
 import sfllhkhan95.doodle.core.views.PaintView;
 
 public class DialogFactory {
@@ -37,6 +46,51 @@ public class DialogFactory {
                 })
                 .create();
     }
+
+    public Dialog shareDialog(final MainActivity context) {
+        return new Dialog(context) {
+            @Override
+            protected void onCreate(Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);
+                setContentView(R.layout.dialog_share);
+
+                // Set click listeners
+                findViewById(R.id.messengerShareButton).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        context.onShareClicked(true);
+                    }
+                });
+                findViewById(R.id.shareButton).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        context.onShareClicked(false);
+                    }
+                });
+
+                // Initialize AdMob SDK
+                MobileAds.initialize(this.getContext(), "ca-app-pub-6293532072634065~6156179621");
+
+                // Load BANNER Ad
+                final AdView mAdView = this.findViewById(R.id.adView);
+                mAdView.setAdListener(new AdListener() {
+                    @Override
+                    public void onAdLoaded() {
+                        super.onAdLoaded();
+                        mAdView.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(int i) {
+                        super.onAdFailedToLoad(i);
+                    }
+                });
+                AdRequest adRequest = new AdRequest.Builder().build();
+                mAdView.loadAd(adRequest);
+            }
+        };
+    }
+
 
     public Dialog saveConfirmationDialog(Context context) {
         return new AlertDialog.Builder(context)
