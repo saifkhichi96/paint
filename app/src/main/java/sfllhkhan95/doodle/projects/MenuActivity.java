@@ -54,6 +54,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         thumbnailInflater = new ThumbnailInflater(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
         // Register event handlers

@@ -108,6 +108,10 @@ public class PaintCanvas extends Canvas {
         this.projectName = title;
     }
 
+    public void clearProjectName() {
+        this.projectName = null;
+    }
+
     public void saveProject() {
         if (projectName == null) {
             DoodleDatabase.saveDoodle(bitmap);

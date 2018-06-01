@@ -4,26 +4,28 @@
 
     <item
         android:icon="@drawable/ic_action_info"
-        android:title="Help"
-        app:showAsAction="always">
+        android:title="About"
+        app:showAsAction="ifRoom">
 
         <menu>
             <item
                 android:id="@+id/privacy_policy"
+                android:icon="@drawable/ic_action_privacy"
                 android:title="@string/menu_item_privacy_policy"
                 app:showAsAction="never" />
 
             <item
                 android:id="@+id/faqs"
+                android:icon="@drawable/ic_action_faqs"
                 android:title="@string/menu_item_faqs"
                 app:showAsAction="never" />
 
             <item
                 android:id="@+id/about_developer"
-                android:title="@string/menu_item_about"
+                android:icon="@drawable/ic_action_review"
+                android:title="@string/menu_item_review"
                 app:showAsAction="never" />
         </menu>
-
     </item>
 
 </menu>

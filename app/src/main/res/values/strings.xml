@@ -18,6 +18,6 @@
 
     <string name="menu_item_pick_gallery_image">From Gallery</string>
     <string name="menu_item_privacy_policy">Privacy Policy</string>
-    <string name="menu_item_about">About</string>
+    <string name="menu_item_review">Rate Us</string>
     <string name="menu_item_faqs">FAQs</string>
 </resources>

@@ -89,10 +89,33 @@ public class DialogFactory {
         };
     }
 
-    public Dialog saveConfirmationDialog(Context context) {
+    public Dialog saveAsConfirmationDialog(Context context) {
         return new ConfirmationDialog(context)
                 .setHeadline("Save")
                 .setIcon(R.drawable.ic_action_save_as)
+                .setTitle("Save the updated Doodle?")
+                .setMessage("Your existing project will be updated in Gallery, and you can continue editing it later.")
+                .setPositiveButton("Save", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        paintView.save();
+                        activity.finish();
+                    }
+                }, true)
+                .setNegativeButton("Save Copy", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        paintView.saveAs();
+                        activity.finish();
+                    }
+                }, true)
+                .create();
+    }
+
+    public Dialog saveConfirmationDialog(Context context) {
+        return new ConfirmationDialog(context)
+                .setHeadline("Save")
+                .setIcon(R.drawable.ic_action_save)
                 .setTitle("Save the current Doodle?")
                 .setMessage("Your project will be saved to Gallery, and you can continue editing it later.")
                 .setPositiveButton("Save", new View.OnClickListener() {
