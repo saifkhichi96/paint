@@ -142,7 +142,13 @@ public class DialogFactory {
                     }
                 }, true)
                 .setIcon(R.drawable.ic_eraser)
-                .setNegativeButton("Cancel", null, true)
+                .setNegativeButton("Save", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        paintView.save();
+                        activity.finish();
+                    }
+                }, true)
                 .create();
     }
 

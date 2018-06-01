@@ -41,7 +41,7 @@ public class Thumbnail implements View.OnClickListener {
     public void onClick(View view) {
         new DialogFactory.ConfirmationDialog(view.getContext())
                 .setHeadline("Delete")
-                .setIcon(android.R.drawable.ic_menu_delete)
+                .setIcon(R.drawable.ic_action_delete)
                 .setTitle(view.getContext().getResources().getString(R.string.confirmDeleteTitle))
                 .setMessage(view.getContext().getResources().getString(R.string.confirmDeleteMessage))
                 .setPositiveButton("Delete", new View.OnClickListener() {
