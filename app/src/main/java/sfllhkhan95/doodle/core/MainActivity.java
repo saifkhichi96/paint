@@ -178,6 +178,7 @@ public class MainActivity extends AppCompatActivity implements
         if (paintView != null) {
             paintView.setCanvas(canvas);
             paintView.setShapeType(Pen.class);  // Select Pen by default
+            paintView.getBrush().setSize(brushController.getProgress());
         }
     }
 
