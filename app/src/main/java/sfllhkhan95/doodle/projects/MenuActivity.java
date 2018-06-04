@@ -26,6 +26,7 @@ import sfllhkhan95.doodle.PrivacyPolicy;
 import sfllhkhan95.doodle.R;
 import sfllhkhan95.doodle.auth.UserDetailsDialog;
 import sfllhkhan95.doodle.core.MainActivity;
+import sfllhkhan95.doodle.core.utils.DialogFactory;
 import sfllhkhan95.doodle.projects.utils.DoodleDatabase;
 import sfllhkhan95.doodle.projects.utils.ThumbnailInflater;
 
@@ -54,6 +55,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         thumbnailInflater = new ThumbnailInflater(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
         // Register event handlers
@@ -115,8 +117,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.about_developer:
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.developer_page_url)));
-                startActivity(browserIntent);
+                new DialogFactory(this, null).supportDialog(this).show();
                 break;
         }
 
