@@ -15,15 +15,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import sfllhkhan95.doodle.billing.BillingManager;
 import sfllhkhan95.doodle.notifs.utils.NotificationService;
 import sfllhkhan95.doodle.projects.MenuActivity;
 
 /**
- *
- *
  * @author saifkhichi96
- * @version 1.0
- * created on 23/10/2017 2:26 AM
+ * @version 1.1.0
+ * @since 1.0.0
+ *          created on 23/10/2017 2:26 AM
  */
 public class LaunchScreen extends AppCompatActivity {
 
@@ -55,6 +55,10 @@ public class LaunchScreen extends AppCompatActivity {
             }, delay);
         }
 
+        // Start billing client
+        BillingManager.getInstance(this).syncInventory();
+
+        // Start notification service
         Intent i = new Intent(this, NotificationService.class);
         startService(i);
     }

@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.view.View;
 
 import sfllhkhan95.doodle.R;
-import sfllhkhan95.doodle.core.utils.DialogFactory;
+import sfllhkhan95.doodle.core.views.ConfirmationDialog;
 import sfllhkhan95.doodle.projects.utils.DoodleDatabase;
 import sfllhkhan95.doodle.projects.utils.ThumbnailInflater;
 
@@ -39,7 +39,7 @@ public class Thumbnail implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        new DialogFactory.ConfirmationDialog(view.getContext())
+        new ConfirmationDialog.Builder(view.getContext())
                 .setHeadline("Delete")
                 .setIcon(R.drawable.ic_action_delete)
                 .setTitle(view.getContext().getResources().getString(R.string.confirmDeleteTitle))
