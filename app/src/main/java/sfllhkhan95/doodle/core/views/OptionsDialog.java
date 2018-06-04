@@ -10,12 +10,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 
 import sfllhkhan95.doodle.R;
+import sfllhkhan95.doodle.ads.AdManager;
 
+/**
+ * @author saifkhichi96
+ * @version 1.1.0
+ * @since 3.3.0
+ */
 public class OptionsDialog extends Dialog {
 
     private ImageView dialogIcon;
@@ -53,6 +57,8 @@ public class OptionsDialog extends Dialog {
     private int iconOp3Id = -1;
 
     private boolean labelsEnabled = false;
+
+    private boolean adsDisabled = true;
 
     private OptionsDialog(@NonNull Context context) {
         super(context);
@@ -124,25 +130,17 @@ public class OptionsDialog extends Dialog {
             hideLabels();
         }
 
-        // Initialize AdMob SDK
-        MobileAds.initialize(this.getContext(), "ca-app-pub-6293532072634065~6156179621");
-
-        // Load BANNER Ad
-        final AdView mAdView = this.findViewById(R.id.adView);
-        mAdView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                super.onAdLoaded();
-                mAdView.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAdFailedToLoad(int i) {
-                super.onAdFailedToLoad(i);
-            }
-        });
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        // Display ads if they are enabled
+        if (!adsDisabled) {
+            final AdView mAdView = this.findViewById(R.id.adView);
+            AdManager.loadBanner(mAdView, new AdListener() {
+                @Override
+                public void onAdLoaded() {
+                    super.onAdLoaded();
+                    mAdView.setVisibility(View.VISIBLE);
+                }
+            });
+        }
     }
 
     public void showLabels() {
@@ -210,5 +208,9 @@ public class OptionsDialog extends Dialog {
             return this;
         }
 
+        public Builder setAdsDisabled(boolean adsDisabled) {
+            optionsDialog.adsDisabled = adsDisabled;
+            return this;
+        }
     }
 }
