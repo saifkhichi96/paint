@@ -17,7 +17,7 @@ import sfllhkhan95.doodle.core.views.PaintView;
 
 /**
  * @author saifkhichi96
- * @version 1.0.0
+ * @version 1.0.1
  * @since 3.4.2
  */
 public class DialogFactory {
@@ -102,7 +102,7 @@ public class DialogFactory {
                         @Override
                         public void onClick(View view) {
                             if (mAdManager.removeAds()) {
-                                Toast.makeText(context, "Thank you for supporting Doodle!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Thank you for supporting Doodle! Ads will be removed when you launch the app again.", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
