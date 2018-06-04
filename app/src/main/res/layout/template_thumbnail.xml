@@ -18,16 +18,27 @@
             android:scaleType="centerCrop"
             android:src="@drawable/avatar_placeholder" />
 
+        <View
+            android:id="@+id/deleteBg"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="-3dp"
+            android:layout_marginRight="-3dp"
+            android:background="@drawable/bg_delete" />
+
         <ImageView
             android:id="@+id/deleteButton"
             android:layout_width="20dp"
             android:layout_height="20dp"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:background="#000"
-            android:scaleType="centerInside"
-            android:src="@android:drawable/ic_menu_delete"
-            android:tint="@color/colorAccentLight" />
+            android:scaleType="fitStart"
+            android:src="@drawable/ic_action_delete"
+            android:tint="@color/colorBlack" />
 
     </RelativeLayout>
 
@@ -41,6 +52,7 @@
         android:text="Project Name"
         android:textAllCaps="true"
         android:textColor="@color/colorAccentLight"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        android:visibility="gone" />
 
 </LinearLayout>

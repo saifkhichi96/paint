@@ -9,21 +9,10 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/shareButtons"
+        android:id="@+id/share"
         android:icon="@drawable/ic_action_share"
         android:title="Share"
         app:showAsAction="always">
-        <menu>
-            <item
-                android:id="@+id/share"
-                android:icon="@drawable/ic_action_share"
-                android:title="Share" />
-
-            <item
-                android:id="@+id/messenger"
-                android:icon="@drawable/ic_action_messenger"
-                android:title="Messenger" />
-        </menu>
     </item>
 
     <!--item

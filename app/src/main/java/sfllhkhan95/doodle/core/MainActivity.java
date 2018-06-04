@@ -3,7 +3,6 @@ package sfllhkhan95.doodle.core;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -179,6 +178,7 @@ public class MainActivity extends AppCompatActivity implements
         if (paintView != null) {
             paintView.setCanvas(canvas);
             paintView.setShapeType(Pen.class);  // Select Pen by default
+            paintView.getBrush().setSize(brushController.getProgress());
         }
     }
 
@@ -253,7 +253,6 @@ public class MainActivity extends AppCompatActivity implements
 
     private PaintCanvas startFromScratch(DisplayMetrics metrics) {
         PaintCanvas canvas = new PaintCanvas(metrics);
-        canvas.setColor(getIntent().getIntExtra("BG_COLOR", Color.BLACK));
 
         // Log event
         Bundle logParams = new Bundle();
@@ -336,7 +335,7 @@ public class MainActivity extends AppCompatActivity implements
             inflater.inflate(R.menu.main, menu);
 
             if (mReplying) {
-                MenuItem item = menu.findItem(R.id.shareButtons);
+                MenuItem item = menu.findItem(R.id.share);
                 item.setVisible(false);
             }
 
@@ -382,23 +381,23 @@ public class MainActivity extends AppCompatActivity implements
 
             case R.id.save:
                 if (paintView.isModified()) {
-                    dialogFactory.saveConfirmationDialog(this).show();
+                    if (isExisting) {
+                        dialogFactory.saveAsConfirmationDialog(this).show();
+                    } else {
+                        dialogFactory.saveConfirmationDialog(this).show();
+                    }
                 }
                 return true;
 
-            case R.id.messenger:
-                onShareClicked(true);
-                break;
-
             case R.id.share:
-                onShareClicked(false);
+                dialogFactory.shareDialog(this).show();
                 return true;
         }
 
         return false;
     }
 
-    private void onShareClicked(boolean messengerExpression) {
+    public void onShareClicked(boolean messengerExpression) {
         if (isExisting || paintView.isModified()) {
             try {
                 // Get the drawn bitmap from paint canvas

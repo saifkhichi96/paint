@@ -12,13 +12,16 @@ public class PaintBrush extends Paint implements Cloneable {
 
     private static final int DEFAULT_STROKE_COLOR = R.color.colorPrimaryDark;
     private static final int DEFAULT_FILL_COLOR = R.color.colorPrimaryDark;
-    private static final int DEFAULT_SIZE = 10;
+    private static final int DEFAULT_SIZE = 5;
+
+    private final Context context;
 
     private int strokeColor;
     private int fillColor;
     private int size = DEFAULT_SIZE;
 
     public PaintBrush(Context context) {
+        this.context = context;
         strokeColor = context.getResources().getColor(DEFAULT_STROKE_COLOR);
         fillColor = context.getResources().getColor(DEFAULT_FILL_COLOR);
 
@@ -62,5 +65,9 @@ public class PaintBrush extends Paint implements Cloneable {
             e.printStackTrace();
             return this;
         }
+    }
+
+    public Context getContext() {
+        return context;
     }
 }
