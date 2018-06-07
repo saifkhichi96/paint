@@ -20,4 +20,6 @@
     <string name="menu_item_privacy_policy">Privacy Policy</string>
     <string name="menu_item_review">Support Us</string>
     <string name="menu_item_faqs">FAQs</string>
+    <string name="url_faqs">file:///android_asset/FAQ.md</string>
+    <string name="url_faqs_css">file:///android_asset/FAQ.css</string>
 </resources>
