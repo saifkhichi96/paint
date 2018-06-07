@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.SeekBar;
@@ -56,9 +57,13 @@ import sfllhkhan95.doodle.core.views.PaintView;
 import sfllhkhan95.doodle.core.views.ToolboxView;
 import sfllhkhan95.doodle.projects.utils.DoodleFactory;
 
+/**
+ * @version 2.0.0
+ * @since 1.0.0
+ */
 public class MainActivity extends AppCompatActivity implements
         SeekBar.OnSeekBarChangeListener, OnToolSelectedListener,
-        OnColorPickedListener {
+        OnColorPickedListener, View.OnTouchListener {
 
     private static final int REQUEST_CODE_SHARE = 100;
     private static final int REQUEST_CODE_SHARE_TO_MESSENGER = 200;
@@ -112,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements
 
         // Initialize canvas where everything is drawn
         paintView = findViewById(R.id.canvas);
+        paintView.setOnTouchListener(this);
         Intent intent = getIntent();
         boolean messengerAction = intent.getBooleanExtra("MESSENGER", false);
         messengerShareButton = findViewById(R.id.messenger_share_button);
@@ -167,8 +173,8 @@ public class MainActivity extends AppCompatActivity implements
         toolbox.updatePenColorPicker(paintView.getBrush().getStrokeColor());
 
         // Start in windowed mode
-        this.isMaximized = true;
-        toggleMaximized();
+        this.isMaximized = false;
+        onMaximizeToggled(false);
 
         // Select pen
         findViewById(R.id.pen).callOnClick();
@@ -300,8 +306,12 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    private void toggleMaximized() {
-        this.isMaximized = !this.isMaximized;
+    /**
+     * @param isMaximized
+     * @since 3.4.3
+     */
+    private void setMaximized(boolean isMaximized) {
+        this.isMaximized = isMaximized;
         onMaximizeToggled(this.isMaximized);
     }
 
@@ -339,6 +349,11 @@ public class MainActivity extends AppCompatActivity implements
                 item.setVisible(false);
             }
 
+            if (isExisting) {
+                MenuItem item = menu.findItem(R.id.canvas);
+                item.setVisible(false);
+            }
+
             ActionBarManager mActionBarManager = new ActionBarManager(menu);
             paintView.setCanvasActionListener(mActionBarManager);
             mActionBarManager.sync(paintView);
@@ -350,10 +365,6 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
-                toggleMaximized();
-                return true;
-
             case R.id.canvas:
                 CanvasColorPicker canvasColorPicker = new CanvasColorPicker(this, paintView.getCanvas().getColor());
                 canvasColorPicker.setOnColorPickedListener(new OnColorPickedListener() {
@@ -365,7 +376,7 @@ public class MainActivity extends AppCompatActivity implements
                     }
                 });
                 canvasColorPicker.show();
-                break;
+                return true;
 
             case R.id.undo:
                 paintView.undo();
@@ -521,30 +532,40 @@ public class MainActivity extends AppCompatActivity implements
         toolbox.updatePenColorPicker(color);
     }
 
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        switch (motionEvent.getAction()) {
+            case MotionEvent.ACTION_UP:
+                if (!paintView.getShapeType().equals(sfllhkhan95.doodle.core.models.tools.ColorPicker.class)) {
+                    setMaximized(false);
+                } else {
+                    findViewById(R.id.pen).performClick();
+                }
+                break;
+
+            case MotionEvent.ACTION_DOWN:
+                if (!paintView.getShapeType().equals(sfllhkhan95.doodle.core.models.tools.ColorPicker.class)) {
+                    setMaximized(true);
+                }
+
+                view.performClick();
+                break;
+        }
+        return false;
+    }
+
     private class CustomToolbar {
         private Toolbar primary;
-        private Toolbar secondary;
 
         CustomToolbar() {
             primary = findViewById(R.id.primaryToolbar);
-            primary.setNavigationIcon(R.drawable.ic_action_maximize);
             primary.setOverflowIcon(getResources().getDrawable(R.drawable.ic_action_layers));
             primary.setTitle("");
-
-            secondary = findViewById(R.id.secondaryToolbar);
-            secondary.setNavigationIcon(R.drawable.ic_action_minimize);
-            secondary.setOverflowIcon(getResources().getDrawable(R.drawable.ic_action_layers));
-            secondary.setTitle("");
         }
 
         void configure(boolean isMaximized) {
             primary.setVisibility(isMaximized ? View.GONE : View.VISIBLE);
-            secondary.setVisibility(isMaximized ? View.VISIBLE : View.GONE);
-
-            setSupportActionBar(isMaximized ? secondary : primary);
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            }
+            setSupportActionBar(primary);
         }
     }
 }
