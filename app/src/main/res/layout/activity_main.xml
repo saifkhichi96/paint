@@ -26,18 +26,6 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp" />
 
-    <!-- Action bar -->
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/secondaryToolbar"
-        android:layout_width="?actionBarSize"
-        android:layout_height="?actionBarSize"
-        android:layout_alignParentTop="true"
-        android:background="#0000"
-        android:elevation="4dp"
-        android:gravity="center_vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp" />
-
     <!-- Drawing tools -->
     <RelativeLayout
         android:id="@+id/container"

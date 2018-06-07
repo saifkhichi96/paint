@@ -61,6 +61,14 @@ public class PaintView extends View {
         this.shapeType = shapeType;
     }
 
+    /**
+     * @since 3.4.3
+     * @return
+     */
+    public Class<? extends Tool> getShapeType() {
+        return shapeType;
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.save();
@@ -230,4 +238,5 @@ public class PaintView extends View {
     public boolean canRedo() {
         return tools.getPointer() < tools.size();
     }
+
 }
