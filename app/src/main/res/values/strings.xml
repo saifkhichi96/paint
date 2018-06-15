@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Doodle</string>
-    <string name="app_version">Doodle v3.3.0</string>
 
     <string name="confirmDeleteTitle">Are you sure?</string>
     <string name="confirmDeleteMessage">This action will permanently delete the project. Do you really wish to continue?</string>

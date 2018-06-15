@@ -31,14 +31,26 @@
             android:layout_weight="1">
 
             <TextView
-                android:id="@+id/appTitle"
+                android:id="@+id/appVersion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="5dp"
                 android:fontFamily="sans-serif-condensed"
                 android:text="@string/app_version"
+                android:textAllCaps="true"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/appTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/appVersion"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:fontFamily="sans-serif"
+                android:text="@string/app_name"
                 android:textAllCaps="true"
                 android:textSize="12sp"
                 android:textStyle="bold" />
@@ -47,7 +59,7 @@
                 android:id="@+id/appLogo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@id/appTitle"
+                android:layout_above="@id/appVersion"
                 android:padding="10dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/paintbrush"
