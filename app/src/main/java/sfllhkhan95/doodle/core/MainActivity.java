@@ -226,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements
             cursor.close();
 
             Bitmap bitmapFromFile = DoodleFactory.loadFromPath(picturePath, metrics.widthPixels, metrics.heightPixels);
-            canvas = PaintCanvas.loadFromBitmap(metrics, bitmapFromFile);
+            canvas = PaintCanvas.loadFromBitmap(this, metrics, bitmapFromFile);
 
             success = true;
         } catch (Exception ex) {
@@ -245,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements
         PaintCanvas canvas;
         try {
             Bitmap bitmapFromFile = DoodleFactory.loadFromPath(cameraImage, metrics.widthPixels, metrics.heightPixels);
-            canvas = PaintCanvas.loadFromBitmap(metrics, bitmapFromFile);
+            canvas = PaintCanvas.loadFromBitmap(this, metrics, bitmapFromFile);
 
             success = true;
         } catch (Exception ex) {
@@ -258,7 +258,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private PaintCanvas startFromScratch(DisplayMetrics metrics) {
-        PaintCanvas canvas = new PaintCanvas(metrics);
+        PaintCanvas canvas = new PaintCanvas(this, metrics);
 
         // Log event
         Bundle logParams = new Bundle();
@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private PaintCanvas resumeProject(DisplayMetrics metrics, String savedDoodle) {
         isExisting = true;
-        return PaintCanvas.loadFromPath(metrics, savedDoodle);
+        return PaintCanvas.loadFromPath(this, metrics, savedDoodle);
     }
 
     private void share(File tempFile) {
@@ -316,7 +316,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void onMaximizeToggled(boolean isMaximized) {
-        findViewById(R.id.container).setVisibility(isMaximized ? View.GONE : View.VISIBLE);
+        findViewById(R.id.toolbox).setVisibility(isMaximized ? View.GONE : View.VISIBLE);
         findViewById(R.id.brushSizeBar).setVisibility(isMaximized ? View.GONE : View.VISIBLE);
         toolbar.configure(isMaximized);
     }

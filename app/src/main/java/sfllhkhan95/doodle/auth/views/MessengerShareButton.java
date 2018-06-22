@@ -51,9 +51,9 @@ public class MessengerShareButton extends RelativeLayout {
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         inflate(context, R.layout.messenger_share_button, this);
 
-        mActionStringView = findViewById(R.id.action_message);
-        mDescriptionStringView = findViewById(R.id.description_message);
-        mActionButton = findViewById(R.id.action_button);
+        mActionStringView = findViewById(R.id.action);
+        mDescriptionStringView = findViewById(R.id.recipient);
+        mActionButton = findViewById(R.id.share_button);
 
         String DEFAULT_ACTION_TEXT = "Compose";
         setActionText(DEFAULT_ACTION_TEXT);

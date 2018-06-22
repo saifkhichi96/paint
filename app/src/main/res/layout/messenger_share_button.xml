@@ -4,7 +4,7 @@
     android:id="@+id/messenger_button_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="#AFFF"
+    app:cardBackgroundColor="@color/overlayNight"
     app:cardCornerRadius="16dp">
 
     <RelativeLayout
@@ -12,36 +12,53 @@
         android:layout_height="wrap_content"
         android:padding="8dp">
 
-        <include
-            android:id="@+id/action_button"
-            layout="@layout/messenger_button_send_blue_round"
+        <Button xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/messenger_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/messenger_button_blue_bg_round" />
+
+        <ImageButton
+            android:id="@+id/share_button"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true" />
+            android:layout_centerVertical="true"
+            android:background="#0000"
+            android:contentDescription="@string/desc_messenger_share_button"
+            android:src="@drawable/ic_action_send" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/messenger_icon"
+            android:layout_toLeftOf="@id/share_button"
+            android:layout_toRightOf="@id/messenger_icon"
+            android:layout_toStartOf="@id/share_button"
             android:orientation="vertical"
             android:paddingLeft="10dp"
             android:paddingRight="10dp">
 
             <TextView
-                android:id="@+id/action_message"
+                android:id="@+id/action"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:textColor="#555"
+                android:text="@string/label_messenger_action"
+                android:textColor="#BBB"
                 android:textSize="12sp" />
 
             <TextView
-                android:id="@+id/description_message"
+                android:id="@+id/recipient"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:textColor="#333"
+                android:text="@string/placeholder_fullname"
+                android:textColor="#DDD"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 

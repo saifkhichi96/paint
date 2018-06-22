@@ -1,11 +1,12 @@
 package sfllhkhan95.doodle.core.models;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.PointF;
 import android.util.DisplayMetrics;
 
+import sfllhkhan95.doodle.R;
 import sfllhkhan95.doodle.projects.utils.DoodleDatabase;
 
 
@@ -14,14 +15,19 @@ import sfllhkhan95.doodle.projects.utils.DoodleDatabase;
  */
 public class PaintCanvas extends Canvas {
 
-    private static final int DEFAULT_BG_COLOR = Color.BLACK;
-    private int bgColor = DEFAULT_BG_COLOR;
+    private static final int DEFAULT_BG_COLOR = R.color.defaultCanvasColor;
+    private int bgColor;
+
+    private final Context context;
 
     private Bitmap bgImage;
     private Bitmap bitmap;
     private String projectName = null;
 
-    public PaintCanvas(DisplayMetrics metrics) {
+    public PaintCanvas(Context context, DisplayMetrics metrics) {
+        this.context = context;
+        bgColor = context.getResources().getColor(DEFAULT_BG_COLOR);
+
         int height = metrics.heightPixels;
         int width = metrics.widthPixels;
 
@@ -29,8 +35,8 @@ public class PaintCanvas extends Canvas {
         setBitmap(bitmap);
     }
 
-    public static PaintCanvas loadFromBitmap(DisplayMetrics metrics, Bitmap srcBmp) {
-        PaintCanvas canvas = new PaintCanvas(metrics);
+    public static PaintCanvas loadFromBitmap(Context context, DisplayMetrics metrics, Bitmap srcBmp) {
+        PaintCanvas canvas = new PaintCanvas(context, metrics);
 
         float deviceAspect = metrics.widthPixels / (float) metrics.heightPixels;
         float bmpAspect = srcBmp.getWidth() / (float) srcBmp.getHeight();
@@ -72,9 +78,9 @@ public class PaintCanvas extends Canvas {
         return canvas;
     }
 
-    public static PaintCanvas loadFromPath(DisplayMetrics metrics, String bmpPath) {
+    public static PaintCanvas loadFromPath(Context context, DisplayMetrics metrics, String bmpPath) {
         Bitmap srcBmp = DoodleDatabase.loadDoodle(bmpPath, metrics.widthPixels, metrics.heightPixels);
-        PaintCanvas canvas = loadFromBitmap(metrics, srcBmp);
+        PaintCanvas canvas = loadFromBitmap(context, metrics, srcBmp);
         canvas.setProjectName(bmpPath);
 
         return canvas;

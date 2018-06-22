@@ -12,7 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:background="@color/colorPrimaryDark"
-        android:elevation="4dp" />
+        android:elevation="4dp"
+        tools:targetApi="lollipop" />
 
     <us.feras.mdv.MarkdownView
         android:id="@+id/markdownView"
