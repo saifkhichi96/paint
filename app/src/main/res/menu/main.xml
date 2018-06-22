@@ -12,8 +12,7 @@
         android:id="@+id/share"
         android:icon="@drawable/ic_action_share"
         android:title="Share"
-        app:showAsAction="always">
-    </item>
+        app:showAsAction="always"></item>
 
     <!--item
         android:icon="@drawable/ic_action_save"

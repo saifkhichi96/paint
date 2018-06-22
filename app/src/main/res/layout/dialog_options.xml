@@ -163,7 +163,7 @@
         android:layout_centerHorizontal="true"
         android:background="@drawable/bg_options_icon"
         android:scaleType="centerInside"
-        android:src="@drawable/ic_shape"
+        android:src="@drawable/ic_tool_shapes"
         android:tint="@color/colorPrimaryDark" />
 
 </RelativeLayout>
