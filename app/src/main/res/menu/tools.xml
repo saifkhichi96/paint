@@ -3,12 +3,12 @@
 
     <item
         android:id="@+id/pen"
-        android:icon="@drawable/ic_brush"
+        android:icon="@drawable/ic_tool_pen"
         android:title="Pen" />
 
     <item
         android:id="@+id/tools"
-        android:icon="@drawable/ic_shape"
+        android:icon="@drawable/ic_tool_shapes"
         android:title="Shapes">
         <menu>
             <item
@@ -34,7 +34,7 @@
             <item
                 android:id="@+id/fillColorPicker"
                 android:checkable="true"
-                android:icon="@drawable/ic_color_fill"
+                android:icon="@drawable/ic_tool_shape_color_selector"
                 android:title="Select fill color" />
         </menu>
     </item>
@@ -42,18 +42,18 @@
 
     <item
         android:id="@+id/colorPicker"
-        android:icon="@drawable/ic_color_picker"
+        android:icon="@drawable/ic_tool_color_picker"
         android:title="Color picker" />
 
     <item
         android:id="@+id/eraser"
-        android:icon="@drawable/ic_eraser"
+        android:icon="@drawable/ic_tool_eraser"
         android:title="Eraser" />
 
     <item
         android:id="@+id/penColorPicker"
         android:checkable="true"
-        android:icon="@drawable/ic_color_brush"
+        android:icon="@drawable/ic_tool_pen_color_selector"
         android:title="Select stroke color" />
 
 </menu>

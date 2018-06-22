@@ -4,21 +4,36 @@
     <string name="confirmDeleteTitle">Are you sure?</string>
     <string name="confirmDeleteMessage">This action will permanently delete the project. Do you really wish to continue?</string>
 
-    <string name="labelYes">Yes</string>
-    <string name="labelNo">No</string>
-
     <string name="unknownError">Unknown error. Upgrade application to latest version or contact support if error persists.</string>
 
     <string name="facebook_app_id">140472159955272</string>
     <string name="fb_login_protocol_scheme">fb140472159955272</string>
 
     <string name="privacy_policy_url">https://www.iubenda.com/privacy-policy/35502767</string>
-    <string name="developer_page_url">http://saifkhichi.com</string>
 
-    <string name="menu_item_pick_gallery_image">From Gallery</string>
-    <string name="menu_item_privacy_policy">Privacy Policy</string>
-    <string name="menu_item_review">Support Us</string>
-    <string name="menu_item_faqs">FAQs</string>
     <string name="url_faqs">file:///android_asset/FAQ.md</string>
     <string name="url_faqs_css">file:///android_asset/FAQ.css</string>
+
+    <string name="navigation_home">Home</string>
+    <string name="navigation_profile">Profile</string>
+    <string name="navigation_notifications">Alerts</string>
+    <string name="navigation_settings">Settings</string>
+    <string name="placeholder_fullname">Muhammad Saifullah Khan</string>
+    <string name="placeholder_email">saifkhichi96@gmail.com</string>
+    <string name="section_social">Social</string>
+    <string name="section_backup">Cloud Backup</string>
+    <string name="label_backup">Backup</string>
+    <string name="label_restore">Restore</string>
+    <string name="label_backup_size">Backup Size:</string>
+    <string name="label_backup_date">Last Backup:</string>
+    <string name="placeholder_backup_date">Never</string>
+    <string name="placeholder_backup_size">N/A</string>
+    <string name="desc_backup">Signed in users can back up their projects to cloud storage and never lose them.</string>
+    <string name="section_stats">Stats</string>
+    <string name="label_signin_date">Last Login:</string>
+    <string name="placeholder_signin_date">N/A</string>
+    <string name="label_signup_date">User Since:</string>
+    <string name="placeholder_signup_date">N/A</string>
+    <string name="desc_avatar">User avatar</string>
+    <string name="section_about">About</string>
 </resources>

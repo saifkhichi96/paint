@@ -12,4 +12,5 @@
     <color name="colorSectionBreak">#b0b0b0</color>
     <color name="colorSectionHeading">#565656</color>
     <color name="colorBlack">#000000</color>
+    <color name="colorWhite">#FFF</color>
 </resources>
