@@ -32,7 +32,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".projects.MenuActivity"
+            android:name=".projects.HomeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".auth.SettingsActivity"
+            android:parentActivityName=".projects.HomeActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".core.MainActivity"
@@ -73,11 +77,12 @@
 
         <activity
             android:name=".PrivacyPolicy"
+            android:parentActivityName=".auth.SettingsActivity"
             android:screenOrientation="portrait" />
 
         <activity
             android:name=".FAQsActivity"
-            android:parentActivityName=".projects.MenuActivity"
+            android:parentActivityName=".auth.SettingsActivity"
             android:screenOrientation="portrait" />
 
         <!-- This is required if you want to do any message handling beyond receiving notifications

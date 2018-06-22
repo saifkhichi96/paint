@@ -11,14 +11,17 @@ import com.google.android.gms.ads.MobileAds;
 import sfllhkhan95.doodle.billing.BillingManager;
 
 /**
+ * AdManager communicates with the Google Mobile SDK to manage the creation of all ads
+ * in this application.
+ *
  * @author saifkhichi96
- * @version 1.0.0
+ * @version 1.1.0
  * @since 3.4.2
  * created on 04/06/2018 6:36 AM
  */
 public class AdManager {
 
-    private static final String ADMOB_KEY = "ca-app-pub-6293532072634065~6156179621";
+    private static final String ADMOB_APP_ID = "ca-app-pub-6293532072634065~6156179621";
 
     private final Activity mContext;
     private final BillingManager mBillingManager;
@@ -58,8 +61,16 @@ public class AdManager {
         return mBillingManager.getPrice(BillingManager.Products.AD_REMOVE);
     }
 
+    /**
+     * Makes an asynchronous request for loading a banner ad into the target view
+     * and fires a callback when a response is received.
+     *
+     * @param target   the {@link AdView} into which the banner ad is to be displayed
+     * @param callback this {@link AdListener} listens for response to ad request
+     * @since 3.4.2
+     */
     public static void loadBanner(AdView target, AdListener callback) {
-        MobileAds.initialize(target.getContext(), AdManager.ADMOB_KEY);
+        MobileAds.initialize(target.getContext(), AdManager.ADMOB_APP_ID);
 
         target.setAdListener(callback);
         target.loadAd(new AdRequest.Builder().build());
