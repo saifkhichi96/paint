@@ -36,4 +36,10 @@
     <string name="placeholder_signup_date">N/A</string>
     <string name="desc_avatar">User avatar</string>
     <string name="section_about">About</string>
+    <string name="desc_thumbnail">Project icon</string>
+    <string name="desc_delete_button">Delete button</string>
+    <string name="label_project_name">Project Name</string>
+    <string name="label_messenger_action">Replying to</string>
+    <string name="desc_messenger_share_button">Share button</string>
+    <string name="desc_brush_size_icon">Brush size selector</string>
 </resources>

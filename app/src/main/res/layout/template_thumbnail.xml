@@ -15,6 +15,7 @@
             android:id="@+id/projectIcon"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:contentDescription="@string/desc_thumbnail"
             android:scaleType="centerCrop"
             android:src="@drawable/avatar_placeholder" />
 
@@ -26,6 +27,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="-3dp"
+            android:layout_marginEnd="-3dp"
             android:layout_marginRight="-3dp"
             android:background="@drawable/bg_delete" />
 
@@ -36,6 +38,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:contentDescription="@string/desc_delete_button"
             android:scaleType="fitStart"
             android:src="@drawable/ic_action_delete"
             android:tint="@color/colorBlack" />
@@ -49,7 +52,7 @@
         android:fontFamily="casual"
         android:gravity="center"
         android:maxLines="1"
-        android:text="Project Name"
+        android:text="@string/label_project_name"
         android:textAllCaps="true"
         android:textColor="@color/colorAccentLight"
         android:textSize="12sp"

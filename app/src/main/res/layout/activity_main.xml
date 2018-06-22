@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:layout_alignParentTop="true"
-        android:background="#A888"
+        android:background="@color/overlayNight"
         android:elevation="4dp"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
@@ -32,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#A888">
+        android:background="@color/overlayNight">
 
         <sfllhkhan95.doodle.core.views.ToolboxView
             android:id="@+id/toolbox"
@@ -47,15 +47,16 @@
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_above="@+id/container"
-        android:background="#A888"
+        android:background="@color/overlayNight"
         android:orientation="horizontal"
         android:weightSum="6">
 
-        <ImageButton
+        <ImageView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@android:color/transparent"
+            android:contentDescription="@string/desc_brush_size_icon"
+            android:scaleType="centerInside"
             android:src="@drawable/ic_brush_size" />
 
         <SeekBar
@@ -72,7 +73,7 @@
         android:id="@+id/messenger_share_button"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:layout_below="@id/primaryToolbar"
+        android:layout_above="@id/brushSizeBar"
         android:layout_margin="16dp"
         android:visibility="gone"
         custom:actionText="Composing"
