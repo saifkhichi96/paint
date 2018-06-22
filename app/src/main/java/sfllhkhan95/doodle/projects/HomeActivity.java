@@ -11,9 +11,6 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -21,21 +18,18 @@ import java.io.File;
 import java.io.IOException;
 
 import sfllhkhan95.doodle.DoodleApplication;
-import sfllhkhan95.doodle.FAQsActivity;
-import sfllhkhan95.doodle.PrivacyPolicy;
 import sfllhkhan95.doodle.R;
-import sfllhkhan95.doodle.auth.UserDetailsDialog;
+import sfllhkhan95.doodle.auth.SettingsActivity;
 import sfllhkhan95.doodle.core.MainActivity;
-import sfllhkhan95.doodle.core.utils.DialogFactory;
 import sfllhkhan95.doodle.projects.utils.DoodleDatabase;
 import sfllhkhan95.doodle.projects.utils.ThumbnailInflater;
 
 /**
  * @author saifkhichi96
  * @version 1.0
- *          created on 23/10/2017 2:27 AM
+ *          created on 16/06/2018 12:10 AM
  */
-public class MenuActivity extends AppCompatActivity implements View.OnClickListener {
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int REQUEST_TAKE_PHOTO = 100;
     private static final int REQUEST_PICK_PHOTO = 200;
@@ -43,14 +37,13 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     private final ProjectScanner projectScanner = new ProjectScanner();
     private ThumbnailInflater thumbnailInflater;
     private boolean backPressedOnce = false;
-    private UserDetailsDialog mUserDetailsDialog;
 
     private String mCameraPicturePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu);
+        setContentView(R.layout.activity_home);
 
         thumbnailInflater = new ThumbnailInflater(this);
 
@@ -63,19 +56,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.fromGallery).setOnClickListener(this);
         findViewById(R.id.fromCamera).setOnClickListener(this);
         findViewById(R.id.profileButton).setOnClickListener(this);
-
-        mUserDetailsDialog = new UserDetailsDialog(this, R.style.DialogTheme);
-        mUserDetailsDialog.setShareClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra("MESSENGER", true);
-                intent.putExtra("BG_COLOR", Color.BLACK);
-
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-            }
-        });
     }
 
     @Override
@@ -88,40 +68,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     protected void onPause() {
         super.onPause();
         projectScanner.finish();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (mUserDetailsDialog.getAuthHandler() != null) {
-            mUserDetailsDialog.getAuthHandler().stopTracking();
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.privacy_policy:
-                startActivity(new Intent(getApplicationContext(), PrivacyPolicy.class));
-                break;
-
-            case R.id.faqs:
-                startActivity(new Intent(getApplicationContext(), FAQsActivity.class));
-                break;
-
-            case R.id.about_developer:
-                new DialogFactory(this, null).supportDialog(this).show();
-                break;
-        }
-
-        return false;
     }
 
     @Override
@@ -162,7 +108,8 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.profileButton:
-                mUserDetailsDialog.show();
+                startActivity(new Intent(this, SettingsActivity.class));
+                overridePendingTransition(0, 0);
                 break;
         }
     }
@@ -170,7 +117,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        mUserDetailsDialog.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode != RESULT_OK) return;
         switch (requestCode) {

@@ -17,7 +17,7 @@ import java.util.TimerTask;
 
 import sfllhkhan95.doodle.billing.BillingManager;
 import sfllhkhan95.doodle.notifs.utils.NotificationService;
-import sfllhkhan95.doodle.projects.MenuActivity;
+import sfllhkhan95.doodle.projects.HomeActivity;
 
 /**
  * @author saifkhichi96
@@ -48,7 +48,7 @@ public class LaunchScreen extends AppCompatActivity {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    startActivity(new Intent(getApplicationContext(), MenuActivity.class));
+                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                     overridePendingTransition(0, 0);
                     finish();
                 }
@@ -87,7 +87,7 @@ public class LaunchScreen extends AppCompatActivity {
                     timer.schedule(new TimerTask() {
                         @Override
                         public void run() {
-                            startActivity(new Intent(getApplicationContext(), MenuActivity.class));
+                            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                             overridePendingTransition(0, 0);
                             finish();
                         }
