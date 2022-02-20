@@ -86,7 +86,7 @@ class AdManager private constructor(context: Context) {
      * @param callback this [AdListener] listens for response to ad request
      * @since 3.4.2
      */
-    fun showBannerAd(target: AdView, callback: AdListener?) {
+    fun showBannerAd(target: AdView, callback: AdListener) {
         if (!hasRemovedAds()) {
             target.adListener = callback
             target.loadAd(AdRequest.Builder().build())

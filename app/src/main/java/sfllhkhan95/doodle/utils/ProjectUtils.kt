@@ -34,6 +34,7 @@ object ProjectUtils {
     private lateinit var legacyRootDir: File
 
     fun init(context: Context) {
+        @Suppress("DEPRECATION")
         legacyRootDirPath = Environment.getExternalStorageDirectory().toString() + "/" + DIR_LEGACY
         legacyRootDir = File(legacyRootDirPath)
         legacyRootDir.mkdirs()

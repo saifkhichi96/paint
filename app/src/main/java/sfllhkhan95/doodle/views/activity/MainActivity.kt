@@ -5,8 +5,10 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.Rect
 import android.net.Uri
-import android.os.Build
+import android.os.Build.VERSION
+import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.Menu
@@ -15,6 +17,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.BlendModeColorFilterCompat
@@ -97,12 +100,15 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener, OnToo
         this.brushController = findViewById(R.id.brushController)
         this.brushController!!.setOnSeekBarChangeListener(this)
 
-        // Obtain device display metrics (used to setup project resolution)
-        val metrics = DisplayMetrics()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            windowManager.defaultDisplay.getRealMetrics(metrics)
+        // Obtain device display metrics (used to set up project resolution)
+        var metrics = Rect()
+        if (VERSION.SDK_INT >= VERSION_CODES.R) {
+            metrics = windowManager.currentWindowMetrics.bounds
         } else {
-            windowManager.defaultDisplay.getMetrics(metrics)
+            val displayMetrics = DisplayMetrics()
+            @Suppress("DEPRECATION")
+            windowManager.defaultDisplay.getMetrics(displayMetrics)
+            metrics.set(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels)
         }
 
         isViewing = intent.getBooleanExtra(FLAG_READ_ONLY, false)
@@ -398,7 +404,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener, OnToo
         onShareClicked()
     }
 
-    private fun createCanvas(metrics: DisplayMetrics): PaintCanvas {
+    private fun createCanvas(metrics: Rect): PaintCanvas {
         val savedDoodle = intent.getStringExtra(PROJECT_FROM_SAVED)
         val selectedImage = intent.getParcelableExtra<Uri>(PROJECT_FROM_IMAGE)
 
@@ -488,17 +494,17 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener, OnToo
         paintView.invalidate()
     }
 
-    private fun resumeProject(metrics: DisplayMetrics, savedDoodle: String): PaintCanvas {
+    private fun resumeProject(metrics: Rect, savedDoodle: String): PaintCanvas {
         isExisting = true
         return PaintCanvas.createWithBitmapPath(this, metrics, savedDoodle)
     }
 
-    private fun startFromDevice(metrics: DisplayMetrics, galleryImage: Uri?): PaintCanvas {
+    private fun startFromDevice(metrics: Rect, galleryImage: Uri?): PaintCanvas {
         var canvas: PaintCanvas
         var success = false
         try {
             val path = galleryImage?.path
-            val bitmap = BitmapUtils.openFromPath(path!!, metrics.widthPixels, metrics.heightPixels)
+            val bitmap = BitmapUtils.openFromPath(path!!, metrics.width(), metrics.height())
             canvas = PaintCanvas.createWithBitmap(this, metrics, bitmap!!)
 
             projectName = path
@@ -513,7 +519,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener, OnToo
         return canvas
     }
 
-    private fun startFromScratch(metrics: DisplayMetrics): PaintCanvas {
+    private fun startFromScratch(metrics: Rect): PaintCanvas {
         val canvas = PaintCanvas(this, metrics)
 
         // Log event
@@ -551,14 +557,14 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener, OnToo
             setSupportActionBar(if (isMaximized) secondary else primary)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-            val upIcon = resources.getDrawable(
+            val upIcon = ContextCompat.getDrawable(
+                ContextThemeWrapper(this@MainActivity, theme),
                 when {
                     isMaximized -> R.drawable.ic_action_minimize
                     else -> R.drawable.ic_action_maximize
-                },
-                theme
+                }
             )
-            upIcon.colorFilter =
+            upIcon?.colorFilter =
                 BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
                     ThemeUtils.colorTextPrimary(this@MainActivity),
                     BlendModeCompat.SRC_ATOP

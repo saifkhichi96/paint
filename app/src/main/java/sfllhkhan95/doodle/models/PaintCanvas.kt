@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.PointF
-import android.util.DisplayMetrics
+import android.graphics.Rect
 import androidx.core.content.ContextCompat
 import sfllhkhan95.doodle.R
 import sfllhkhan95.doodle.utils.ProjectUtils
@@ -13,7 +13,7 @@ import sfllhkhan95.doodle.utils.ProjectUtils
 /**
  * @author saifkhichi96
  */
-class PaintCanvas(context: Context, metrics: DisplayMetrics) : Canvas() {
+class PaintCanvas(context: Context, metrics: Rect) : Canvas() {
 
     private var baseBitmap: Bitmap? = null
     private var bitmapPath: String? = null
@@ -24,8 +24,8 @@ class PaintCanvas(context: Context, metrics: DisplayMetrics) : Canvas() {
     init {
         color = ContextCompat.getColor(context, DEFAULT_BG_COLOR)
 
-        val height = metrics.heightPixels
-        val width = metrics.widthPixels
+        val height = metrics.height()
+        val width = metrics.width()
 
         bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
         setBitmap(bitmap)
@@ -65,11 +65,11 @@ class PaintCanvas(context: Context, metrics: DisplayMetrics) : Canvas() {
     companion object {
         private const val DEFAULT_BG_COLOR = R.color.blue_grey_500
 
-        fun createWithBitmap(context: Context, metrics: DisplayMetrics, source: Bitmap): PaintCanvas {
+        fun createWithBitmap(context: Context, metrics: Rect, source: Bitmap): PaintCanvas {
             var bitmap = source
             val canvas = PaintCanvas(context, metrics)
 
-            val deviceAspect = metrics.widthPixels / metrics.heightPixels.toFloat()
+            val deviceAspect = metrics.width() / metrics.height().toFloat()
             val bmpAspect = bitmap.width / bitmap.height.toFloat()
 
             if (deviceAspect != bmpAspect) {
@@ -85,32 +85,32 @@ class PaintCanvas(context: Context, metrics: DisplayMetrics) : Canvas() {
                 } else {
                     val targetWidth = bitmap.height * deviceAspect
                     bitmap = Bitmap.createBitmap(
-                            bitmap,
-                            ((bitmap.width - targetWidth) / 2).toInt(),
-                            0,
-                            targetWidth.toInt(),
-                            bitmap.height
+                        bitmap,
+                        ((bitmap.width - targetWidth) / 2).toInt(),
+                        0,
+                        targetWidth.toInt(),
+                        bitmap.height
                     )
                 }
 
-                if (metrics.widthPixels > metrics.heightPixels) {
-                    val w = metrics.widthPixels
-                    val h = (metrics.widthPixels * bitmap.height / bitmap.width.toFloat()).toInt()
+                if (metrics.width() > metrics.height()) {
+                    val w = metrics.width()
+                    val h = (metrics.width() * bitmap.height / bitmap.width.toFloat()).toInt()
                     canvas.baseBitmap = Bitmap.createScaledBitmap(bitmap, w, h, false)
                 } else {
-                    val h = metrics.heightPixels
-                    val w = (metrics.heightPixels * bitmap.width / bitmap.height.toFloat()).toInt()
+                    val h = metrics.height()
+                    val w = (metrics.height() * bitmap.width / bitmap.height.toFloat()).toInt()
                     canvas.baseBitmap = Bitmap.createScaledBitmap(bitmap, w, h, false)
                 }
             } else {
-                canvas.baseBitmap = Bitmap.createScaledBitmap(bitmap, metrics.widthPixels, metrics.heightPixels, false)
+                canvas.baseBitmap = Bitmap.createScaledBitmap(bitmap, metrics.width(), metrics.height(), false)
             }
 
             return canvas
         }
 
-        fun createWithBitmapPath(context: Context, metrics: DisplayMetrics, bitmapPath: String): PaintCanvas {
-            val srcBmp = ProjectUtils.open(bitmapPath, metrics.widthPixels, metrics.heightPixels)
+        fun createWithBitmapPath(context: Context, metrics: Rect, bitmapPath: String): PaintCanvas {
+            val srcBmp = ProjectUtils.open(bitmapPath, metrics.width(), metrics.height())
             val canvas = this.createWithBitmap(context, metrics, srcBmp!!)
             canvas.bitmapPath = bitmapPath
 

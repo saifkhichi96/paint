@@ -2,6 +2,7 @@ package sfllhkhan95.doodle.bo
 
 import android.content.Context
 import android.os.Handler
+import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.android.billingclient.api.*
 
@@ -185,7 +186,7 @@ class BillingManager private constructor(context: Context) :
      * reconnect to the server after 5 seconds.
      */
     override fun onBillingServiceDisconnected() {
-        Handler().postDelayed({ mBillingClient.startConnection(this@BillingManager) }, 5000L)
+        Handler(Looper.getMainLooper()).postDelayed({ mBillingClient.startConnection(this@BillingManager) }, 5000L)
     }
 
     object Products {
