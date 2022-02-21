@@ -1,5 +1,5 @@
 <resources>
-  <string name="company_name_prefix"/>
+  <string name="company_name_prefix">" "</string>
   <string name="company_name_suffix">اپلی کیشن</string>
 
   <!-- Error messages -->

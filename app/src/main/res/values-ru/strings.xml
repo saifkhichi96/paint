@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="company_name_prefix">Приложение</string>
-  <string name="company_name_suffix"/>
+  <string name="company_name_suffix">" "</string>
 
   <!-- Error messages -->
   <string name="error_unknown">Неизвестная ошибка. Обновите приложение до последней версии или обратитесь в службу

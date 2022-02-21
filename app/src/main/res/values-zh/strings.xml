@@ -1,119 +1,104 @@
 <resources>
-  <string name="company_name_prefix"/>
+  <string name="company_name_prefix" >" "</string>
   <string name="company_name_suffix">应用</string>
 
   <!-- Error messages -->
-  <string name="error_unknown">Unknown error. Upgrade application to latest version or contact support if error
-    persists.
-  </string>
-  <string name="error_no_gallery">No Gallery application found.</string>
-  <string name="error_no_camera">No Camera application found.</string>
+  <string name="error_unknown">未知错误。 如果错误仍然存在，请将应用程序升级到最新版本或联系支持人员。</string>
+  <string name="error_no_gallery">未找到图库应用程序。</string>
+  <string name="error_no_camera">找不到相机应用程序。</string>
 
   <!-- Confirmation and Status messages -->
-  <string name="confirm_delete_body">This action will permanently delete the project</string>
+  <string name="confirm_delete_body">此操作将永久删除该项目</string>
 
   <!-- Content descriptions (for Accessibility) -->
-  <string name="desc_brush_size_icon">Select brush size</string>
-  <string name="desc_donated">Thank you for supporting Doodle! Ads will be removed when you launch the app again.
-  </string>
+  <string name="desc_brush_size_icon">选择画笔大小</string>
+  <string name="desc_donated">感谢您的支持！ 当您再次启动应用程序时，广告将被移除。</string>
 
   <!-- Prompt descriptions -->
-  <string name="desc_prompt_save">Changes in your project will be saved, and you can continue editing it later</string>
-  <string name="desc_prompt_save_as">Create a copy instead of overwriting existing project</string>
-  <string name="desc_prompt_close">All unsaved changes would be discarded</string>
-  <string name="desc_prompt_revert">This action will erase all unsaved changes. It cannot be reversed</string>
-  <string name="desc_prompt_save_and_close">Save changes before closing</string>
-  <string name="desc_prompt_support">Doodle is a free-of-charge, open-source project. Our team is hard at work to bring
-    you the best product. Minimal ads are the only income source from this app. You can support Doodle by reviewing it
-    on Play Store, contributing to its source, or donating a one-time amount to remove all ads from the app.
+  <string name="desc_prompt_save">项目中的更改将被保存，您可以稍后继续编辑</string>
+  <string name="desc_prompt_save_as">创建副本而不是覆盖现有项目</string>
+  <string name="desc_prompt_close">所有未保存的更改都将被丢弃</string>
+  <string name="desc_prompt_revert">此操作将删除所有未保存的更改。 无法逆转</string>
+  <string name="desc_prompt_save_and_close">关闭前保存更改</string>
+  <string name="desc_prompt_support">Doodle 是一个免费的开源项目。 我们的团队正在努力为您带来最好的产品。 最少的广告是这个应用程序的唯一收入来源。 您可以通过在 Play
+    商店中查看、贡献其来源或捐赠一次性金额以从应用程序中删除所有广告来支持 Doodle。
   </string>
-  <string name="desc_prompt_supported">Thank you for supporting Doodle! Doodle is a free-of-charge, open-source project.
-    Our team is hard at work to bring you the best product. You can support Doodle by reviewing it on Play Store or
-    contributing to its source.
+  <string name="desc_prompt_supported">感谢您对涂鸦的支持！ Doodle 是一个免费的开源项目。 我们的团队正在努力为您带来最好的产品。 您可以通过在 Play 商店中查看或贡献其来源来支持
+    Doodle。
   </string>
-  <string name="desc_prompt_exit">Come back soon.\nHappy Doodling!</string>
+  <string name="desc_prompt_exit">快回来。\n快乐涂鸦！</string>
 
-  <string name="desc_support_review">Your feedback helps us serve you better</string>
-  <string name="desc_support_contribute">This open-source project welcomes contributions to its source code and
-    documentation
-  </string>
-  <string name="desc_support_donate">All in-app ads will be removed if you choose to make this donation</string>
+  <string name="desc_support_review">您的反馈有助于我们更好地为您服务</string>
+  <string name="desc_support_contribute">这个开源项目欢迎对其源代码和文档的贡献</string>
+  <string name="desc_support_donate">如果您选择捐款，所有应用内广告都将被移除</string>
 
   <!-- Labels -->
-  <string name="label_blank">Blank Project</string>
-  <string name="label_camera">Camera</string>
-  <string name="label_close">Close</string>
-  <string name="label_delete">Delete</string>
-  <string name="label_exit">Exit</string>
-  <string name="label_gallery">Gallery</string>
-  <string name="label_save_and_close">Save &amp; Close</string>
-  <string name="label_support_contribute">Contribute</string>
-  <string name="label_support_donate">Donate</string>
-  <string name="label_support_review">Review</string>
+  <string name="label_blank">空项目</string>
+  <string name="label_camera">拍照</string>
+  <string name="label_close">关闭</string>
+  <string name="label_delete">删除</string>
+  <string name="label_exit">关闭</string>
+  <string name="label_gallery">照片库</string>
+  <string name="label_save_and_close">保存并关闭</string>
+  <string name="label_support_contribute">贡献</string>
+  <string name="label_support_donate">捐</string>
+  <string name="label_support_review">审查</string>
 
   <!-- Activity titles -->
-  <string name="title_faqs">Doodle FAQs</string>
-  <string name="title_privacy">Privacy Policy</string>
-  <string name="title_settings">Settings</string>
+  <string name="title_faqs">Doodle 常见问题</string>
+  <string name="title_privacy">隐私政策</string>
+  <string name="title_settings">设置</string>
 
   <!-- Settings screen options -->
-  <string name="settings_item_help">Get Help</string>
-  <string name="settings_item_privacy">See Privacy Policy</string>
-  <string name="settings_item_support">Support Us</string>
-  <string name="settings_item_theme">Choose Theme</string>
-  <string name="settings_item_intro">See Intro</string>
+  <string name="settings_item_help">得到帮助</string>
+  <string name="settings_item_privacy">请参阅隐私政策</string>
+  <string name="settings_item_support">支持我们</string>
+  <string name="settings_item_theme">选择主题</string>
+  <string name="settings_item_intro">见简介</string>
 
   <!-- Menu items -->
-  <string name="menu_action_layers">Layers</string>
-  <string name="menu_action_redo">Redo</string>
-  <string name="menu_action_revert">Revert</string>
-  <string name="menu_action_save">Save</string>
-  <string name="menu_action_save_as">Save As</string>
-  <string name="menu_action_settings">Settings</string>
-  <string name="menu_action_share">Share</string>
-  <string name="menu_action_undo">Undo</string>
+  <string name="menu_action_layers">图层</string>
+  <string name="menu_action_redo">重做</string>
+  <string name="menu_action_revert">恢复原状</string>
+  <string name="menu_action_save">保存</string>
+  <string name="menu_action_save_as">保存副本</string>
+  <string name="menu_action_settings">设置</string>
+  <string name="menu_action_share">分享</string>
+  <string name="menu_action_undo">撤消</string>
 
-  <string name="menu_tools_box">Box</string>
-  <string name="menu_tools_canvas">Canvas Color</string>
-  <string name="menu_tools_circle">Circle</string>
-  <string name="menu_tools_color_fill">Fill Color</string>
-  <string name="menu_tools_color_stroke">Pen Color</string>
-  <string name="menu_tools_diamond">Diamond</string>
-  <string name="menu_tools_eraser">Eraser</string>
-  <string name="menu_tools_eyedrop">Color Picker</string>
-  <string name="menu_tools_line">Line</string>
-  <string name="menu_tools_pen">Pen</string>
-  <string name="menu_tools_rect">Quad</string>
-  <string name="menu_tools_shape">Shapes</string>
-  <string name="menu_tools_star">Star</string>
-  <string name="menu_tools_triangle">Triangle</string>
+  <string name="menu_tools_box">盒子</string>
+  <string name="menu_tools_canvas">画布颜色</string>
+  <string name="menu_tools_circle">圆圈</string>
+  <string name="menu_tools_color_fill">内部颜色</string>
+  <string name="menu_tools_color_stroke">笔颜色</string>
+  <string name="menu_tools_diamond">钻石</string>
+  <string name="menu_tools_eraser">橡皮</string>
+  <string name="menu_tools_eyedrop">颜色选择器</string>
+  <string name="menu_tools_line">线</string>
+  <string name="menu_tools_pen">钢笔</string>
+  <string name="menu_tools_rect">正方形</string>
+  <string name="menu_tools_shape">形状</string>
+  <string name="menu_tools_star">星星</string>
+  <string name="menu_tools_triangle">三角形</string>
 
   <!-- Intro Slides -->
-  <string name="label_intro_done_permission">Allow</string>
-  <string name="label_intro_end_normal">Start</string>
+  <string name="label_intro_done_permission">允许</string>
+  <string name="label_intro_end_normal">开始</string>
 
-  <string name="slide1_title">Welcome</string>
-  <string name="slide1_description">Doodle is your art-companion which you can use for anything from casual doodling to
-    more serious drawings.
+  <string name="slide1_title">你好</string>
+  <string name="slide1_description">涂鸦是您的艺术伴侣，您可以将其用于从随意涂鸦到更严肃的绘画的任何事情。</string>
+
+  <string name="slide2_title">形状和颜色</string>
+  <string name="slide2_description">除了自由形式的涂鸦之外，Doodle 还允许您以您选择的颜色绘制预定义的几何形状。</string>
+
+  <string name="slide3_title">和朋友一起涂鸦</string>
+  <string name="slide3_description">在 Facebook Messenger 上将您的创作发送给您的朋友，并使用您自己的 Doodle 回复他们的 Doodle 消息，而无需离开 Messenger。
   </string>
 
-  <string name="slide2_title">Shapes &amp; Colours</string>
-  <string name="slide2_description">In addition to free-form doodling, Doodle allows you to draw predefined geometric
-    shapes in colours of your choice.
-  </string>
+  <string name="slide4_title">授予访问权限</string>
+  <string name="slide4_description_permissions">Doodle 需要存储和相机权限才能让您使用图库图像或从相机启动项目。</string>
+  <string name="slide4_description_normal">从一个空白项目开始，或者从图库或相机中选择一个图像。</string>
 
-  <string name="slide3_title">Doodle with Friends</string>
-  <string name="slide3_description">Send your creations to your friends on Facebook Messenger, and reply to their Doodle
-    messages with your own Doodle without leaving Messenger.
-  </string>
-
-  <string name="slide4_title">Grant Access</string>
-  <string name="slide4_description_permissions">Doodle requires storage and camera permissions to let you start a
-    project with a Gallery image or from Camera.
-  </string>
-  <string name="slide4_description_normal">Start with a blank project, or choose an image from Gallery or Camera.
-  </string>
-
-  <string name="theme_light">Light</string>
-  <string name="theme_dark">Dark</string>
+  <string name="theme_light">光</string>
+  <string name="theme_dark">黑暗的</string>
 </resources>
