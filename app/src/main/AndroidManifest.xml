@@ -4,15 +4,27 @@
           package="sfllhkhan95.doodle">
 
   <uses-permission android:name="android.permission.CAMERA"/>
-  <uses-permission android:name="android.permission.INTERNET"/>
-  <uses-permission android:name="android.permission.VIBRATE"/>
-  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-  <uses-permission android:name="com.android.vending.BILLING"/>
-  <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.VIBRATE" />
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+  <uses-permission android:name="com.android.vending.BILLING" />
+  <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
   <uses-feature
       android:name="android.hardware.camera"
-      android:required="false"/>
+      android:required="false" />
+
+  <queries>
+    <intent>
+      <action android:name="android.intent.action.VIEW" />
+    </intent>
+    <intent>
+      <action android:name="android.intent.action.PICK" />
+    </intent>
+    <intent>
+      <action android:name="android.intent.action.CAMERA_BUTTON" />
+    </intent>
+  </queries>
 
   <application
       android:name=".DoodleApplication"

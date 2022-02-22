@@ -1,7 +1,6 @@
 package sfllhkhan95.doodle.views.activity
 
 import android.Manifest
-import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Point
@@ -227,43 +226,39 @@ class HomeActivity : AppCompatActivity(), SpeedDialView.OnActionSelectedListener
 
     private fun onCameraActionSelected() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        if (intent.resolveActivity(packageManager) != null) {
-            try {
-                val photoFile: File = FileUtils.createImageFile(this, FILE_CAMERA)
-                mCameraPicturePath = photoFile.absolutePath
+        try {
+            val photoFile: File = FileUtils.createImageFile(this, FILE_CAMERA)
+            mCameraPicturePath = photoFile.absolutePath
 
-                intent.putExtra(
-                    MediaStore.EXTRA_OUTPUT,
-                    FileProvider.getUriForFile(
-                        this,
-                        applicationContext.packageName + getString(R.string.provider),
-                        photoFile
-                    )
+            intent.putExtra(
+                MediaStore.EXTRA_OUTPUT,
+                FileProvider.getUriForFile(
+                    this,
+                    applicationContext.packageName + getString(R.string.provider),
+                    photoFile
                 )
+            )
 
-                startActivityForResult(intent, REQUEST_PHOTO_CAPTURE)
+            startActivityForResult(intent, REQUEST_PHOTO_CAPTURE)
 
-            } catch (ex: ActivityNotFoundException) {
-                Snackbar.make(
-                    composeButton, getString(R.string.error_no_camera),
-                    Snackbar.LENGTH_LONG
-                ).show()
-            }
+        } catch (ex: Exception) {
+            Snackbar.make(
+                composeButton, ex.message ?: getString(R.string.error_no_camera),
+                Snackbar.LENGTH_LONG
+            ).show()
         }
     }
 
     private fun onGalleryActionSelected() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        if (intent.resolveActivity(packageManager) != null) {
-            try {
-                startActivityForResult(intent, REQUEST_PHOTO_PICK)
+        try {
+            startActivityForResult(intent, REQUEST_PHOTO_PICK)
 
-            } catch (ex: ActivityNotFoundException) {
-                Snackbar.make(
-                    composeButton, getString(R.string.error_no_gallery),
-                    Snackbar.LENGTH_LONG
-                ).show()
-            }
+        } catch (ex: Exception) {
+            Snackbar.make(
+                composeButton, ex.message ?: getString(R.string.error_no_gallery),
+                Snackbar.LENGTH_LONG
+            ).show()
         }
     }
 
