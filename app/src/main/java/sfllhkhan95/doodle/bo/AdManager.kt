@@ -87,10 +87,12 @@ class AdManager private constructor(context: Context) {
      * @since 3.4.2
      */
     fun showBannerAd(target: AdView, callback: AdListener) {
-        if (!hasRemovedAds()) {
-            target.adListener = callback
-            target.loadAd(AdRequest.Builder().build())
-        }
+        // fixme: temporarily disable banner ads until we have a solution for
+        //        the policy violation due to invalid ad placement
+//        if (!hasRemovedAds()) {
+//            target.adListener = callback
+//            target.loadAd(AdRequest.Builder().build())
+//        }
     }
 
     /**
@@ -123,7 +125,7 @@ class AdManager private constructor(context: Context) {
                             context.finish()
                         }
 
-                        override fun onAdFailedToShowFullScreenContent(adError: AdError?) {}
+                        override fun onAdFailedToShowFullScreenContent(adError: AdError) {}
                         override fun onAdShowedFullScreenContent() {}
                     }
                 }
@@ -162,7 +164,7 @@ class AdManager private constructor(context: Context) {
                             context.finish()
                         }
 
-                        override fun onAdFailedToShowFullScreenContent(adError: AdError?) {}
+                        override fun onAdFailedToShowFullScreenContent(adError: AdError) {}
                         override fun onAdShowedFullScreenContent() {}
                     }
                 }
